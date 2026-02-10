@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TM Advisors | Institutional Wealth & Tax Advisory</title>
+    
+    <meta property="og:title" content="TM Advisors | Institutional Wealth & Tax Advisory">
+    
+    <meta property="og:description" content="Wealth Engineered. Tax Optimized. Strategic Wealth Management, Sophisticated Tax Planning, and Experienced M&A Advisory.">
+    
+    <meta property="og:image" content="https://raw.githubusercontent.com/btcapital/TM_Advisors/main/TM-ADVISORS-RGB-White-Background_old.png">
+    
+    <meta property="og:url" content="https://raw.githubusercontent.com/btcapital/TM_Advisors/main/TM-ADVISORS-RGB-White-Background_old.png">
+    <meta property="og:type" content="website">
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="style.css">
@@ -27,6 +37,7 @@
             <div class="nav-brand">
                 <img src="TM-ADVISORS-RGB-White-Background-transparent.png" alt="TM Advisors Logo" class="brand-img">
             </div>
+            
             <nav class="nav-links">
                 <a href="index.html" class="active-link">Home</a>
                 <a href="about.html">About</a>
@@ -35,8 +46,12 @@
                 <a href="strategies.html">Investment Strategies</a>
                 <a href="#portals" class="portal-link">Client Portals</a>
             </nav>
+            
             <div class="nav-action">
-                <a href="#contact" class="btn-pill">Contact Us</a>
+                <a href="#contact" class="btn-pill desktop-only">Contact Us</a>
+                <button class="mobile-toggle" aria-label="Open Menu" onclick="toggleMobileMenu()">
+                    <i class="ph ph-list"></i>
+                </button>
             </div>
         </div>
     </header>
@@ -107,7 +122,7 @@
                         <div class="service-details">
                             <h4>Investment Planning</h4>
                             <p>Custom-engineered asset allocation and risk oversight.</p>
-                            <span class="view-more">View Details →</span>
+                            <span class="view-more">View Details <i class="ph ph-arrow-right"></i></span>
                         </div>
                     </a>
                     <a href="services.html#tax" class="service-link-card">
@@ -115,7 +130,7 @@
                         <div class="service-details">
                             <h4>Tax Planning</h4>
                             <p>Proactive liability minimization and regulatory compliance.</p>
-                            <span class="view-more">View Details →</span>
+                            <span class="view-more">View Details <i class="ph ph-arrow-right"></i></span>
                         </div>
                     </a>
                     <a href="services.html#ma" class="service-link-card">
@@ -123,7 +138,7 @@
                         <div class="service-details">
                             <h4>M&A Advisory</h4>
                             <p>Liquidity event structuring and pre-sale valuation.</p>
-                            <span class="view-more">View Details →</span>
+                            <span class="view-more">View Details <i class="ph ph-arrow-right"></i></span>
                         </div>
                     </a>
                     <a href="services.html#retirement" class="service-link-card">
@@ -131,7 +146,7 @@
                         <div class="service-details">
                             <h4>Retirement Planning</h4>
                             <p>Long-term income security and withdrawal strategy.</p>
-                            <span class="view-more">View Details →</span>
+                            <span class="view-more">View Details <i class="ph ph-arrow-right"></i></span>
                         </div>
                     </a>
                     <a href="services.html#nil" class="service-link-card">
@@ -139,7 +154,7 @@
                         <div class="service-details">
                             <h4>NIL Advisory</h4>
                             <p>Name, Image, and Likeness monetization strategy for athletes.</p>
-                            <span class="view-more">View Details →</span>
+                            <span class="view-more">View Details <i class="ph ph-arrow-right"></i></span>
                         </div>
                     </a>
                     <a href="services.html#family-office" class="service-link-card">
@@ -147,7 +162,7 @@
                         <div class="service-details">
                             <h4>Family Office Advisory</h4>
                             <p>Multi-generational wealth governance and legacy structuring.</p>
-                            <span class="view-more">View Details →</span>
+                            <span class="view-more">View Details <i class="ph ph-arrow-right"></i></span>
                         </div>
                     </a>
                 </div>
@@ -319,6 +334,21 @@
                 </div>
             </div>
         </footer>
+
+        <div id="mobile-menu" class="mobile-menu-overlay">
+            <div class="mobile-menu-content">
+                <button class="mobile-close" onclick="toggleMobileMenu()">×</button>
+                <nav class="mobile-nav-links">
+                    <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+                    <a href="about.html" onclick="toggleMobileMenu()">About</a>
+                    <a href="services.html" onclick="toggleMobileMenu()">Services</a>
+                    <a href="#team" onclick="toggleMobileMenu()">Team/Advisors</a>
+                    <a href="strategies.html" onclick="toggleMobileMenu()">Investment Strategies</a>
+                    <a href="#portals" onclick="toggleMobileMenu()">Client Portals</a>
+                    <a href="#contact" class="mobile-btn-pill" onclick="toggleMobileMenu()">Contact Us</a>
+                </nav>
+            </div>
+        </div>
 
         <div id="bio-modal" class="modal-overlay" onclick="closeBio(event)">
             <div class="modal-glass-sheet">
