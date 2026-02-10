@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM Advisors | Institutional Wealth & Tax Advisory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+</head>
+<body class="loading-state">
+
+    <div id="loader">
+        <div class="loader-inner">
+            <img src="TM-ADVISORS-RGB-White-Background-transparent.png" alt="TM Advisors Loading" class="loader-logo-img">
+            <div class="loader-line-wrap">
+                <div id="loader-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="hero-canvas"></canvas>
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="nav-brand">
+                <img src="TM-ADVISORS-RGB-White-Background-transparent.png" alt="TM Advisors Logo" class="brand-img">
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="active-link">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="#team">Team/Advisors</a>
+                <a href="strategies.html">Investment Strategies</a>
+                <a href="#portals" class="portal-link">Client Portals</a>
+            </nav>
+            <div class="nav-action">
+                <a href="#contact" class="btn-pill">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        
+        <section class="hero">
+            <div class="hero-container">
+                <h1 class="macro-text">Wealth Engineered. <br>Tax Optimized.</h1>
+                <div class="hero-glass-bar">
+                    <p class="hero-sub">
+                        Strategic Wealth Management <span class="separator">|</span> 
+                        Sophisticated Tax Planning <span class="separator">|</span> 
+                        Experienced M&A Advisory
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="matrix" class="matrix-section">
+            <div class="section-container">
+                <div class="matrix-header">
+                    <span class="eyebrow">The TM Advantage</span>
+                    <h2 class="section-heading">Institutional Capabilities</h2>
+                </div>
+                <div class="glass-grid">
+                    <div class="glass-card main">
+                        <div class="glass-inner">
+                            <span class="num">01</span>
+                            <h3>Strategic Investment Management</h3>
+                            <p>We structure portfolios designed to meet specific growth, income, and principal preservation goals. In investing, there is no one size fits all.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="glass-inner">
+                            <span class="num">02</span>
+                            <h3>Optimizing Tax Strategies</h3>
+                            <p>Our CPAs and CFPs craft efficient strategies designed to optimize outcomes and preserve wealth.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card wide">
+                        <div class="glass-inner">
+                            <span class="num">03</span>
+                            <h3>Guiding Strategic Transactions</h3>
+                            <p>From valuation and due diligence to tax-optimized deal structuring, our dedicated M&A team ensures you make informed decisions that maximize value.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="glass-inner">
+                            <span class="num">04</span>
+                            <h3>Alternative Investment Expertise</h3>
+                            <p>We specialize in exclusive alternative investments (Private Real Estate, Infrastructure, Equity, Credit) to enhance returns and diversify portfolios.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services-grid" class="services-section">
+            <div class="section-container">
+                <div class="matrix-header">
+                    <span class="eyebrow">Comprehensive Advisory</span>
+                    <h2 class="section-heading">Our Services</h2>
+                </div>
+                <div class="service-box-layout">
+                    <a href="services.html#investment" class="service-link-card">
+                        <div class="crystal-icon-wrap"><i class="ph ph-chart-line-up"></i></div>
+                        <div class="service-details">
+                            <h4>Investment Planning</h4>
+                            <p>Custom-engineered asset allocation and risk oversight.</p>
+                            <span class="view-more">View Details →</span>
+                        </div>
+                    </a>
+                    <a href="services.html#tax" class="service-link-card">
+                        <div class="crystal-icon-wrap"><i class="ph ph-calculator"></i></div>
+                        <div class="service-details">
+                            <h4>Tax Planning</h4>
+                            <p>Proactive liability minimization and regulatory compliance.</p>
+                            <span class="view-more">View Details →</span>
+                        </div>
+                    </a>
+                    <a href="services.html#ma" class="service-link-card">
+                        <div class="crystal-icon-wrap"><i class="ph ph-handshake"></i></div>
+                        <div class="service-details">
+                            <h4>M&A Advisory</h4>
+                            <p>Liquidity event structuring and pre-sale valuation.</p>
+                            <span class="view-more">View Details →</span>
+                        </div>
+                    </a>
+                    <a href="services.html#retirement" class="service-link-card">
+                        <div class="crystal-icon-wrap"><i class="ph ph-umbrella"></i></div>
+                        <div class="service-details">
+                            <h4>Retirement Planning</h4>
+                            <p>Long-term income security and withdrawal strategy.</p>
+                            <span class="view-more">View Details →</span>
+                        </div>
+                    </a>
+                    <a href="services.html#nil" class="service-link-card">
+                        <div class="crystal-icon-wrap"><i class="ph ph-signature"></i></div>
+                        <div class="service-details">
+                            <h4>NIL Advisory</h4>
+                            <p>Name, Image, and Likeness monetization strategy for athletes.</p>
+                            <span class="view-more">View Details →</span>
+                        </div>
+                    </a>
+                    <a href="services.html#family-office" class="service-link-card">
+                        <div class="crystal-icon-wrap"><i class="ph ph-bank"></i></div>
+                        <div class="service-details">
+                            <h4>Family Office Advisory</h4>
+                            <p>Multi-generational wealth governance and legacy structuring.</p>
+                            <span class="view-more">View Details →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="team-section">
+            <div class="section-container">
+                <div class="matrix-header">
+                    <span class="eyebrow">Expertise</span>
+                    <h2 class="section-heading">Meet the Team</h2>
+                </div>
+                
+                <div class="team-grid">
+                    <div class="team-card" onclick="openBio('robert')">
+                        <div class="member-img-wrap">
+                            <img src="rt-Gray.png" id="img-robert" class="member-img-real" alt="Robert T. Taylor" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Robert T. Taylor</h3>
+                        <p class="role">JD, CPA, CVA</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('brett-long')">
+                        <div class="member-img-wrap">
+                            <img src="Brett-Long-gray.png" id="img-brett-long" class="member-img-real" alt="Brett Long" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Brett Long</h3>
+                        <p class="role">CFP, CRPC</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('bryan-long')">
+                        <div class="member-img-wrap">
+                            <img src="Bryan-Long-gray.png" id="img-bryan-long" class="member-img-real" alt="Bryan Long" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Bryan Long</h3>
+                        <p class="role">CFP</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('andrew')">
+                        <div class="member-img-wrap">
+                            <img src="Andrew-Morgan-gray.png" id="img-andrew" class="member-img-real" alt="Andrew Morgan" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Andrew Morgan</h3>
+                        <p class="role">CPA</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('tracey')">
+                        <div class="member-img-wrap">
+                            <img src="Tracey-Pannell-gray.png" id="img-tracey" class="member-img-real" alt="Tracey Pannell" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Tracey Pannell</h3>
+                        <p class="role">Director of Compliance</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('tom')">
+                        <div class="member-img-wrap">
+                            <img src="tom-t-Gray.png" id="img-tom" class="member-img-real" alt="Tom Taylor" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Tom Taylor</h3>
+                        <p class="role">CPA</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('brett-quayle')">
+                        <div class="member-img-wrap">
+                            <img src="Brett-gray.png" id="img-brett-quayle" class="member-img-real" alt="Brett Quayle" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Brett Quayle</h3>
+                        <p class="role">CFP, CRPC</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('robert-quayle')">
+                        <div class="member-img-wrap">
+                            <img src="bob-q-gray.png" id="img-robert-quayle" class="member-img-real" alt="Robert Quayle" onerror="this.style.display='none'">
+                            <div class="member-img-placeholder"></div>
+                        </div>
+                        <h3>Robert Quayle</h3>
+                        <p class="role">Founder, Quayle Financial</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                    <div class="team-card" onclick="openBio('brandon')">
+                        <div class="member-img-wrap">
+                            <img src="bt_gray.jpg" id="img-brandon" class="member-img-real" alt="Brandon Taylor">
+                        </div>
+                        <h3>Brandon Taylor</h3>
+                        <p class="role">CPA</p>
+                        <button class="bio-trigger">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="section-container">
+                <div class="footer-top-bar">
+                    <div class="footer-brand-wrap">
+                        <img src="TM-ADVISORS-RGB-White-Background.png" alt="TM Advisors Logo" class="footer-logo">
+                    </div>
+                    <div class="footer-contact-info">
+                        <div class="contact-item">
+                            <i class="ph ph-envelope-simple"></i>
+                            <div>
+                                <span class="contact-label">Email Us</span>
+                                <a href="mailto:info@tmadvisors.com" class="contact-link">Info@tmadvisors.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="ph ph-phone"></i>
+                            <div>
+                                <span class="contact-label">Call Us</span>
+                                <a href="tel:2486889399" class="contact-link">248.688.9399</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-locations-grid">
+                    <div class="location-col">
+                        <span class="loc-eyebrow">Headquarters</span>
+                        <h4 class="loc-city">Charlotte, North Carolina</h4>
+                        <address>
+                            <i class="ph ph-map-pin"></i>
+                            11415 Golf Links Dr.<br>
+                            Charlotte, NC 28277
+                        </address>
+                    </div>
+                    <div class="location-col">
+                        <span class="loc-eyebrow">Our Location</span>
+                        <h4 class="loc-city">Troy, Michigan</h4>
+                        <address>
+                            <i class="ph ph-map-pin"></i>
+                            3150 Livernois Rd. Suite 175<br>
+                            Troy, MI 48083
+                        </address>
+                    </div>
+                    <div class="location-col">
+                        <span class="loc-eyebrow">Our Location</span>
+                        <h4 class="loc-city">Grand Blanc, Michigan</h4>
+                        <address>
+                            <i class="ph ph-map-pin"></i>
+                            9400 S. Saginaw St. Suite B<br>
+                            Grand Blanc, MI 48439
+                        </address>
+                    </div>
+                    <div class="location-col">
+                        <span class="loc-eyebrow">Our Location</span>
+                        <h4 class="loc-city">Flint, Michigan</h4>
+                        <address>
+                            <i class="ph ph-map-pin"></i>
+                            2302 Stonebridge Dr. Building D<br>
+                            Flint, MI 48532
+                        </address>
+                    </div>
+                </div>
+
+                <div class="footer-disclaimer">
+                    <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC’s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC’s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC’s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC’s current written disclosure statement discussing TM Advisors, LLC’s business operations, services, and fees is available at the SEC’s investment adviser public information website – www.adviserinfo.sec.gov or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC’s web site or incorporated herein, and takes no responsibility, therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
+                    <p class="disclaimer-sub">This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 TM Advisors. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <div id="bio-modal" class="modal-overlay" onclick="closeBio(event)">
+            <div class="modal-glass-sheet">
+                
+                <button class="modal-nav prev" onclick="changeBio(-1)" aria-label="Previous Profile">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <button class="modal-nav next" onclick="changeBio(1)" aria-label="Next Profile">
+                    <i class="ph ph-caret-right"></i>
+                </button>
+
+                <button class="modal-close" onclick="closeBio(event)">×</button>
+                <div class="modal-grid">
+                    <div class="modal-sidebar">
+                        <div class="modal-img-wrap">
+                            <img src="" id="modal-img" class="modal-portrait" alt="">
+                            <div id="modal-placeholder" class="member-img-placeholder"></div>
+                        </div>
+                        <h3 id="modal-name">Name</h3>
+                        <p id="modal-role">Title</p>
+                    </div>
+                    <div class="modal-content">
+                        <div id="modal-bio-text"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
