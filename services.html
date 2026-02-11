@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Services | TM Advisors</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- GLOBAL MOBILE FIXES --- */
+        html, body {
+            overflow-x: hidden; /* Critical for mobile to prevent side-scrolling */
+            position: relative;
+            width: 100%;
+        }
+
+        /* --- 1. MIDNIGHT SILK: MOBILE OPTIMIZED ENGINE --- */
+        .silk-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #0f1c2e; 
+            overflow: hidden;
+            pointer-events: none; /* Ensures touches pass through to content */
+        }
+
+        .silk-layer {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px); /* Slightly reduced for mobile performance */
+            opacity: 0.6; 
+            mix-blend-mode: screen; 
+            will-change: transform; /* Hardware Acceleration */
+        }
+
+        /* Layer 1: Massive Royal Blue Field */
+        .layer-1 {
+            top: -50%;
+            left: -50%;
+            width: 160vw;
+            height: 160vw;
+            background: radial-gradient(circle, #1c3b65 0%, rgba(28, 59, 101, 0) 70%);
+            animation: moveHorizontal 25s infinite alternate ease-in-out;
+        }
+
+        /* Layer 2: Massive Slate Teal Field */
+        .layer-2 {
+            bottom: -50%;
+            right: -50%;
+            width: 150vw;
+            height: 150vw;
+            background: radial-gradient(circle, #2c5364 0%, rgba(44, 83, 100, 0) 70%);
+            animation: moveVertical 30s infinite alternate ease-in-out;
+            animation-delay: -5s;
+        }
+
+        /* Layer 3: Fill Light */
+        .layer-3 {
+            top: 10%;
+            left: 10%;
+            width: 120vw;
+            height: 120vw;
+            background: radial-gradient(circle, rgba(64, 104, 144, 0.3) 0%, rgba(64, 104, 144, 0) 60%); 
+            animation: pulseMove 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes moveHorizontal {
+            0% { transform: translateX(-10%) rotate(0deg); }
+            100% { transform: translateX(10%) rotate(5deg); } /* Reduced range for smoother mobile perf */
+        }
+
+        @keyframes moveVertical {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-10%) scale(1.1); }
+        }
+
+        @keyframes pulseMove {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-10%, 10%) scale(1.1); }
+        }
+
+        .silk-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- 2. PAGE LAYOUT --- */
+        .page-hero {
+            padding: 180px 60px 100px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .page-intro {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.9);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .services-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding-bottom: 160px;
+        }
+
+        /* --- 3. THE EXECUTIVE CARD (CRISP WHITE EDITION) --- */
+        .service-detail-card {
+            background: rgba(23, 38, 56, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); /* Safari Mobile Support */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 50px 40px;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-detail-card:hover {
+            transform: translateY(-8px);
+            border-color: #FFFFFF;
+            background: rgba(23, 38, 56, 0.85);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 25px;
+        }
+
+        .service-icon-large {
+            font-size: 2.5rem;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .service-detail-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .value-hook {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 400; 
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 40px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 400;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .text-link-white {
+            color: #FFFFFF;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: gap 0.3s ease;
+        }
+
+        .text-link-white:hover {
+            gap: 15px;
+            opacity: 0.8;
+        }
+
+        /* --- 4. NAVIGATION DROPDOWN --- */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+            height: 100%;
+        }
+
+        .dropdown-trigger {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 220px;
+            background: rgba(11, 22, 34, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #FFFFFF;
+            border-radius: 0 0 4px 4px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            z-index: 3000;
+        }
+
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.05);
+            color: #FFFFFF;
+            padding-left: 30px;
+        }
+
+        /* --- 5. MOBILE AUDIT FIXES --- */
+        @media (max-width: 1200px) {
+            .services-detail-grid { grid-template-columns: repeat(2, 1fr); }
+            .page-hero { padding-top: 140px; }
+        }
+        
+        @media (max-width: 768px) {
+            /* 1. STACKING */
+            .services-detail-grid { 
+                grid-template-columns: 1fr; 
+                gap: 25px; /* Tighter gap for mobile scroll flow */
+            }
+            
+            /* 2. HEADER/HERO SPACING */
+            .page-hero { 
+                padding: 110px 20px 50px; /* Reduced top padding to bring content "Above the fold" */
+            }
+            
+            /* 3. TYPOGRAPHY SCALING */
+            .macro-text { 
+                font-size: 2.5rem !important; /* Smaller title prevents wrapping issues */
+                line-height: 1.1;
+            }
+            .page-intro { 
+                font-size: 1rem; 
+                padding: 0 10px; /* Prevent text touching edges */
+            }
+            
+            /* 4. CARD DENSITY */
+            .service-detail-card { 
+                padding: 35px 25px; /* More dense padding for mobile */
+            }
+            
+            .service-detail-card h3 {
+                font-size: 1.75rem; /* Sized for mobile screens */
+            }
+            
+            /* 5. BACKGROUND TUNING */
+            /* Reduce blur radius on mobile to save GPU battery */
+            .silk-layer { filter: blur(60px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="silk-background">
+        <div class="silk-layer layer-1"></div>
+        <div class="silk-layer layer-2"></div>
+        <div class="silk-layer layer-3"></div>
+    </div>
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo-link">
+                    <img src="TM-ADVISORS-RGB-White-Background-transparent.png" alt="TM Advisors Logo" class="brand-img">
+                </a>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#team">Team/Advisors</a>
+                <a href="services.html" class="active-link">Services</a>
+                <a href="investment_strategies.html">Investment Strategies</a>
+                
+                <div class="dropdown-container">
+                    <a href="#" class="portal-link dropdown-trigger">
+                        Client Portals <i class="ph ph-caret-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="https://client.schwab.com/Areas/Access/Login" target="_blank">Schwab Login</a>
+                        <a href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank">Client Login</a>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="nav-action">
+                <a href="#contact" class="btn-pill desktop-only">Contact Us</a>
+                <button class="mobile-toggle" aria-label="Open Menu" onclick="toggleMobileMenu()">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        
+        <section class="page-hero">
+            <span class="eyebrow">Comprehensive Advisory</span>
+            <h1 class="macro-text" style="font-size: 4.5rem; margin-bottom: 25px; line-height: 1;">Our Capabilities</h1>
+            <p class="page-intro">
+                Wealth engineered. Tax optimized. A unified approach to preserving your legacy.
+            </p>
+        </section>
+
+        <section class="services-section">
+            <div class="section-container">
+                <div class="services-detail-grid">
+                    
+                    <div id="investment" class="service-detail-card">
+                        <div class="card-header">
+                            <i class="ph ph-chart-line-up service-icon-large"></i>
+                            <h3>Investment Planning</h3>
+                        </div>
+                        <p class="value-hook">
+                            Bespoke portfolios engineered for preservation and growth, calibrated to your risk profile.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Custom Asset Allocation & Risk Modeling</li>
+                            <li>Equities, Fixed Income & Real Estate</li>
+                            <li>Liquidity Analysis & Tax Impact Sizing</li>
+                            <li>Dynamic Rebalancing to Market Conditions</li>
+                        </ul>
+                        <div class="card-footer">
+                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div id="tax" class="service-detail-card">
+                        <div class="card-header">
+                            <i class="ph ph-calculator service-icon-large"></i>
+                            <h3>Tax Planning</h3>
+                        </div>
+                        <p class="value-hook">
+                            Proactive liability minimization designed to ensure you keep more of what you earn.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Regulatory Compliance & Filing</li>
+                            <li>Capital Gains & Loss Harvesting Strategies</li>
+                            <li>Retirement Account Optimization</li>
+                            <li>Business Succession Tax Structuring</li>
+                        </ul>
+                        <div class="card-footer">
+                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div id="ma" class="service-detail-card">
+                        <div class="card-header">
+                            <i class="ph ph-handshake service-icon-large"></i>
+                            <h3>M&A Advisory</h3>
+                        </div>
+                        <p class="value-hook">
+                            Guiding strategic transactions to maximize valuation and minimize risk at the exit.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Pre-Sale Valuation & Due Diligence</li>
+                            <li>Deal Structuring & Negotiation</li>
+                            <li>Strategic Buyer Identification</li>
+                            <li>Post-Transaction Wealth Integration</li>
+                        </ul>
+                        <div class="card-footer">
+                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div id="retirement" class="service-detail-card">
+                        <div class="card-header">
+                            <i class="ph ph-umbrella service-icon-large"></i>
+                            <h3>Retirement Planning</h3>
+                        </div>
+                        <p class="value-hook">
+                            A roadmap to long-term income security, factoring in inflation, healthcare, and lifestyle.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Income Replacement Strategy</li>
+                            <li>Social Security & Pension Analysis</li>
+                            <li>Healthcare Cost Projection</li>
+                            <li>Withdrawal Rate Stress Testing</li>
+                        </ul>
+                        <div class="card-footer">
+                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div id="nil" class="service-detail-card">
+                        <div class="card-header">
+                            <i class="ph ph-signature service-icon-large"></i>
+                            <h3>NIL Advisory</h3>
+                        </div>
+                        <p class="value-hook">
+                            Converting temporary athletic earnings into enduring financial independence.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Income Structuring & Asset Protection</li>
+                            <li>Brand Monetization Strategy</li>
+                            <li>Tax Compliance for Multi-State Income</li>
+                            <li>Long-Term Investment Allocation</li>
+                        </ul>
+                        <div class="card-footer">
+                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div id="family-office" class="service-detail-card">
+                        <div class="card-header">
+                            <i class="ph ph-bank service-icon-large"></i>
+                            <h3>Family Office</h3>
+                        </div>
+                        <p class="value-hook">
+                            A personal CFO service dedicated to the stewardship of multi-generational dynasties.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Holistic Lifestyle Management</li>
+                            <li>Philanthropic Structuring</li>
+                            <li>Intergenerational Wealth Transfer</li>
+                            <li>Private Deal Flow & Direct Investment</li>
+                        </ul>
+                        <div class="card-footer">
+                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="section-container">
+            <div class="footer-top-bar">
+                <div class="footer-brand-wrap">
+                    <img src="TM-ADVISORS-RGB-White-Background.png" alt="TM Advisors Logo" class="footer-logo">
+                </div>
+                <div class="footer-contact-info">
+                    <div class="contact-item">
+                        <i class="ph ph-envelope-simple"></i>
+                        <div>
+                            <span class="contact-label">Email Us</span>
+                            <a href="mailto:info@tmadvisors.com" class="contact-link">Info@tmadvisors.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="ph ph-phone"></i>
+                        <div>
+                            <span class="contact-label">Call Us</span>
+                            <a href="tel:2486889399" class="contact-link">248.688.9399</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-locations-grid">
+                <div class="location-col">
+                    <span class="loc-eyebrow">Headquarters</span>
+                    <h4 class="loc-city">Charlotte, North Carolina</h4>
+                    <address>
+                        <i class="ph ph-map-pin"></i>
+                        11415 Golf Links Dr.<br>
+                        Charlotte, NC 28277
+                    </address>
+                </div>
+                <div class="location-col">
+                    <span class="loc-eyebrow">Our Location</span>
+                    <h4 class="loc-city">Troy, Michigan</h4>
+                    <address>
+                        <i class="ph ph-map-pin"></i>
+                        3150 Livernois Rd. Suite 175<br>
+                        Troy, MI 48083
+                    </address>
+                </div>
+                <div class="location-col">
+                    <span class="loc-eyebrow">Our Location</span>
+                    <h4 class="loc-city">Grand Blanc, Michigan</h4>
+                    <address>
+                        <i class="ph ph-map-pin"></i>
+                        9400 S. Saginaw St. Suite B<br>
+                        Grand Blanc, MI 48439
+                    </address>
+                </div>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC’s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC’s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC’s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC’s current written disclosure statement discussing TM Advisors, LLC’s business operations, services, and fees is available at the SEC’s investment adviser public information website – www.adviserinfo.sec.gov or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC’s web site or incorporated herein, and takes no responsibility, therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
+                <p class="disclaimer-sub">This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 TM Advisors. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="mobile-menu" class="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <button class="mobile-close" onclick="toggleMobileMenu()">×</button>
+            <nav class="mobile-nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#team">Team/Advisors</a>
+                <a href="services.html">Services</a>
+                <a href="investment_strategies.html">Investment Strategies</a>
+                <a href="https://client.schwab.com/Areas/Access/Login" target="_blank" style="font-size: 1.5rem; color: #FFFFFF;">Schwab Login</a>
+                <a href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank" style="font-size: 1.5rem; color: #FFFFFF;">Client Login</a>
+                <a href="#contact" class="mobile-btn-pill">Contact Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
