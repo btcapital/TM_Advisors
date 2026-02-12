@@ -119,10 +119,15 @@ body.loading-state { overflow: hidden; animation: unlockScroll 0.1s forwards 2.5
 
 .matrix-section { padding: 160px 60px; position: relative; z-index: 10; }
 .section-heading { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 20px; text-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-.eyebrow { 
-    display: block; text-transform: uppercase; letter-spacing: 3px; 
-    font-size: 20px; /* Updated to 20px */
-    margin-bottom: 20px; opacity: 0.9; font-weight: 700; color: #ffffff; 
+.eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 20px;       /* Large, readable size */
+    margin-bottom: 20px;
+    opacity: 0.9;
+    font-weight: 700;
+    color: #c5a47e;        /* Updated to Gold */
 }
 .matrix-header { margin-bottom: 80px; text-align: center; }
 
