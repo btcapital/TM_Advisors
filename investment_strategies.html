@@ -18,7 +18,7 @@
             --midnight-bot: #050a10;
             
             --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-surface: rgba(13, 24, 38, 0.5);
+            --glass-surface: rgba(13, 24, 38, 0.6); 
             --accent-blue: #6495ED;
             --brand-gold: #c5a47e; 
             --footer-bg: #020406;
@@ -133,6 +133,18 @@
             padding: 160px 20px 40px; 
         }
 
+        /* UPDATED EYEBROW (Exact Request) */
+        .eyebrow {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 20px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-weight: 700;
+            color: #c5a47e;
+        }
+
         .macro-headline {
             font-family: 'Playfair Display', serif;
             font-size: clamp(2.5rem, 6vw, 5.5rem);
@@ -145,49 +157,75 @@
             font-weight: 300; line-height: 1.7;
         }
 
+        /* --- LINEAR LAYOUT --- */
         .strategy-block {
-            padding: 50px 5%; max-width: 1400px; margin: 0 auto;
-            display: flex; align-items: center; gap: 80px; position: relative;
+            padding: 100px 5%; 
+            max-width: 1400px; 
+            margin: 0 auto;
+            display: flex; 
+            align-items: center; 
+            gap: 80px; 
+            position: relative;
         }
 
-        .strategy-block.reverse { flex-direction: row-reverse; }
+        .strategy-block:not(:last-of-type) {
+            border-bottom: 1px solid var(--brand-gold);
+        }
+
         .content-side { flex: 1; position: relative; z-index: 2; }
         .visual-side { flex: 1; position: relative; }
 
         .strategy-card {
-            background: var(--glass-surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); padding: 50px; border-radius: 4px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2); transition: transform 0.5s ease;
+            background: var(--glass-surface); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); 
+            padding: 50px; 
+            border-radius: 4px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4); 
+            min-height: 450px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            transition: transform 0.5s ease;
         }
 
-        .strategy-block:hover .strategy-card { transform: translateY(-5px); border-color: rgba(255,255,255,0.4); }
+        .strategy-block:hover .strategy-card { 
+            transform: translateY(-8px); 
+            border-color: rgba(255,255,255,0.4); 
+        }
 
         .strategy-title {
-            font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 15px;
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 25px;
             position: relative; display: inline-block;
         }
+        
         .strategy-title::after {
-            content: ''; position: absolute; bottom: -8px; left: 0; width: 60px; height: 2px; background: var(--accent-blue);
+            content: ''; 
+            position: absolute; 
+            bottom: -10px; 
+            left: 0; 
+            width: 60px; 
+            height: 2px; 
+            background: var(--brand-gold);
         }
 
         .strategy-desc {
-            font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);
-            margin-top: 25px; margin-bottom: 25px; font-weight: 300;
+            font-size: 1.15rem; 
+            line-height: 1.8; 
+            color: var(--text-secondary);
+            margin-top: 30px; 
+            margin-bottom: 30px; 
+            font-weight: 300;
         }
 
         .capability-list {
-            list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 12px;
+            list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 15px;
         }
-        .capability-list li { display: flex; align-items: flex-start; gap: 15px; font-size: 0.95rem; color: rgba(255,255,255,0.9); }
-        
-        /* UPDATED: Checkmarks are now BRAND GOLD */
-        .capability-list li i { 
-            color: var(--brand-gold); /* Updated from accent-blue */
-            font-size: 1.2rem; 
-            margin-top: 3px; 
-        }
+        .capability-list li { display: flex; align-items: flex-start; gap: 15px; font-size: 1rem; color: rgba(255,255,255,0.9); }
+        .capability-list li i { color: var(--brand-gold); font-size: 1.3rem; margin-top: 2px; }
 
-        /* --- 4. THE LUXURY FOOTER (ABSOLUTE CENTER) --- */
+        /* --- 4. THE LUXURY FOOTER --- */
         .site-footer {
             background-color: var(--footer-bg);
             border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -197,12 +235,8 @@
             color: #fff;
         }
 
-        .footer-wide-container {
-            width: 95%;
-            margin: 0 auto;
-        }
+        .footer-wide-container { width: 95%; margin: 0 auto; }
 
-        /* Relative Parent for Absolute Centering */
         .footer-top-bar {
             position: relative; 
             display: flex;
@@ -215,7 +249,6 @@
 
         .footer-logo { height: 60px; width: auto; opacity: 0.9; }
 
-        /* Absolute Position for Perfect Center */
         .footer-contact-info {
             position: absolute;
             left: 50%;
@@ -225,11 +258,7 @@
             white-space: nowrap;
         }
 
-        .contact-item { 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 15px; 
-        }
+        .contact-item { display: flex; align-items: flex-start; gap: 15px; }
         .contact-item i { color: var(--brand-gold); font-size: 1.4rem; margin-top: 2px; }
 
         .contact-label {
@@ -242,7 +271,6 @@
             font-size: 1.1rem; letter-spacing: 0.5px;
         }
 
-        /* Locations Grid */
         .footer-locations-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -289,25 +317,21 @@
         }
 
         @media (max-width: 968px) {
-            .strategy-block, .strategy-block.reverse { flex-direction: column; padding: 40px 20px; gap: 30px; }
-            .strategy-card { padding: 30px 25px; width: 100%; }
+            .strategy-block { 
+                flex-direction: column; 
+                padding: 60px 20px; 
+                gap: 40px; 
+            }
+            .strategy-card { 
+                padding: 40px 30px; 
+                width: 100%; 
+                min-height: 300px; 
+            }
             .macro-headline { font-size: 2.8rem; }
             .visual-side { width: 100%; display: block; }
 
-            /* Footer Mobile */
-            .footer-top-bar { 
-                flex-direction: column; 
-                align-items: flex-start; 
-                gap: 40px; 
-            }
-            
-            .footer-contact-info { 
-                position: static; 
-                transform: none; 
-                flex-direction: column; 
-                gap: 30px; 
-            }
-            
+            .footer-top-bar { flex-direction: column; align-items: flex-start; gap: 40px; }
+            .footer-contact-info { position: static; transform: none; flex-direction: column; gap: 30px; }
             .footer-locations-grid { grid-template-columns: 1fr; gap: 50px; }
             .location-col { border-left: none; padding-left: 0; }
         }
@@ -365,6 +389,7 @@
 
         <section class="strategy-block">
             <div class="content-side">
+                <span class="eyebrow">Strategy 01</span>
                 <h2 class="strategy-title">Core Diversified</h2>
                 <p class="strategy-desc">
                     The foundation of your financial house. We utilize a globally diversified approach to capture market returns efficiently while minimizing cost and uncompensated risk. This isn't about guessing; it is about mathematical allocation.
@@ -377,17 +402,18 @@
             </div>
             <div class="visual-side">
                 <div class="strategy-card">
-                    <i class="ph ph-chart-pie-slice" style="font-size: 4rem; color: #fff; margin-bottom: 20px;"></i>
-                    <h4 style="font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 15px;">The Objective</h4>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6;">
+                    <i class="ph ph-chart-pie-slice" style="font-size: 5rem; color: #fff; margin-bottom: 20px;"></i>
+                    <h4 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 15px;">The Objective</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6;">
                         To serve as the reliable engine of the portfolio, delivering consistent compounding over multi-year cycles.
                     </p>
                 </div>
             </div>
         </section>
 
-        <section class="strategy-block reverse">
+        <section class="strategy-block">
             <div class="content-side">
+                <span class="eyebrow">Strategy 02</span>
                 <h2 class="strategy-title">Tactical Overlay</h2>
                 <p class="strategy-desc">
                     Markets are inefficient. Our tactical layer is designed to exploit those inefficiencies. We actively adjust exposure to sectors and asset classes that demonstrate strong momentum or deep value characteristics, acting as the portfolio's accelerator.
@@ -400,9 +426,9 @@
             </div>
             <div class="visual-side">
                 <div class="strategy-card">
-                    <i class="ph ph-trend-up" style="font-size: 4rem; color: #fff; margin-bottom: 20px;"></i>
-                    <h4 style="font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 15px;">The Objective</h4>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6;">
+                    <i class="ph ph-trend-up" style="font-size: 5rem; color: #fff; margin-bottom: 20px;"></i>
+                    <h4 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 15px;">The Objective</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6;">
                         To enhance returns during bull markets and provide a mechanism for defensive positioning during downturns.
                     </p>
                 </div>
@@ -411,6 +437,7 @@
 
         <section class="strategy-block">
             <div class="content-side">
+                <span class="eyebrow">Strategy 03</span>
                 <h2 class="strategy-title">Alternative Investments</h2>
                 <p class="strategy-desc">
                     True diversification requires looking beyond the stock exchange. We provide access to private markets that historically offer lower correlation to public equities, adding a layer of stability and exclusivity to your wealth.
@@ -423,9 +450,9 @@
             </div>
             <div class="visual-side">
                 <div class="strategy-card">
-                    <i class="ph ph-buildings" style="font-size: 4rem; color: #fff; margin-bottom: 20px;"></i>
-                    <h4 style="font-family: 'Playfair Display'; font-size: 1.5rem; margin-bottom: 15px;">The Objective</h4>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6;">
+                    <i class="ph ph-buildings" style="font-size: 5rem; color: #fff; margin-bottom: 20px;"></i>
+                    <h4 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 15px;">The Objective</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6;">
                         To generate non-correlated income and capital appreciation that is insulated from daily stock market sentiment.
                     </p>
                 </div>
