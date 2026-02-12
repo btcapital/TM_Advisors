@@ -124,7 +124,7 @@
         }
 
         .brand-img { 
-            height: 60px; /* Locked to larger optical size */
+            height: 50px; 
             width: auto; 
             display: block;
         }
@@ -208,14 +208,15 @@
 
         .header-title-block { text-align: center; margin-bottom: 60px; padding: 0 20px; }
 
-        .section-label-hero {
-            font-size: 20px;
-            color: #FFFFFF;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            margin-bottom: 15px;
+        .eyebrow {
             display: block;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 20px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-weight: 700;
+            color: #c5a47e;
         }
 
         .macro-headline {
@@ -294,7 +295,7 @@
             transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        /* --- 5. FOOTER (CSS GRID ARCHITECTURE) --- */
+        /* --- 5. FOOTER --- */
         .site-footer {
             background: var(--footer-bg);
             padding: 80px 0 40px;
@@ -305,15 +306,14 @@
 
         .footer-fluid-container {
             width: 100%;
-            padding: 0 5%; /* Fluid Padding */
+            padding: 0 5%;
             box-sizing: border-box;
         }
 
-        /* TOP ROW: CSS GRID (The Fix for Centering) */
+        /* TOP ROW */
         .footer-top-bar {
-            display: grid;
-            /* 3 Columns: 1fr (Left), auto (Center), 1fr (Right Spacer) */
-            grid-template-columns: 1fr auto 1fr; 
+            display: flex;
+            justify-content: space-between; 
             align-items: center;
             padding-bottom: 50px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -321,21 +321,12 @@
             width: 100%;
         }
 
-        .footer-brand-wrap {
-            grid-column: 1; /* Explicitly Column 1 */
-            justify-self: start; /* Force Left */
-        }
-
         .footer-logo { height: 45px; display: block; }
 
         .footer-contact-info {
-            grid-column: 2; /* Explicitly Column 2 (Center) */
-            justify-self: center; /* Force Center */
             display: flex;
             gap: 80px;
         }
-
-        /* No content for Column 3, it acts as a counter-weight */
 
         .contact-item {
             display: flex;
@@ -421,7 +412,7 @@
             margin-bottom: 25px;
             text-align: justify;
             margin-top: 0;
-            width: 100%; /* Force Full Width */
+            width: 100%;
         }
         
         .footer-bottom {
@@ -443,9 +434,8 @@
             .form-grid { grid-template-columns: 1fr; } 
             .full-width { grid-column: span 1; }
             
-            /* Footer Mobile: Switch Grid to Block/Flex Column */
+            /* Footer Mobile */
             .footer-top-bar { 
-                display: flex;
                 flex-direction: column; 
                 align-items: flex-start; 
                 gap: 40px; 
@@ -526,7 +516,7 @@
 
     <main class="page-wrapper">
         <div class="header-title-block">
-            <span class="section-label-hero">Get in Touch</span>
+            <span class="eyebrow">Get in Touch</span>
             <h1 class="macro-headline">Start the Conversation</h1>
             <p class="intro-lead">
                 Wealth management is personal. Whether you are ready to build a portfolio or simply have a question, we are here to provide the clarity you need.
@@ -630,7 +620,6 @@
                         </div>
                     </div>
                 </div>
-                <div></div>
             </div>
 
             <div class="footer-locations-grid">
@@ -717,5 +706,4 @@
         });
     </script>
 </body>
-
 </html>
