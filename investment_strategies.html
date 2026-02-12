@@ -20,6 +20,9 @@
             --glass-border: rgba(255, 255, 255, 0.15);
             --glass-surface: rgba(13, 24, 38, 0.5);
             --accent-blue: #6495ED;
+            --brand-gold: #c5a47e; 
+            --footer-bg: #020406;
+            
             --text-primary: #FFFFFF;
             --text-secondary: rgba(255, 255, 255, 0.85);
         }
@@ -55,24 +58,6 @@
             z-index: 1;
         }
 
-        .ambient-light {
-            position: absolute;
-            top: 20%;
-            right: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: breathe 10s infinite alternate ease-in-out;
-            z-index: 0;
-        }
-
-        @keyframes breathe {
-            0% { opacity: 0.3; transform: scale(1); }
-            100% { opacity: 0.6; transform: scale(1.1); }
-        }
-
         /* --- 2. HEADER NAVIGATION --- */
         .nav-links {
             display: flex;
@@ -81,7 +66,6 @@
             height: 100%;
         }
 
-        /* Desktop Dropdown Area */
         .dropdown-container {
             position: relative;
             display: flex;
@@ -89,7 +73,6 @@
             height: 100%;
         }
 
-        /* The Vertical Spacer Bar - Desktop Only */
         .dropdown-container::before {
             content: '';
             display: block;
@@ -111,7 +94,6 @@
             font-weight: 500;
             padding: 10px 0;
         }
-        
         .dropdown-trigger:hover { opacity: 0.8; }
 
         .dropdown-menu {
@@ -133,177 +115,201 @@
             display: block !important;
         }
 
-        .dropdown-container:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
+        .dropdown-container:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .dropdown-menu a {
-            display: block;
-            padding: 15px 25px;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 0.9rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: background 0.2s ease;
-            text-align: left;
+            display: block; padding: 15px 25px; color: rgba(255,255,255,0.8);
+            text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s ease; text-align: left;
         }
         .dropdown-menu a:last-child { border-bottom: none; }
         .dropdown-menu a:hover { background: rgba(255,255,255,0.1); color: #FFFFFF; }
 
         /* --- 3. PAGE CONTENT --- */
-        .page-wrapper {
-            position: relative;
-            z-index: 10;
-            padding-bottom: 60px; 
-        }
+        .page-wrapper { position: relative; z-index: 10; padding-bottom: 60px; }
 
         .hero-section {
             min-height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
             padding: 160px 20px 40px; 
         }
 
         .macro-headline {
             font-family: 'Playfair Display', serif;
-            /* AUDIT FIX: Lowered minimum clamp to 2.5rem for small screens */
             font-size: clamp(2.5rem, 6vw, 5.5rem);
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
+            line-height: 1.1; margin-bottom: 20px; letter-spacing: -1px;
             text-shadow: 0 10px 30px rgba(0,0,0,0.2); 
         }
 
         .intro-lead {
-            font-size: 1.25rem;
-            max-width: 700px;
-            color: var(--text-secondary);
-            font-weight: 300;
-            line-height: 1.7;
+            font-size: 1.25rem; max-width: 700px; color: var(--text-secondary);
+            font-weight: 300; line-height: 1.7;
         }
 
-        /* --- 4. Z-PATTERN SECTIONS --- */
         .strategy-block {
-            padding: 50px 5%; 
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 80px;
-            position: relative;
+            padding: 50px 5%; max-width: 1400px; margin: 0 auto;
+            display: flex; align-items: center; gap: 80px; position: relative;
         }
 
         .strategy-block.reverse { flex-direction: row-reverse; }
-
         .content-side { flex: 1; position: relative; z-index: 2; }
         .visual-side { flex: 1; position: relative; }
 
         .strategy-card {
-            background: var(--glass-surface);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            padding: 50px;
-            border-radius: 4px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-            transition: transform 0.5s ease;
+            background: var(--glass-surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); padding: 50px; border-radius: 4px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2); transition: transform 0.5s ease;
         }
 
-        .strategy-block:hover .strategy-card {
-            transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.4);
-        }
+        .strategy-block:hover .strategy-card { transform: translateY(-5px); border-color: rgba(255,255,255,0.4); }
 
         .strategy-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 15px;
+            position: relative; display: inline-block;
         }
-
         .strategy-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background: var(--accent-blue);
+            content: ''; position: absolute; bottom: -8px; left: 0; width: 60px; height: 2px; background: var(--accent-blue);
         }
 
         .strategy-desc {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-top: 25px;
-            margin-bottom: 25px;
-            font-weight: 300;
+            font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary);
+            margin-top: 25px; margin-bottom: 25px; font-weight: 300;
         }
 
         .capability-list {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
+            list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 12px;
+        }
+        .capability-list li { display: flex; align-items: flex-start; gap: 15px; font-size: 0.95rem; color: rgba(255,255,255,0.9); }
+        
+        /* UPDATED: Checkmarks are now BRAND GOLD */
+        .capability-list li i { 
+            color: var(--brand-gold); /* Updated from accent-blue */
+            font-size: 1.2rem; 
+            margin-top: 3px; 
         }
 
-        .capability-list li {
+        /* --- 4. THE LUXURY FOOTER (ABSOLUTE CENTER) --- */
+        .site-footer {
+            background-color: var(--footer-bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 80px 2% 40px; 
+            position: relative;
+            z-index: 20;
+            color: #fff;
+        }
+
+        .footer-wide-container {
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        /* Relative Parent for Absolute Centering */
+        .footer-top-bar {
+            position: relative; 
             display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.9);
+            justify-content: space-between; 
+            align-items: center;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 60px;
         }
 
-        .capability-list li i {
-            color: var(--accent-blue);
-            font-size: 1.2rem;
-            margin-top: 3px;
+        .footer-logo { height: 60px; width: auto; opacity: 0.9; }
+
+        /* Absolute Position for Perfect Center */
+        .footer-contact-info {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%); 
+            display: flex;
+            gap: 40px;
+            white-space: nowrap;
         }
 
-        /* --- 5. MOBILE OBSESSION (AUDIT FIXES) --- */
+        .contact-item { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 15px; 
+        }
+        .contact-item i { color: var(--brand-gold); font-size: 1.4rem; margin-top: 2px; }
+
+        .contact-label {
+            display: block; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.5); margin-bottom: 5px;
+        }
+
+        .contact-link {
+            color: #FFFFFF; text-decoration: none; font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; letter-spacing: 0.5px;
+        }
+
+        /* Locations Grid */
+        .footer-locations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px; 
+            margin-bottom: 80px;
+        }
+
+        .location-col {
+            position: relative;
+            padding-left: 20px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        .location-col:first-child { border-left: none; padding-left: 0; }
+
+        .loc-eyebrow {
+            display: block; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--brand-gold); margin-bottom: 15px; font-weight: 600;
+        }
+
+        .loc-city {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #FFFFFF; margin-bottom: 15px;
+        }
+
+        .loc-address {
+            font-style: normal; font-size: 0.9rem; line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6); display: flex; gap: 10px;
+        }
+        .loc-address i { color: var(--brand-gold); margin-top: 4px; }
+
+        .footer-disclaimer {
+            font-size: 0.75rem; color: rgba(255, 255, 255, 0.3); line-height: 1.6;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 40px; text-align: justify;
+        }
+
+        .disclaimer-sub { margin-top: 20px; font-style: italic; }
+
+        .footer-bottom {
+            margin-top: 40px; text-align: center; font-size: 0.8rem; color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- MOBILE --- */
         @media (max-width: 1024px) {
-            /* AUDIT FIX: Hide spacer on Tablet/Mobile to prevent collision */
             .dropdown-container::before { display: none; }
         }
 
         @media (max-width: 968px) {
-            .strategy-block, .strategy-block.reverse {
-                flex-direction: column; /* Force stack */
-                padding: 40px 20px; 
-                gap: 30px;
-            }
+            .strategy-block, .strategy-block.reverse { flex-direction: column; padding: 40px 20px; gap: 30px; }
+            .strategy-card { padding: 30px 25px; width: 100%; }
+            .macro-headline { font-size: 2.8rem; }
+            .visual-side { width: 100%; display: block; }
 
-            /* AUDIT FIX: Mobile Card Padding Reduction */
-            .strategy-card {
-                padding: 30px 25px; /* RECLAIMED 50px SPACE */
-                width: 100%;
-            }
-
-            /* AUDIT FIX: Font Adjustments */
-            .macro-headline {
-                font-size: 2.8rem; /* Hard fallback for clamp issues */
+            /* Footer Mobile */
+            .footer-top-bar { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 40px; 
             }
             
-            .strategy-title {
-                font-size: 2rem;
+            .footer-contact-info { 
+                position: static; 
+                transform: none; 
+                flex-direction: column; 
+                gap: 30px; 
             }
-
-            .intro-lead {
-                font-size: 1.1rem;
-            }
-
-            .visual-side {
-                width: 100%;
-                display: block;
-            }
+            
+            .footer-locations-grid { grid-template-columns: 1fr; gap: 50px; }
+            .location-col { border-left: none; padding-left: 0; }
         }
     </style>
 </head>
@@ -326,7 +332,7 @@
                 <a href="index.html">Home</a>
                 <a href="index.html#team">Team/Advisors</a>
                 <a href="services.html">Services</a>
-                <a href="strategies.html" class="active-link">Investment Strategies</a>
+                <a href="investment_strategies.html" class="active-link">Investment Strategies</a>
                 
                 <div class="dropdown-container">
                     <div class="dropdown-trigger">
@@ -340,7 +346,7 @@
             </nav>
             
             <div class="nav-action">
-                <a href="#contact" class="btn-pill desktop-only">Contact Us</a>
+                <a href="contact.html" class="btn-pill desktop-only">Contact Us</a>
                 <button class="mobile-toggle" aria-label="Open Menu" onclick="toggleMobileMenu()">
                     <i class="ph ph-list"></i>
                 </button>
@@ -429,11 +435,12 @@
     </main>
 
     <footer class="site-footer">
-        <div class="section-container">
+        <div class="footer-wide-container">
             <div class="footer-top-bar">
                 <div class="footer-brand-wrap">
                     <img src="TM-ADVISORS-RGB-White-Background.png" alt="TM Advisors Logo" class="footer-logo">
                 </div>
+                
                 <div class="footer-contact-info">
                     <div class="contact-item">
                         <i class="ph ph-envelope-simple"></i>
@@ -451,7 +458,48 @@
                     </div>
                 </div>
             </div>
-            
+
+            <div class="footer-locations-grid">
+                <div class="location-col">
+                    <span class="loc-eyebrow">Headquarters</span>
+                    <h4 class="loc-city">Charlotte, North Carolina</h4>
+                    <address class="loc-address">
+                        <i class="ph ph-map-pin"></i>
+                        <div>
+                            11415 Golf Links Dr.<br>
+                            Charlotte, NC 28277
+                        </div>
+                    </address>
+                </div>
+                <div class="location-col">
+                    <span class="loc-eyebrow">Our Location</span>
+                    <h4 class="loc-city">Troy, Michigan</h4>
+                    <address class="loc-address">
+                        <i class="ph ph-map-pin"></i>
+                        <div>
+                            3150 Livernois Rd. Suite 175<br>
+                            Troy, MI 48083
+                        </div>
+                    </address>
+                </div>
+                <div class="location-col">
+                    <span class="loc-eyebrow">Our Location</span>
+                    <h4 class="loc-city">Grand Blanc, Michigan</h4>
+                    <address class="loc-address">
+                        <i class="ph ph-map-pin"></i>
+                        <div>
+                            9400 S. Saginaw St. Suite B<br>
+                            Grand Blanc, MI 48439
+                        </div>
+                    </address>
+                </div>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC’s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC’s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC’s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC’s current written disclosure statement discussing TM Advisors, LLC’s business operations, services, and fees is available at the SEC’s investment adviser public information website – www.adviserinfo.sec.gov or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC’s web site or incorporated herein, and takes no responsibility, therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
+                <p class="disclaimer-sub">This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
+            </div>
+
             <div class="footer-bottom">
                 <p>&copy; 2026 TM Advisors. All Rights Reserved.</p>
             </div>
@@ -465,10 +513,10 @@
                 <a href="index.html">Home</a>
                 <a href="index.html#team">Team/Advisors</a>
                 <a href="services.html">Services</a>
-                <a href="strategies.html">Investment Strategies</a>
+                <a href="investment_strategies.html" class="active-link">Investment Strategies</a>
                 <a href="https://client.schwab.com/Areas/Access/Login" target="_blank" style="color: var(--accent-blue);">Schwab Login</a>
                 <a href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank" style="color: var(--accent-blue);">Client Login</a>
-                <a href="#contact" class="mobile-btn-pill">Contact Us</a>
+                <a href="contact.html" class="mobile-btn-pill">Contact Us</a>
             </nav>
         </div>
     </div>
