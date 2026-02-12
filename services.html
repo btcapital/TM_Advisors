@@ -13,7 +13,7 @@
     <style>
         /* --- GLOBAL MOBILE FIXES --- */
         html, body {
-            overflow-x: hidden; /* Critical for mobile to prevent side-scrolling */
+            overflow-x: hidden;
             position: relative;
             width: 100%;
         }
@@ -28,16 +28,16 @@
             z-index: -1;
             background-color: #0f1c2e; 
             overflow: hidden;
-            pointer-events: none; /* Ensures touches pass through to content */
+            pointer-events: none;
         }
 
         .silk-layer {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px); /* Slightly reduced for mobile performance */
+            filter: blur(80px);
             opacity: 0.6; 
             mix-blend-mode: screen; 
-            will-change: transform; /* Hardware Acceleration */
+            will-change: transform;
         }
 
         /* Layer 1: Massive Royal Blue Field */
@@ -73,7 +73,7 @@
 
         @keyframes moveHorizontal {
             0% { transform: translateX(-10%) rotate(0deg); }
-            100% { transform: translateX(10%) rotate(5deg); } /* Reduced range for smoother mobile perf */
+            100% { transform: translateX(10%) rotate(5deg); }
         }
 
         @keyframes moveVertical {
@@ -130,7 +130,7 @@
         .service-detail-card {
             background: rgba(23, 38, 56, 0.5);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px); /* Safari Mobile Support */
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 50px 40px;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -288,45 +288,19 @@
             padding-left: 30px;
         }
 
-        /* --- 5. MOBILE AUDIT FIXES --- */
+        /* --- 5. MOBILE OPTIMIZATION OVERRIDES --- */
         @media (max-width: 1200px) {
             .services-detail-grid { grid-template-columns: repeat(2, 1fr); }
             .page-hero { padding-top: 140px; }
         }
         
         @media (max-width: 768px) {
-            /* 1. STACKING */
-            .services-detail-grid { 
-                grid-template-columns: 1fr; 
-                gap: 25px; /* Tighter gap for mobile scroll flow */
-            }
-            
-            /* 2. HEADER/HERO SPACING */
-            .page-hero { 
-                padding: 110px 20px 50px; /* Reduced top padding to bring content "Above the fold" */
-            }
-            
-            /* 3. TYPOGRAPHY SCALING */
-            .macro-text { 
-                font-size: 2.5rem !important; /* Smaller title prevents wrapping issues */
-                line-height: 1.1;
-            }
-            .page-intro { 
-                font-size: 1rem; 
-                padding: 0 10px; /* Prevent text touching edges */
-            }
-            
-            /* 4. CARD DENSITY */
-            .service-detail-card { 
-                padding: 35px 25px; /* More dense padding for mobile */
-            }
-            
-            .service-detail-card h3 {
-                font-size: 1.75rem; /* Sized for mobile screens */
-            }
-            
-            /* 5. BACKGROUND TUNING */
-            /* Reduce blur radius on mobile to save GPU battery */
+            .services-detail-grid { grid-template-columns: 1fr; gap: 25px; }
+            .page-hero { padding: 110px 20px 50px; }
+            .macro-text { font-size: 2.5rem !important; line-height: 1.1; }
+            .page-intro { font-size: 1rem; padding: 0 10px; }
+            .service-detail-card { padding: 35px 25px; }
+            .service-detail-card h3 { font-size: 1.75rem; }
             .silk-layer { filter: blur(60px); }
         }
     </style>
@@ -365,7 +339,7 @@
             </nav>
             
             <div class="nav-action">
-                <a href="#contact" class="btn-pill desktop-only">Contact Us</a>
+                <a href="contact.html" class="btn-pill desktop-only">Contact Us</a>
                 <button class="mobile-toggle" aria-label="Open Menu" onclick="toggleMobileMenu()">
                     <i class="ph ph-list"></i>
                 </button>
@@ -402,7 +376,7 @@
                             <li>Dynamic Rebalancing to Market Conditions</li>
                         </ul>
                         <div class="card-footer">
-                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                            <a href="contact.html" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -421,7 +395,7 @@
                             <li>Business Succession Tax Structuring</li>
                         </ul>
                         <div class="card-footer">
-                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                            <a href="contact.html" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -440,7 +414,7 @@
                             <li>Post-Transaction Wealth Integration</li>
                         </ul>
                         <div class="card-footer">
-                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                            <a href="contact.html" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -459,7 +433,7 @@
                             <li>Withdrawal Rate Stress Testing</li>
                         </ul>
                         <div class="card-footer">
-                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                            <a href="contact.html" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -478,7 +452,7 @@
                             <li>Long-Term Investment Allocation</li>
                         </ul>
                         <div class="card-footer">
-                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                            <a href="contact.html" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -497,7 +471,7 @@
                             <li>Private Deal Flow & Direct Investment</li>
                         </ul>
                         <div class="card-footer">
-                            <a href="#contact" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
+                            <a href="contact.html" class="text-link-white">Start a Conversation <i class="ph ph-arrow-right"></i></a>
                         </div>
                     </div>
 
@@ -582,7 +556,7 @@
                 <a href="investment_strategies.html">Investment Strategies</a>
                 <a href="https://client.schwab.com/Areas/Access/Login" target="_blank" style="font-size: 1.5rem; color: #FFFFFF;">Schwab Login</a>
                 <a href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank" style="font-size: 1.5rem; color: #FFFFFF;">Client Login</a>
-                <a href="#contact" class="mobile-btn-pill">Contact Us</a>
+                <a href="contact.html" class="mobile-btn-pill">Contact Us</a>
             </nav>
         </div>
     </div>
