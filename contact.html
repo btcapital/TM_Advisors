@@ -23,6 +23,7 @@
         
         *, *::before, *::after {
             box-sizing: border-box;
+            outline: none;
         }
 
         /* --- CORE VARIABLES --- */
@@ -40,8 +41,11 @@
             --text-secondary: rgba(255, 255, 255, 0.85);
             --input-bg: rgba(255, 255, 255, 0.05);
             
-            --footer-bg: #020406;
-            --footer-text-mute: rgba(255, 255, 255, 0.4);
+            /* FOOTER COLORS UPDATED */
+            --footer-bg: #081018; 
+            --footer-border: rgba(255, 255, 255, 0.05);
+            /* CHANGED FROM 0.4 to 1.0 (WHITE) */
+            --footer-text-mute: #FFFFFF; 
             --footer-disclaimer: rgba(255, 255, 255, 0.3);
         }
 
@@ -295,37 +299,41 @@
             transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        /* --- 5. FOOTER --- */
+        /* --- 5. FOOTER (UPDATED COLORS) --- */
         .site-footer {
+            /* EXACT PADDING FROM SNIPPET */
+            padding: 80px 60px 40px; 
             background: var(--footer-bg);
-            padding: 80px 0 40px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            color: #fff;
+            border-top: 1px solid var(--footer-border);
+            color: #ffffff;
             width: 100%;
-        }
-
-        .footer-fluid-container {
-            width: 100%;
-            padding: 0 5%;
-            box-sizing: border-box;
         }
 
         /* TOP ROW */
         .footer-top-bar {
             display: flex;
-            justify-content: space-between; 
+            justify-content: center; /* THIS CENTERS THE CONTACT INFO */
             align-items: center;
-            padding-bottom: 50px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 60px;
+            position: relative; /* REQUIRED for Absolute Positioning of Logo */
             width: 100%;
+        }
+
+        /* ANCHOR LOGO TO LEFT */
+        .footer-brand-wrap {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .footer-logo { height: 45px; display: block; }
 
         .footer-contact-info {
             display: flex;
-            gap: 80px;
+            gap: 80px; /* Space between Email and Call */
         }
 
         .contact-item {
@@ -344,7 +352,7 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--footer-text-mute);
+            color: var(--footer-text-mute); /* NOW WHITE */
             margin-bottom: 5px;
         }
 
@@ -386,7 +394,7 @@
         }
 
         .footer-locations-grid address {
-            color: var(--footer-text-mute);
+            color: var(--footer-text-mute); /* NOW WHITE */
             font-size: 1rem;
             line-height: 1.7;
             font-style: normal;
@@ -412,12 +420,12 @@
             margin-bottom: 25px;
             text-align: justify;
             margin-top: 0;
-            width: 100%;
+            width: 100%; /* Force Full Width */
         }
         
         .footer-bottom {
             margin-top: 30px;
-            color: var(--footer-text-mute);
+            color: var(--footer-text-mute); /* NOW WHITE */
             font-size: 0.9rem;
             text-align: left;
         }
@@ -437,17 +445,33 @@
             /* Footer Mobile */
             .footer-top-bar { 
                 flex-direction: column; 
-                align-items: flex-start; 
+                align-items: flex-start; /* Aligns left on mobile */
                 gap: 40px; 
             }
+            
+            /* Disable Absolute Positioning on Mobile */
+            .footer-brand-wrap {
+                position: static;
+                transform: none;
+                margin-bottom: 20px;
+            }
+            
             .footer-contact-info { 
                 flex-direction: column; 
                 gap: 30px; 
             }
+            
             .footer-locations-grid { 
                 grid-template-columns: 1fr; 
                 text-align: left; 
                 gap: 50px; 
+            }
+        }
+
+        /* BREAKPOINT FROM SERVICES SNIPPET (900px) */
+        @media (max-width: 900px) {
+            .site-footer {
+                padding: 60px 20px; 
             }
         }
 
@@ -599,67 +623,65 @@
     </main>
 
     <footer class="site-footer">
-        <div class="footer-fluid-container">
-            <div class="footer-top-bar">
-                <div class="footer-brand-wrap">
-                    <img src="TM-ADVISORS-RGB-White-Background.png" alt="TM Advisors Logo" class="footer-logo">
-                </div>
-                <div class="footer-contact-info">
-                    <div class="contact-item">
-                        <i class="ph ph-envelope-simple"></i>
-                        <div>
-                            <span class="contact-label">Email Us</span>
-                            <a href="mailto:info@tmadvisors.com" class="contact-link">Info@tmadvisors.com</a>
-                        </div>
+        <div class="footer-top-bar">
+            <div class="footer-brand-wrap">
+                <img src="TM-ADVISORS-RGB-White-Background.png" alt="TM Advisors Logo" class="footer-logo">
+            </div>
+            <div class="footer-contact-info">
+                <div class="contact-item">
+                    <i class="ph ph-envelope-simple"></i>
+                    <div>
+                        <span class="contact-label">Email Us</span>
+                        <a href="mailto:info@tmadvisors.com" class="contact-link">Info@tmadvisors.com</a>
                     </div>
-                    <div class="contact-item">
-                        <i class="ph ph-phone"></i>
-                        <div>
-                            <span class="contact-label">Call Us</span>
-                            <a href="tel:2486889399" class="contact-link">248.688.9399</a>
-                        </div>
+                </div>
+                <div class="contact-item">
+                    <i class="ph ph-phone"></i>
+                    <div>
+                        <span class="contact-label">Call Us</span>
+                        <a href="tel:2486889399" class="contact-link">248.688.9399</a>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="footer-locations-grid">
-                <div class="location-col">
-                    <span class="loc-eyebrow">Headquarters</span>
-                    <h4 class="loc-city">Charlotte, North Carolina</h4>
-                    <address>
-                        <i class="ph ph-map-pin"></i>
-                        11415 Golf Links Dr.<br>
-                        Charlotte, NC 28277
-                    </address>
-                </div>
-                <div class="location-col">
-                    <span class="loc-eyebrow">Our Location</span>
-                    <h4 class="loc-city">Troy, Michigan</h4>
-                    <address>
-                        <i class="ph ph-map-pin"></i>
-                        3150 Livernois Rd. Suite 175<br>
-                        Troy, MI 48083
-                    </address>
-                </div>
-                <div class="location-col">
-                    <span class="loc-eyebrow">Our Location</span>
-                    <h4 class="loc-city">Grand Blanc, Michigan</h4>
-                    <address>
-                        <i class="ph ph-map-pin"></i>
-                        9400 S. Saginaw St. Suite B<br>
-                        Grand Blanc, MI 48439
-                    </address>
-                </div>
+        <div class="footer-locations-grid">
+            <div class="location-col">
+                <span class="loc-eyebrow">Headquarters</span>
+                <h4 class="loc-city">Charlotte, North Carolina</h4>
+                <address>
+                    <i class="ph ph-map-pin"></i>
+                    11415 Golf Links Dr.<br>
+                    Charlotte, NC 28277
+                </address>
             </div>
+            <div class="location-col">
+                <span class="loc-eyebrow">Our Location</span>
+                <h4 class="loc-city">Troy, Michigan</h4>
+                <address>
+                    <i class="ph ph-map-pin"></i>
+                    3150 Livernois Rd. Suite 175<br>
+                    Troy, MI 48083
+                </address>
+            </div>
+            <div class="location-col">
+                <span class="loc-eyebrow">Our Location</span>
+                <h4 class="loc-city">Grand Blanc, Michigan</h4>
+                <address>
+                    <i class="ph ph-map-pin"></i>
+                    9400 S. Saginaw St. Suite B<br>
+                    Grand Blanc, MI 48439
+                </address>
+            </div>
+        </div>
 
-            <div class="footer-disclaimer">
-                <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC’s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC’s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC’s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC’s current written disclosure statement discussing TM Advisors, LLC’s business operations, services, and fees is available at the SEC’s investment adviser public information website – www.adviserinfo.sec.gov or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC’s web site or incorporated herein, and takes no responsibility, therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
-                <p class="disclaimer-sub">This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
-            </div>
+        <div class="footer-disclaimer">
+            <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC’s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC’s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC’s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC’s current written disclosure statement discussing TM Advisors, LLC’s business operations, services, and fees is available at the SEC’s investment adviser public information website – www.adviserinfo.sec.gov or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC’s web site or incorporated herein, and takes no responsibility, therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
+            <p class="disclaimer-sub">This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
+        </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2026 TM Advisors. All Rights Reserved.</p>
-            </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 TM Advisors. All Rights Reserved.</p>
         </div>
     </footer>
 
