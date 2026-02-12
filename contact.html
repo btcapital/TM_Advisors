@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Contact Us | TM Advisors</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- GLOBAL RESET --- */
+        html, body {
+            overflow-x: hidden; 
+            position: relative;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        /* --- CORE VARIABLES --- */
+        :root {
+            --slate-top: #526b80;
+            --navy-mid: #1c2e40;
+            --midnight-bot: #050a10;
+            
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-surface: rgba(13, 24, 38, 0.5);
+            --accent-blue: #6495ED;
+            --accent-gold: #c5a47e; 
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --input-bg: rgba(255, 255, 255, 0.05);
+            
+            --footer-bg: #020406;
+            --footer-text-mute: rgba(255, 255, 255, 0.4);
+            --footer-disclaimer: rgba(255, 255, 255, 0.3);
+        }
+
+        body {
+            color: var(--text-primary);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* --- 1. BACKGROUND SYSTEM --- */
+        .immersive-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, var(--slate-top) 0%, var(--navy-mid) 40%, var(--midnight-bot) 100%);
+        }
+
+        .noise-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ambient-light {
+            position: absolute;
+            top: 10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(100, 149, 237, 0.1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: breathe 12s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes breathe {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.4; transform: scale(1.1); }
+        }
+
+        /* --- 2. HEADER --- */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: transparent;
+            border-bottom: 1px solid rgba(255,255,255,0.0);
+            height: 90px;
+            transition: all 0.4s ease;
+        }
+
+        .site-header.scrolled {
+            background: rgba(13, 24, 38, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .brand-img { 
+            height: 60px; /* Locked to larger optical size */
+            width: auto; 
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            height: 100%;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover { color: #FFFFFF; }
+
+        .dropdown-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .dropdown-container::before {
+            content: '';
+            display: block;
+            width: 1px; height: 20px; 
+            background-color: rgba(255, 255, 255, 0.4); 
+            margin-right: 30px; 
+        }
+        .dropdown-trigger {
+            display: flex; align-items: center; gap: 5px; height: 100%;
+            cursor: pointer; color: #FFFFFF; font-size: 0.95rem; font-weight: 500;
+        }
+        .dropdown-menu {
+            position: absolute; top: 100%; right: 0; width: 220px;
+            background: #0b1622; border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 2px solid var(--accent-blue); border-radius: 0 0 4px 4px;
+            padding: 10px 0; opacity: 0; visibility: hidden;
+            transform: translateY(10px); transition: all 0.2s ease-in-out;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); display: block !important;
+        }
+        .dropdown-container:hover .dropdown-menu {
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .dropdown-menu a {
+            display: block; padding: 15px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left;
+        }
+        .dropdown-menu a:last-child { border-bottom: none; }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.1); color: #FFFFFF; }
+
+        .btn-pill {
+            background: #FFFFFF;
+            color: var(--navy-mid);
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .btn-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+            background: var(--accent-blue);
+            color: #FFFFFF;
+        }
+        
+        .mobile-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- 3. PAGE CONTENT --- */
+        .page-wrapper {
+            position: relative; z-index: 10;
+            padding-top: 180px;
+            padding-bottom: 80px; min-height: 80vh;
+        }
+
+        .header-title-block { text-align: center; margin-bottom: 60px; padding: 0 20px; }
+
+        .section-label-hero {
+            font-size: 20px;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .macro-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.1; margin: 0 0 20px 0; letter-spacing: -1px;
+        }
+
+        .intro-lead {
+            font-size: 1.1rem; color: var(--text-secondary);
+            font-weight: 300; max-width: 600px; margin: 0 auto;
+        }
+
+        .contact-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 5%;
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start;
+        }
+
+        .glass-panel {
+            background: var(--glass-surface);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 6px;
+            padding: 50px; box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .location-group { margin-bottom: 50px; }
+        .location-group:last-child { margin-bottom: 0; }
+        
+        .location-sub-label {
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent-gold); 
+            font-weight: 700; margin-bottom: 20px; display: block;
+        }
+
+        .body-contact-item {
+             display: flex; gap: 15px; align-items: center; margin-bottom: 15px; color: #fff; text-decoration: none; font-size: 1.2rem;
+        }
+        .body-contact-item:hover { color: var(--accent-blue); }
+
+        .location-card {
+            margin-bottom: 30px; border-left: 2px solid rgba(255,255,255,0.1);
+            padding-left: 25px; transition: border-color 0.3s ease;
+        }
+        .location-card:hover { border-color: var(--accent-blue); }
+        
+        .city-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; margin: 0 0 10px 0; }
+        .address-text { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; margin: 0; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .form-group { position: relative; margin-bottom: 10px; }
+        .full-width { grid-column: span 2; }
+        .form-label {
+            display: block; font-size: 0.9rem; color: var(--text-secondary);
+            margin-bottom: 10px; font-weight: 500;
+        }
+        .form-input, .form-textarea {
+            width: 100%; background: var(--input-bg);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+            padding: 15px 20px; color: #fff; font-family: 'Montserrat', sans-serif;
+            font-size: 1rem; transition: all 0.3s ease; box-sizing: border-box;
+        }
+        .form-textarea { min-height: 180px; resize: vertical; }
+        .form-input:focus, .form-textarea:focus {
+            outline: none; border-color: var(--accent-blue);
+            background: rgba(255,255,255,0.1); box-shadow: 0 0 0 3px rgba(100, 149, 237, 0.1);
+        }
+        .submit-btn {
+            background: #fff; color: var(--navy-mid); border: none;
+            padding: 18px 50px; font-size: 1rem; font-weight: 700;
+            border-radius: 4px; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px; width: 100%;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background: var(--accent-blue); color: #fff;
+            transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- 5. FOOTER (CSS GRID ARCHITECTURE) --- */
+        .site-footer {
+            background: var(--footer-bg);
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            color: #fff;
+            width: 100%;
+        }
+
+        .footer-fluid-container {
+            width: 100%;
+            padding: 0 5%; /* Fluid Padding */
+            box-sizing: border-box;
+        }
+
+        /* TOP ROW: CSS GRID (The Fix for Centering) */
+        .footer-top-bar {
+            display: grid;
+            /* 3 Columns: 1fr (Left), auto (Center), 1fr (Right Spacer) */
+            grid-template-columns: 1fr auto 1fr; 
+            align-items: center;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .footer-brand-wrap {
+            grid-column: 1; /* Explicitly Column 1 */
+            justify-self: start; /* Force Left */
+        }
+
+        .footer-logo { height: 45px; display: block; }
+
+        .footer-contact-info {
+            grid-column: 2; /* Explicitly Column 2 (Center) */
+            justify-self: center; /* Force Center */
+            display: flex;
+            gap: 80px;
+        }
+
+        /* No content for Column 3, it acts as a counter-weight */
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-item i {
+            color: var(--accent-gold); 
+            font-size: 1.6rem;
+        }
+
+        .contact-label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--footer-text-mute);
+            margin-bottom: 5px;
+        }
+
+        .contact-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* LOCATIONS GRID */
+        .footer-locations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+            margin-bottom: 80px;
+            width: 100%;
+        }
+
+        .loc-eyebrow {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-gold); 
+            margin-bottom: 15px;
+            display: block;
+            font-weight: 700;
+        }
+
+        .loc-city {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+            margin-top: 0;
+            display: block;
+            font-weight: 400;
+        }
+
+        .footer-locations-grid address {
+            color: var(--footer-text-mute);
+            font-size: 1rem;
+            line-height: 1.7;
+            font-style: normal;
+        }
+
+        .footer-locations-grid address i {
+            color: var(--accent-gold); 
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        /* DISCLAIMER - FULL WIDTH */
+        .footer-disclaimer {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 50px;
+            width: 100%;
+        }
+
+        .footer-disclaimer p {
+            font-size: 0.8rem;
+            line-height: 1.8;
+            color: var(--footer-disclaimer);
+            margin-bottom: 25px;
+            text-align: justify;
+            margin-top: 0;
+            width: 100%; /* Force Full Width */
+        }
+        
+        .footer-bottom {
+            margin-top: 30px;
+            color: var(--footer-text-mute);
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 1024px) {
+            .dropdown-container::before { display: none; }
+            .nav-links, .nav-action .btn-pill.desktop-only { display: none; }
+            .mobile-toggle { display: block; }
+            
+            .header-container { padding: 0 20px; }
+            .contact-container { grid-template-columns: 1fr; gap: 40px; }
+            .macro-headline { font-size: 3rem; }
+            .form-grid { grid-template-columns: 1fr; } 
+            .full-width { grid-column: span 1; }
+            
+            /* Footer Mobile: Switch Grid to Block/Flex Column */
+            .footer-top-bar { 
+                display: flex;
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 40px; 
+            }
+            .footer-contact-info { 
+                flex-direction: column; 
+                gap: 30px; 
+            }
+            .footer-locations-grid { 
+                grid-template-columns: 1fr; 
+                text-align: left; 
+                gap: 50px; 
+            }
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100%;
+            background: rgba(5, 10, 16, 0.98); backdrop-filter: blur(15px);
+            z-index: 2000; transition: right 0.4s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .mobile-menu-overlay.active { right: 0; }
+        .mobile-close {
+            position: absolute; top: 25px; right: 25px;
+            background: none; border: none; color: #fff; font-size: 2.5rem; cursor: pointer;
+        }
+        .mobile-nav-links { display: flex; flex-direction: column; text-align: center; gap: 25px; }
+        .mobile-nav-links a {
+            color: #fff; text-decoration: none; font-size: 1.5rem; font-family: 'Playfair Display', serif;
+        }
+        .mobile-btn-pill {
+            background: #FFFFFF; color: var(--navy-mid); padding: 12px 30px;
+            border-radius: 50px; text-decoration: none; font-weight: 600; margin-top: 10px; display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="immersive-background">
+        <div class="noise-overlay"></div>
+        <div class="ambient-light"></div>
+    </div>
+
+    <header class="site-header" id="mainHeader">
+        <div class="header-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo-link">
+                    <img src="TM-ADVISORS-RGB-White-Background-transparent.png" alt="TM Advisors Logo" class="brand-img">
+                </a>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#team">Team/Advisors</a>
+                <a href="services.html">Services</a>
+                <a href="strategies.html">Investment Strategies</a>
+                
+                <div class="dropdown-container">
+                    <div class="dropdown-trigger">
+                        Client Portals <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="https://client.schwab.com/Areas/Access/Login" target="_blank">Schwab Login</a>
+                        <a href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank">Client Login</a>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="nav-action">
+                <a href="contact.html" class="btn-pill desktop-only">Contact Us</a>
+                <button class="mobile-toggle" aria-label="Open Menu" onclick="toggleMobileMenu()">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-wrapper">
+        <div class="header-title-block">
+            <span class="section-label-hero">Get in Touch</span>
+            <h1 class="macro-headline">Start the Conversation</h1>
+            <p class="intro-lead">
+                Wealth management is personal. Whether you are ready to build a portfolio or simply have a question, we are here to provide the clarity you need.
+            </p>
+        </div>
+
+        <div class="contact-container">
+            <div class="glass-panel">
+                <div class="location-group">
+                    <span class="location-sub-label">Direct Line</span>
+                    <a href="tel:2486889399" class="body-contact-item">
+                        <i class="ph ph-phone-call"></i> 248.688.9399
+                    </a>
+                    <a href="mailto:info@tmadvisors.com" class="body-contact-item">
+                        <i class="ph ph-envelope-simple"></i> Info@tmadvisors.com
+                    </a>
+                </div>
+
+                <div class="location-group">
+                    <span class="location-sub-label" style="margin-top: 40px;">Our Offices</span>
+                    
+                    <div class="location-card">
+                        <h3 class="city-name">Charlotte</h3>
+                        <p class="address-text">11415 Golf Links Dr.<br>Charlotte, NC 28277</p>
+                    </div>
+
+                    <div class="location-card">
+                        <h3 class="city-name">Troy</h3>
+                        <p class="address-text">3150 Livernois Rd. Suite 175<br>Troy, MI 48083</p>
+                    </div>
+
+                    <div class="location-card">
+                        <h3 class="city-name">Grand Blanc</h3>
+                        <p class="address-text">9400 S. Saginaw St. Suite B<br>Grand Blanc, MI 48439</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel">
+                <form class="contact-form" action="https://formsubmit.co/info@tmadvisors.com" method="POST">
+                    <input type="hidden" name="_subject" value="New Contact Form Submission - TM Advisors">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" name="First Name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" name="Last Name" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" name="Email" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" name="Phone" class="form-input">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">Subject *</label>
+                            <input type="text" name="Subject" class="form-input" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label">How can we help? *</label>
+                            <textarea name="Message" class="form-textarea" required></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-fluid-container">
+            <div class="footer-top-bar">
+                <div class="footer-brand-wrap">
+                    <img src="TM-ADVISORS-RGB-White-Background.png" alt="TM Advisors Logo" class="footer-logo">
+                </div>
+                <div class="footer-contact-info">
+                    <div class="contact-item">
+                        <i class="ph ph-envelope-simple"></i>
+                        <div>
+                            <span class="contact-label">Email Us</span>
+                            <a href="mailto:info@tmadvisors.com" class="contact-link">Info@tmadvisors.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="ph ph-phone"></i>
+                        <div>
+                            <span class="contact-label">Call Us</span>
+                            <a href="tel:2486889399" class="contact-link">248.688.9399</a>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+
+            <div class="footer-locations-grid">
+                <div class="location-col">
+                    <span class="loc-eyebrow">Headquarters</span>
+                    <h4 class="loc-city">Charlotte, North Carolina</h4>
+                    <address>
+                        <i class="ph ph-map-pin"></i>
+                        11415 Golf Links Dr.<br>
+                        Charlotte, NC 28277
+                    </address>
+                </div>
+                <div class="location-col">
+                    <span class="loc-eyebrow">Our Location</span>
+                    <h4 class="loc-city">Troy, Michigan</h4>
+                    <address>
+                        <i class="ph ph-map-pin"></i>
+                        3150 Livernois Rd. Suite 175<br>
+                        Troy, MI 48083
+                    </address>
+                </div>
+                <div class="location-col">
+                    <span class="loc-eyebrow">Our Location</span>
+                    <h4 class="loc-city">Grand Blanc, Michigan</h4>
+                    <address>
+                        <i class="ph ph-map-pin"></i>
+                        9400 S. Saginaw St. Suite B<br>
+                        Grand Blanc, MI 48439
+                    </address>
+                </div>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC’s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC’s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC’s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC’s current written disclosure statement discussing TM Advisors, LLC’s business operations, services, and fees is available at the SEC’s investment adviser public information website – www.adviserinfo.sec.gov or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC’s web site or incorporated herein, and takes no responsibility, therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
+                <p class="disclaimer-sub">This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 TM Advisors. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="mobile-menu" class="mobile-menu-overlay">
+        <div class="mobile-menu-content">
+            <button class="mobile-close" onclick="toggleMobileMenu()">×</button>
+            <nav class="mobile-nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#team">Team/Advisors</a>
+                <a href="services.html">Services</a>
+                <a href="strategies.html">Investment Strategies</a>
+                <a href="https://client.schwab.com/Areas/Access/Login" target="_blank" style="color: var(--accent-blue);">Schwab Login</a>
+                <a href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank" style="color: var(--accent-blue);">Client Login</a>
+                <a href="contact.html" class="mobile-btn-pill">Contact Us</a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // SCROLL SCRIPT: Toggles header appearance
+        window.addEventListener("scroll", function() {
+            var header = document.getElementById("mainHeader");
+            if (window.scrollY > 50) {
+                header.classList.add("scrolled");
+            } else {
+                header.classList.remove("scrolled");
+            }
+        });
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                const menu = document.getElementById('mobile-menu');
+                if (menu.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
