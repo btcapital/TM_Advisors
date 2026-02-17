@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
 });
 
-// 4. TEAM DATA & MODAL LOGIC (Unchanged)
+// 4. TEAM DATA & MODAL LOGIC
 const teamData = {
     "robert": {
         name: "Robert T. Taylor",
@@ -206,27 +206,46 @@ const teamData = {
     }
 };
 
-// --- NAVIGATION LOGIC ---
-const memberKeys = Object.keys(teamData); 
+// --- NAVIGATION LOGIC (UPDATED WITH CORRECT ORDER) ---
+
+// 1. Explicitly define the order of appearance to match the visual grid
+const memberOrder = [
+    'robert',      // Row 1, Col 1
+    'brett-long',  // Row 1, Col 2
+    'andrew',      // Row 1, Col 3
+    
+    'bryan-long',  // Row 2, Col 1
+    'tom',         // Row 2, Col 2
+    'brandon',     // Row 2, Col 3
+    
+    'robert-quayle', // Row 3, Col 1
+    'brett-quayle',  // Row 3, Col 2
+    'tracey'         // Row 3, Col 3
+];
+
 let currentMemberIndex = 0;
 
 window.openBio = function(id) {
-    const index = memberKeys.indexOf(id);
+    // UPDATED: Look up the index in the manual 'memberOrder' array, not the object keys
+    const index = memberOrder.indexOf(id);
     if (index === -1) return;
     
     currentMemberIndex = index;
     updateModalContent(id);
     updateNavButtons();
 
-    document.getElementById('bio-modal').classList.add('active');
+    const modal = document.getElementById('bio-modal');
+    if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden'; 
 };
 
 window.changeBio = function(direction) {
     const newIndex = currentMemberIndex + direction;
-    if (newIndex >= 0 && newIndex < memberKeys.length) {
+    
+    // Check bounds against the new ordered array
+    if (newIndex >= 0 && newIndex < memberOrder.length) {
         currentMemberIndex = newIndex;
-        const newId = memberKeys[newIndex];
+        const newId = memberOrder[newIndex]; // Get ID from correct order
         updateModalContent(newId);
         updateNavButtons();
     }
@@ -234,6 +253,8 @@ window.changeBio = function(direction) {
 
 function updateModalContent(id) {
     const data = teamData[id];
+    if (!data) return;
+
     document.getElementById('modal-name').textContent = data.name;
     document.getElementById('modal-role').textContent = data.role;
     document.getElementById('modal-bio-text').innerHTML = data.bio;
@@ -255,16 +276,17 @@ function updateNavButtons() {
     const prevBtn = document.querySelector('.modal-nav.prev');
     const nextBtn = document.querySelector('.modal-nav.next');
     
+    // Check bounds against memberOrder length
     if (currentMemberIndex === 0) {
-        prevBtn.style.display = 'none';
+        if(prevBtn) prevBtn.style.display = 'none';
     } else {
-        prevBtn.style.display = 'flex';
+        if(prevBtn) prevBtn.style.display = 'flex';
     }
 
-    if (currentMemberIndex === memberKeys.length - 1) {
-        nextBtn.style.display = 'none';
+    if (currentMemberIndex === memberOrder.length - 1) {
+        if(nextBtn) nextBtn.style.display = 'none';
     } else {
-        nextBtn.style.display = 'flex';
+        if(nextBtn) nextBtn.style.display = 'flex';
     }
 }
 
@@ -280,9 +302,19 @@ function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('active');
     
+    const btnIcon = document.querySelector('.mobile-toggle i');
+    
     if (menu.classList.contains('active')) {
         document.body.style.overflow = 'hidden';
+        if(btnIcon) {
+            btnIcon.classList.remove('ph-list');
+            btnIcon.classList.add('ph-x');
+        }
     } else {
         document.body.style.overflow = 'visible';
+        if(btnIcon) {
+            btnIcon.classList.remove('ph-x');
+            btnIcon.classList.add('ph-list');
+        }
     }
 }
