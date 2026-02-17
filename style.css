@@ -111,13 +111,13 @@ body.loading-state { overflow: hidden; animation: unlockScroll 0.1s forwards 2.5
 
 /* --- Hero & Matrix --- */
 #hero-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
-.hero { height: 100vh; display: flex; align-items: center; padding: 0 60px; position: relative; z-index: 10; }
+.hero { height: 90vh; display: flex; align-items: center; padding: 0 60px; position: relative; z-index: 10; }
 .macro-text { font-family: 'Playfair Display', serif; font-size: clamp(4rem, 10vw, 8.5rem); line-height: 0.95; letter-spacing: -3px; color: #ffffff; margin-bottom: 40px; text-shadow: 0 10px 40px rgba(0,0,0,0.8); }
 .hero-glass-bar { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.15); padding: 30px 40px; display: inline-block; border-radius: 4px; }
 .hero-sub { font-size: 1.1rem; font-weight: 500; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; }
 .separator { color: rgba(255,255,255,0.4); margin: 0 15px; font-style: normal; }
 
-.matrix-section { padding: 160px 60px; position: relative; z-index: 10; }
+.matrix-section { padding: 80px 60px 160px; position: relative; z-index: 10; }
 .section-heading { font-family: 'Playfair Display', serif; font-size: 4rem; margin-bottom: 20px; text-shadow: 0 5px 20px rgba(0,0,0,0.5); }
 .eyebrow {
     display: block;
