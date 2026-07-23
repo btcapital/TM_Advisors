@@ -9,7 +9,7 @@
 
 <!-- TODO: swap this origin if the production domain differs -->
 <link rel="canonical" href="https://www.carolinasmc.com/TM_Advisors/">
-<meta name="theme-color" content="#05080c">
+<meta name="theme-color" content="#16232f">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TM Advisors">
@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
 <!-- Bump ?v= on every deploy so returning visitors pick up changes immediately -->
-<link rel="stylesheet" href="assets/css/main.css?v=5">
+<link rel="stylesheet" href="assets/css/main.css?v=9">
 
 <script type="application/ld+json">
 {
@@ -61,10 +61,32 @@
   }
 }
 </script>
+
+<!-- Intro gate: decide BEFORE first paint whether to skip the curtain, so it
+     never flashes then hides. Runs once per session; skips on deep-link and
+     reduced-motion. -->
+<script>
+  (function () {
+    try {
+      var skip = sessionStorage.getItem('tmIntro') || location.hash ||
+        (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+      if (skip) { document.documentElement.className += ' intro-done'; }
+      else { sessionStorage.setItem('tmIntro', '1'); }
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Intro curtain (home first-load only; lifted and removed by main.js) -->
+<div class="intro" aria-hidden="true">
+  <div class="intro-mark">
+    <img class="intro-logo" src="assets/img/logo-white.png" alt="" width="240" height="46">
+    <span class="intro-bar"><span></span></span>
+  </div>
+</div>
 
 <!-- ===== Icon sprite (replaces the 100KB+ Phosphor web font) ===== -->
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
@@ -233,7 +255,7 @@
   </section>
 
   <!-- ===== SERVICES ===== -->
-  <section class="section" id="services" style="padding-top:0">
+  <section class="section" id="services">
     <div class="shell">
       <header class="section-head section-head--center reveal">
         <span class="eyebrow">Comprehensive Advisory</span>
@@ -282,7 +304,7 @@
   </section>
 
   <!-- ===== TEAM ===== -->
-  <section class="section" id="team" style="padding-top:0">
+  <section class="section" id="team">
     <div class="shell">
       <header class="section-head section-head--center reveal">
         <span class="eyebrow">Expertise</span>
@@ -464,7 +486,7 @@
         <svg class="icon" aria-hidden="true"><use href="#i-caret-down"/></svg>
       </summary>
       <div class="legal-body">
-        <p>TM Advisors, LLC is a registered investment adviser headquartered in Troy, Michigan. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC&rsquo;s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC&rsquo;s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC&rsquo;s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC&rsquo;s current written disclosure statement discussing TM Advisors, LLC&rsquo;s business operations, services, and fees is available at the SEC&rsquo;s investment adviser public information website, <a href="https://adviserinfo.sec.gov" target="_blank" rel="noopener noreferrer">adviserinfo.sec.gov</a>, or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC&rsquo;s website or incorporated herein, and takes no responsibility therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
+        <p>TM Advisors, LLC is a registered investment adviser headquartered in Charlotte, North Carolina. TM Advisors, LLC may only transact business in those states in which it is registered or qualifies for an exemption or exclusion from registration requirements. TM Advisors, LLC&rsquo;s website is limited to the dissemination of general information pertaining to its advisory services, together with access to additional investment-related information, publications, and links. Accordingly, the publication of TM Advisors, LLC&rsquo;s website on the Internet should not be construed by any consumer and/or prospective client as TM Advisors, LLC&rsquo;s solicitation to effect, or attempt to effect transactions in securities, or the rendering of personalized investment advice for compensation, over the Internet. Any subsequent, direct communication by TM Advisors, LLC with a prospective client shall be conducted by a representative that is either registered or qualifies for an exemption or exclusion from registration in the state where the prospective client resides. For information pertaining to the registration status of TM Advisors, LLC, please contact the state securities regulators for those states in which TM Advisors, LLC maintains a registration filing. A copy of TM Advisors, LLC&rsquo;s current written disclosure statement discussing TM Advisors, LLC&rsquo;s business operations, services, and fees is available at the SEC&rsquo;s investment adviser public information website, <a href="https://adviserinfo.sec.gov" target="_blank" rel="noopener noreferrer">adviserinfo.sec.gov</a>, or from TM Advisors, LLC upon written request. TM Advisors, LLC does not make any representations or warranties as to the accuracy, timeliness, suitability, completeness, or relevance of any information prepared by any unaffiliated third party, whether linked to TM Advisors, LLC&rsquo;s website or incorporated herein, and takes no responsibility therefore. All such information is provided solely for convenience purposes only and all users thereof should be guided accordingly.</p>
         <p>This website and information are provided for guidance and information purposes only. Investments involve risk and unless otherwise stated, are not guaranteed. Be sure to first consult with a qualified financial adviser and/or tax professional before implementing any strategy. This website and information are not intended to provide investment, tax, or legal advice.</p>
       </div>
     </details>
@@ -492,7 +514,7 @@
     <span class="drawer-group">Client Portals</span>
     <a class="drawer-sub" style="--i:4" href="https://client.schwab.com/Areas/Access/Login" target="_blank" rel="noopener noreferrer">Schwab Login <svg class="icon" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
     <a class="drawer-sub" style="--i:5" href="https://login.orionadvisor.com/login.html?g=ee24ef37-9065-4327-a1f9-26ba949ef816" target="_blank" rel="noopener noreferrer">Orion Client Login <svg class="icon" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
-    <a class="btn btn--gold drawer-cta" style="--i:6" href="contact.html">Contact Us</a>
+    <a class="btn btn--primary drawer-cta" style="--i:6" href="contact.html">Contact Us</a>
   </nav>
 </div>
 
@@ -566,6 +588,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=5" defer></script>
+<script src="assets/js/main.js?v=9" defer></script>
 </body>
 </html>

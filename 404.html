@@ -6,24 +6,29 @@
 <meta name="robots" content="noindex,follow">
 <base href="/TM_Advisors/">
 <title>Page Not Found | TM Advisors</title>
-<!-- GitHub Pages serves this automatically for any unmatched path. Absolute asset
-     paths (leading /) so it renders correctly from nested URLs too. -->
+<!-- GitHub Pages serves this automatically for any unmatched path. <base> anchors
+     every relative URL to the project root so assets resolve at any depth. -->
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#05080c">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#16232f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=5">
+<link rel="stylesheet" href="assets/css/main.css?v=9">
 </head>
 <body>
 
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
   <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.4 6.8 8.6 5.9 8.6-5.9"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M8.4 4.4 10.5 9l-2.1 1.7a10.6 10.6 0 0 0 4.9 4.9L15 13.5l4.6 2.1v3.3a1.8 1.8 0 0 1-2 1.8C9.7 20.2 3.8 14.3 3.2 6.4a1.8 1.8 0 0 1 1.8-2h3.4Z"/></symbol>
+    <symbol id="i-caret-down" viewBox="0 0 24 24"><path d="m6 9.5 6 6 6-6"/></symbol>
     <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M3.5 12h17"/><path d="m13.5 5 7 7-7 7"/></symbol>
   </defs>
 </svg>
 
 <div class="bg-field" aria-hidden="true"></div>
+<canvas id="contour" aria-hidden="true"></canvas>
 
 <header class="site-header">
   <div class="header-inner">
@@ -33,7 +38,7 @@
   </div>
 </header>
 
-<main id="main" class="hero hero--full" >
+<main id="main" class="hero hero--full">
   <div class="shell shell--narrow cta-inner" style="margin-inline:auto">
     <span class="eyebrow">Error 404</span>
     <h1 class="display" style="font-size:clamp(3rem,9vw,6rem)">Not <span class="gold-text">found.</span></h1>
@@ -47,6 +52,39 @@
   </div>
 </main>
 
-<script src="assets/js/main.js?v=5" defer></script>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-top">
+      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="210" height="40" loading="lazy">
+      <div class="footer-contacts">
+        <div class="footer-contact">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-mail"/></svg>
+          <div><span class="label">Email us</span><a href="mailto:info@tmadvisors.com">info@tmadvisors.com</a></div>
+        </div>
+        <div class="footer-contact">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-phone"/></svg>
+          <div><span class="label">Call us</span><a href="tel:+12486889399">248.688.9399</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-locations">
+      <div class="loc"><span class="eyebrow">Headquarters</span><h3>Charlotte, North Carolina</h3><address><a href="https://maps.google.com/?q=11415+Golf+Links+Dr,+Charlotte,+NC+28277" target="_blank" rel="noopener noreferrer">11415 Golf Links Dr.<br>Charlotte, NC 28277</a></address></div>
+      <div class="loc"><span class="eyebrow">Office</span><h3>Troy, Michigan</h3><address><a href="https://maps.google.com/?q=3150+Livernois+Rd+Suite+175,+Troy,+MI+48083" target="_blank" rel="noopener noreferrer">3150 Livernois Rd. Suite 175<br>Troy, MI 48083</a></address></div>
+      <div class="loc"><span class="eyebrow">Office</span><h3>Grand Blanc, Michigan</h3><address><a href="https://maps.google.com/?q=9400+S+Saginaw+St+Suite+B,+Grand+Blanc,+MI+48439" target="_blank" rel="noopener noreferrer">9400 S. Saginaw St. Suite B<br>Grand Blanc, MI 48439</a></address></div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="year">2026</span> TM Advisors, LLC. All rights reserved.</p>
+      <nav aria-label="Footer">
+        <a href="services.html">Services</a>
+        <a href="investment-strategies.html">Investment Strategies</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js?v=9" defer></script>
 </body>
 </html>

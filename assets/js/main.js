@@ -9,8 +9,21 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-  /* ---------- 1. Entrance ---------- */
-  requestAnimationFrame(() => document.documentElement.classList.add('is-ready'));
+  /* ---------- 1. Entrance / intro curtain ---------- */
+  const html = document.documentElement;
+  const intro = $('.intro');
+  const startPage = () => html.classList.add('is-ready');
+  // .intro-done is set by the inline <head> gate (repeat visit / deep link).
+  const introActive = intro && !html.classList.contains('intro-done') && !reduceMotion;
+  if (introActive) {
+    // Let the hero rise as the curtain lifts (curtain lift begins ~1.15s in).
+    setTimeout(startPage, 1150);
+    intro.addEventListener('animationend', (e) => { if (e.animationName === 'intro-lift') intro.remove(); });
+    setTimeout(() => intro && intro.remove(), 2600); // failsafe if animationend never fires
+  } else {
+    requestAnimationFrame(startPage);
+    if (intro) intro.remove();
+  }
 
   /* ---------- 2. Sticky header ---------- */
   const header = $('.site-header');
@@ -190,4 +203,39 @@
   /* ---------- 8. Footer year ---------- */
   const yearEl = $('#year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  /* ---------- 9. Services ledger: scroll-spy + rail visibility ----------
+     Only toggles classes (no motion), so it runs regardless of reduced-motion. */
+  const ledger = $('.ledger');
+  if (ledger && 'IntersectionObserver' in window) {
+    const rows = $$('.ledger-row');
+    const spyLinks = $$('[data-spy]');
+    const rail = $('.ledger-rail');
+    const setActive = (id) => {
+      spyLinks.forEach((a) => {
+        const on = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('is-active', on);
+        if (a.dataset.spy === 'index') {
+          on ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
+        }
+      });
+      rows.forEach((r) => r.classList.toggle('is-active', r.id === id));
+    };
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    rows.forEach((r) => spy.observe(r));
+    // The last row can never reach the centre band, so activate it at page end.
+    addEventListener('scroll', () => {
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) {
+        setActive(rows[rows.length - 1].id);
+      }
+    }, { passive: true });
+    // Fade the fixed rail in only while the ledger is on screen.
+    if (rail) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => rail.classList.toggle('is-visible', e.isIntersecting));
+      }, { rootMargin: '-10% 0px -10% 0px' }).observe(ledger);
+    }
+  }
 })();
