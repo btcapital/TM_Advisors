@@ -18,20 +18,43 @@ assets/img/team/*.jpg       Portraits, 720x900, ~68KB each
 tools/optimize-images.ps1   Re-run when new portraits are added
 ```
 
+## House rule: no em dashes
+
+This site contains no em dashes or en dashes. Use a comma, a colon, or two
+sentences. CI fails the build if one appears. Check locally before pushing:
+
+```powershell
+.\tools\check-no-emdash.ps1
+```
+
 ## Deploying to GitHub Pages
 
-```bash
-git init && git add -A && git commit -m "Site v2"
-```
-
-Then create the repo and push:
+The repo is already initialised and committed on `main`. It just needs a remote.
+Create an **empty** repo on github.com (no README, no .gitignore), then:
 
 ```bash
-gh repo create tmadvisors-site --private --source=. --push
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
+git push -u origin main
 ```
 
-In **Settings → Pages**, set Source to `main` / `/ (root)`. `.nojekyll` is already
-present so Jekyll won't touch the files.
+In **Settings > Pages**, set Source to `main` and folder `/ (root)`. `.nojekyll` is
+already present so Jekyll will not touch the files. The site is live in about a
+minute.
+
+Every update after that is three commands:
+
+```bash
+git add -A
+git commit -m "What changed"
+git push
+```
+
+### A note on OneDrive
+
+This folder currently sits inside OneDrive. Git and OneDrive both want to manage
+the same files, and OneDrive can lock or partially sync `.git`, which occasionally
+corrupts a repo. Moving the folder somewhere like `C:\dev\tm-advisors` avoids the
+problem entirely. Git history survives the move; just cut and paste the folder.
 
 ### Before it goes live
 
