@@ -157,7 +157,11 @@
       img.alt = `Portrait of ${card.dataset.name || ''}`;
       prevBtn.disabled = i === 0;
       nextBtn.disabled = i === order.length - 1;
+      // Which element actually scrolls depends on viewport: .bio-main owns the
+      // overflow on desktop, .bio-grid takes over below 1024px. Reset both, or
+      // paging to the next profile on mobile lands you mid-bio.
       $('.bio-main', dialog).scrollTop = 0;
+      $('.bio-grid', dialog).scrollTop = 0;
     };
 
     cards.forEach((card, i) => {

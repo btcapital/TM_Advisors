@@ -292,6 +292,9 @@ ul { list-style: none; }
 
 /* ---------- 10. HERO ---------- */
 .hero {
+  /* vh first as a fallback: a browser without svh support drops the whole
+     declaration, and the hero would collapse to content height. */
+  min-height: min(100vh, 900px);
   min-height: min(100svh, 900px);
   display: flex; align-items: flex-end;
   padding-top: calc(var(--header-h) + 4rem); padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
@@ -372,9 +375,15 @@ ul { list-style: none; }
   background: var(--surface); position: relative; cursor: pointer;
   transition: border-color 0.5s var(--ease), transform 0.5s var(--ease), background 0.5s var(--ease);
 }
-/* Keyboard focus lands on the inner trigger, so draw the ring around the whole card */
-.member:has(.member-trigger:focus-visible) { outline: 2px solid var(--gold); outline-offset: 3px; }
-.member-trigger:focus-visible { outline: none; }
+/* Keyboard focus lands on the inner trigger. Ideally the ring wraps the whole
+   card, but :has() only landed in Firefox 121, so ring the button by default and
+   upgrade to the full-card ring only where :has() is actually supported.
+   Without this split, pre-121 Firefox shows no focus indicator at all. */
+.member-trigger:focus-visible { outline: 2px solid var(--gold); outline-offset: -3px; }
+@supports selector(:has(*)) {
+  .member:has(.member-trigger:focus-visible) { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .member-trigger:focus-visible { outline: none; }
+}
 .member:hover { border-color: var(--line-2); transform: translateY(-5px); background: var(--surface-2); }
 .member-photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: linear-gradient(150deg, var(--ink-700), var(--ink-900)); }
 .member-photo img {
@@ -420,6 +429,7 @@ ul { list-style: none; }
      what centres a modal <dialog>. Put it back explicitly. */
   margin: auto;
   width: min(1000px, calc(100vw - 2rem)); max-width: none;
+  max-height: min(88vh, 820px);
   max-height: min(88svh, 820px);
   background: rgba(28, 43, 60, 0.985);
   backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -664,8 +674,8 @@ select.input:invalid { color: var(--fg-4); }
   .bio-side { border-right: 0; border-bottom: 1px solid var(--line); padding: 2.2rem 1.5rem; }
   .bio-photo { width: 108px; margin-bottom: 1.1rem; }
   .bio-main { padding: 2rem 1.6rem 4.5rem; }
-  .bio { max-height: 92svh; }
-  .bio-grid { display: block; overflow-y: auto; max-height: 92svh; }
+  .bio { max-height: 92vh; max-height: 92svh; }
+  .bio-grid { display: block; overflow-y: auto; max-height: 92vh; max-height: 92svh; }
   .bio-main { overflow: visible; }
 }
 
@@ -677,7 +687,7 @@ select.input:invalid { color: var(--fg-4); }
   .footer-locations { grid-template-columns: 1fr; gap: 2.5rem; }
   .footer-top { flex-direction: column; align-items: flex-start; }
   .hero-scroll { display: none; }
-  .hero { align-items: center; min-height: 92svh; }
+  .hero { align-items: center; min-height: 92vh; min-height: 92svh; }
   .creds-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
 }
 
@@ -708,3 +718,6 @@ select.input:invalid { color: var(--fg-4); }
   body { background: #fff; color: #000; }
   a { color: #000; }
 }
+
+/* Full-viewport centred page used by 404 and thank-you */
+.hero--full { min-height: 100vh; min-height: 100svh; align-items: center; }
