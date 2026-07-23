@@ -19,20 +19,4 @@ jobs:
 
       - name: No broken local links
         shell: pwsh
-        run: |
-          $bad = 0
-          Get-ChildItem . -Filter *.html | ForEach-Object {
-            $page = $_.Name
-            $t = Get-Content $_.FullName -Raw
-            [regex]::Matches($t, '(?:href|src)="([^"#]+?)"') | ForEach-Object {
-              $ref = $_.Groups[1].Value
-              if ($ref -match '^(https?:|mailto:|tel:|data:)') { return }
-              $clean = ($ref -split '\?')[0].TrimStart('/')
-              # The Accounting Today badge is intentionally optional; the page
-              # falls back to a text lockup when it is absent.
-              if ($clean -eq 'assets/img/accounting-today-2026.png') { return }
-              if (-not (Test-Path $clean)) { "MISSING  $page -> $ref"; $bad++ }
-            }
-          }
-          if ($bad -gt 0) { Write-Host "FAIL: $bad broken reference(s)." -ForegroundColor Red; exit 1 }
-          Write-Host 'PASS: all local references resolve.' -ForegroundColor Green
+        run: ./tools/check-links.ps1
