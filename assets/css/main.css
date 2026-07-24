@@ -810,14 +810,26 @@ ul, ol { list-style: none; }
 .ledger { border-top: 1px solid var(--line); margin-top: clamp(2.5rem, 5vw, 4rem); }
 .ledger-row {
   position: relative; isolation: isolate;
+  /* The numeral gets its own band above the head, and the capability list spans
+     both bands on the opposite side. Previously the numeral was a ghost pinned
+     over the head column, which is the same column the eyebrow and the headline
+     occupy, so at its full size its strokes ran straight through both. Row gap is
+     zero: the spacing under the numeral is carried by its own margin. */
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  grid-template-areas: "head caps"; gap: clamp(2.5rem, 6vw, 6rem);
+  grid-template-areas: "num  caps"
+                       "head caps";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(2.5rem, 6vw, 6rem); row-gap: 0;
   padding-block: clamp(3.5rem, 8vw, 7rem);
   border-bottom: 1px solid var(--line);
   scroll-margin-top: calc(var(--header-h) + 2rem);
 }
 /* Mirror is VISUAL only (grid-template-areas), DOM order stays head-then-caps. */
-.ledger-row:nth-child(even) { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); grid-template-areas: "caps head"; }
+.ledger-row:nth-child(even) {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-areas: "caps num"
+                       "caps head";
+}
 
 /* gold vertical accent bar on the head side (echoes .layer::before) */
 .ledger-row::before { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; z-index: 1; background: var(--grad-gold); transform: scaleY(0); transform-origin: top; transition: transform 0.6s var(--ease); }
@@ -830,22 +842,45 @@ ul, ol { list-style: none; }
 .ledger-row:nth-child(even)::after { background: radial-gradient(120% 140% at 88% 0%, rgba(197, 164, 126, 0.08), transparent 60%); }
 .ledger-row:hover::after, .ledger-row:focus-within::after, .ledger-row.is-active::after { opacity: 1; }
 
-/* ghost numeral: faint fill is the fallback, stroke is the detail. No transform. */
+/* Masthead numeral: outlined figure on its own band, with a rule running out
+   from it to carry the eye across to the content. Faint fill is the fallback for
+   anything without text-stroke; the stroke is the detail. */
 .ledger-num {
-  position: absolute; top: clamp(-0.6rem, -1vw, -0.2rem); z-index: 0;
+  grid-area: num; z-index: 0;
   pointer-events: none; user-select: none;
-  font-family: var(--serif); line-height: 0.8; font-size: clamp(7rem, 20vw, 15rem);
-  letter-spacing: -0.02em; color: rgba(242, 245, 248, 0.045);
-  -webkit-text-stroke: 1px var(--line-2); transition: -webkit-text-stroke-color 0.6s var(--ease);
+  display: flex; align-items: center; gap: clamp(1rem, 2vw, 1.7rem);
+  font-family: var(--serif); line-height: 0.86;
+  font-size: clamp(3.4rem, 8vw, 8.5rem);
+  letter-spacing: -0.02em; color: rgba(242, 245, 248, 0.05);
+  font-variant-numeric: tabular-nums lining-nums;
+  margin-bottom: clamp(1.2rem, 2.4vw, 2.2rem);
+  -webkit-text-stroke: 1px rgba(197, 164, 126, 0.42);
+  transition: -webkit-text-stroke-color 0.6s var(--ease);
 }
-.ledger-row:nth-child(odd) .ledger-num { left: -0.06em; }
-.ledger-row:nth-child(even) .ledger-num { right: -0.06em; text-align: right; }
-.ledger-row:hover .ledger-num, .ledger-row:focus-within .ledger-num, .ledger-row.is-active .ledger-num { -webkit-text-stroke-color: rgba(197, 164, 126, 0.5); }
+.ledger-num::after { content: ""; flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
+.ledger-row:hover .ledger-num, .ledger-row:focus-within .ledger-num, .ledger-row.is-active .ledger-num { -webkit-text-stroke-color: rgba(197, 164, 126, 0.8); }
+/* The figure stays at the head column's leading edge on both sides. The mirror
+   is carried by the columns swapping, which is where it always lived. Pushing
+   the figure to the outer edge on even rows would strand it a full column away
+   from the eyebrow and headline it belongs to. */
+
+/* The figure states the number, so the eyebrow repeating it is noise. Hidden
+   visually, kept for screen readers, because .ledger-num is aria-hidden and
+   dropping the digits outright would take the number out of the accessible
+   name entirely. */
+.ledger-head .eyebrow-n { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/* One horizontal stroke per band. The numeral's rule already does that job, so
+   the eyebrow's leading dash would be a second rule two lines below the first. */
+.ledger-head .eyebrow::before { display: none; }
 
 /* head */
 .ledger-head { grid-area: head; position: relative; z-index: 1; }
-.ledger-title { display: flex; align-items: center; gap: 1.1rem; margin-top: 1.4rem; }
-.ledger-title .icon--lg { color: var(--gold); flex: none; transition: transform 0.55s var(--ease); }
+/* The icon sits above the headline rather than inline before it. Inline, it
+   pushed the h2 in by roughly 50px while the eyebrow, the hook and every
+   capability line stayed flush at the column's leading edge, so the one element
+   that should anchor that edge hardest was the only one off it. */
+.ledger-title { display: block; margin-top: 1.15rem; }
+.ledger-title .icon--lg { color: var(--gold); flex: none; margin-bottom: 0.8rem; transition: transform 0.55s var(--ease); }
 .ledger-row:hover .ledger-title .icon--lg { transform: translateY(-4px); }
 .ledger-title h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; }
 .ledger-hook { font-family: var(--serif); font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.5; color: var(--fg-2); margin: 1.4rem 0 1.9rem; max-width: 32ch; }
@@ -875,44 +910,25 @@ ul, ol { list-style: none; }
 }
 
 @media (max-width: 900px) {
-  /* The numeral stops being a watermark sitting BEHIND the headline and becomes
-     the row's masthead, in its own band above the content.
-     On a wide row there is empty column beside the text for a monumental figure
-     to occupy. At phone width there is not: the figure and the headline are
-     forced into the same few hundred pixels, so the outlined strokes cross the
-     letterforms of the eyebrow and the title, and two things fight for the same
-     space. Nothing is misaligned there, it is simply overcrowded.
-     Given its own band the figure keeps its scale and its outline, gains a
-     hairline that carries the eye across to the content, and reads as the
-     chapter number it always was. */
-  .ledger-row, .ledger-row:nth-child(even) { grid-template-columns: 1fr; grid-template-areas: "num" "head" "caps"; gap: clamp(1.6rem, 4vw, 2.4rem); padding-block: clamp(3rem, 9vw, 4.5rem); }
-  .ledger-caps { align-self: start; }
-  .ledger-num, .ledger-row:nth-child(even) .ledger-num {
-    grid-area: num; position: static; inset: auto; text-align: left;
-    display: flex; align-items: center; gap: clamp(0.9rem, 3.5vw, 1.5rem);
-    font-size: clamp(3.4rem, 15vw, 5.4rem); line-height: 0.86;
-    /* Gold at rest rather than a near invisible grey. In its own band this is a
-       deliberate element, not a ghost, so it is allowed to be seen. */
-    color: rgba(242, 245, 248, 0.05);
-    -webkit-text-stroke: 1px rgba(197, 164, 126, 0.55);
-    font-variant-numeric: tabular-nums lining-nums;
-    margin-bottom: calc(clamp(1.6rem, 4vw, 2.4rem) * -0.35);
+  /* One column, so the three bands stack and the left-right mirror switches off:
+     every band opens to the left, including the even rows the wide layout
+     mirrors. Spacing is carried by row-gap here rather than the numeral's own
+     margin, so the three bands share one rhythm. */
+  .ledger-row, .ledger-row:nth-child(even) {
+    grid-template-columns: 1fr;
+    grid-template-areas: "num" "head" "caps";
+    grid-template-rows: auto auto auto;
+    column-gap: 0; row-gap: clamp(1.5rem, 3.6vw, 2.2rem);
+    padding-block: clamp(3rem, 9vw, 4.5rem);
   }
-  /* The rule runs from the figure out to the edge of the measure and fades, so
-     the band is anchored on the left and open on the right. */
-  .ledger-num::after { content: ""; flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
-  /* The figure now states the number, so the eyebrow saying it again is noise.
-     Hidden visually, kept for screen readers, since .ledger-num is aria-hidden
-     and would otherwise take the number out of the accessible name entirely. */
-  .ledger-head .eyebrow-n { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-  /* One horizontal stroke per band. The numeral's rule already does this job. */
-  .ledger-head .eyebrow::before { display: none; }
-  /* The icon sat inline before the headline, pushing it 48px in while the label,
-     the hook and every capability line stayed flush at the gutter. One indented
-     element in an otherwise flush column reads as a mistake, and it was the
-     headline, the thing that should anchor the left edge hardest. Stacking the
-     icon above it puts every line in the row on the same margin. */
-  .ledger-title { display: block; margin-top: 0.9rem; }
+  .ledger-caps { align-self: start; }
+  .ledger-num {
+    gap: clamp(0.9rem, 3.5vw, 1.5rem);
+    font-size: clamp(3.4rem, 15vw, 5.4rem);
+    margin-bottom: 0;   /* row-gap carries the rhythm at this width */
+    -webkit-text-stroke-color: rgba(197, 164, 126, 0.55);
+  }
+  .ledger-title { margin-top: 0.9rem; }
   .ledger-title .icon--lg { margin-bottom: 0.75rem; }
   .ledger-row:nth-child(even)::before { right: auto; left: 0; transform-origin: top; }
   .ledger-row:nth-child(even)::after { background: radial-gradient(120% 140% at 12% 0%, rgba(197, 164, 126, 0.08), transparent 60%); }
