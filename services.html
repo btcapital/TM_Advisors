@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=9">
+<link rel="stylesheet" href="assets/css/main.css?v=18">
+<!-- Runs before first paint. If scripting is off it never runs, the class stays,
+     and the html.no-js floor in main.css keeps gated entrances visible. -->
+<script>document.documentElement.classList.remove("no-js");</script>
 </head>
 <body>
 
@@ -53,7 +56,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="index.html" aria-label="TM Advisors home">
-      <img src="assets/img/logo-white.png" alt="TM Advisors" width="220" height="42">
+      <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
     </a>
     <nav class="nav" aria-label="Primary">
       <a class="nav-link" href="index.html">Home</a>
@@ -127,7 +130,7 @@
         <article class="ledger-row reveal" id="investment" style="--i:0" aria-labelledby="svc-investment-t">
           <span class="ledger-num" aria-hidden="true">01</span>
           <div class="ledger-head">
-            <span class="eyebrow">Discipline 01</span>
+            <span class="eyebrow">Discipline <span class="eyebrow-n">01</span></span>
             <div class="ledger-title">
               <svg class="icon icon--lg" aria-hidden="true"><use href="#i-chart"/></svg>
               <h2 id="svc-investment-t">Investment <span class="gold-text">Planning</span></h2>
@@ -146,7 +149,7 @@
         <article class="ledger-row reveal" id="tax" style="--i:1" aria-labelledby="svc-tax-t">
           <span class="ledger-num" aria-hidden="true">02</span>
           <div class="ledger-head">
-            <span class="eyebrow">Discipline 02</span>
+            <span class="eyebrow">Discipline <span class="eyebrow-n">02</span></span>
             <div class="ledger-title">
               <svg class="icon icon--lg" aria-hidden="true"><use href="#i-calc"/></svg>
               <h2 id="svc-tax-t">Tax <span class="gold-text">Planning</span></h2>
@@ -165,7 +168,7 @@
         <article class="ledger-row reveal" id="ma" style="--i:2" aria-labelledby="svc-ma-t">
           <span class="ledger-num" aria-hidden="true">03</span>
           <div class="ledger-head">
-            <span class="eyebrow">Discipline 03</span>
+            <span class="eyebrow">Discipline <span class="eyebrow-n">03</span></span>
             <div class="ledger-title">
               <svg class="icon icon--lg" aria-hidden="true"><use href="#i-venn"/></svg>
               <h2 id="svc-ma-t">M&amp;A <span class="gold-text">Advisory</span></h2>
@@ -184,7 +187,7 @@
         <article class="ledger-row reveal" id="retirement" style="--i:3" aria-labelledby="svc-retirement-t">
           <span class="ledger-num" aria-hidden="true">04</span>
           <div class="ledger-head">
-            <span class="eyebrow">Discipline 04</span>
+            <span class="eyebrow">Discipline <span class="eyebrow-n">04</span></span>
             <div class="ledger-title">
               <svg class="icon icon--lg" aria-hidden="true"><use href="#i-umbrella"/></svg>
               <h2 id="svc-retirement-t">Retirement <span class="gold-text">Planning</span></h2>
@@ -203,7 +206,7 @@
         <article class="ledger-row reveal" id="nil" style="--i:4" aria-labelledby="svc-nil-t">
           <span class="ledger-num" aria-hidden="true">05</span>
           <div class="ledger-head">
-            <span class="eyebrow">Discipline 05</span>
+            <span class="eyebrow">Discipline <span class="eyebrow-n">05</span></span>
             <div class="ledger-title">
               <svg class="icon icon--lg" aria-hidden="true"><use href="#i-sign"/></svg>
               <h2 id="svc-nil-t">NIL <span class="gold-text">Advisory</span></h2>
@@ -222,7 +225,7 @@
         <article class="ledger-row reveal" id="family-office" style="--i:5" aria-labelledby="svc-family-t">
           <span class="ledger-num" aria-hidden="true">06</span>
           <div class="ledger-head">
-            <span class="eyebrow">Discipline 06</span>
+            <span class="eyebrow">Discipline <span class="eyebrow-n">06</span></span>
             <div class="ledger-title">
               <svg class="icon icon--lg" aria-hidden="true"><use href="#i-bank"/></svg>
               <h2 id="svc-family-t">Family Office <span class="gold-text">Advisory</span></h2>
@@ -262,7 +265,7 @@
 <footer class="site-footer">
   <div class="shell">
     <div class="footer-top">
-      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="210" height="40" loading="lazy">
+      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120" loading="lazy">
       <div class="footer-contacts">
         <div class="footer-contact">
           <svg class="icon icon--lg" aria-hidden="true"><use href="#i-mail"/></svg>
@@ -314,6 +317,6 @@
   </nav>
 </div>
 
-<script src="assets/js/main.js?v=9" defer></script>
+<script src="assets/js/main.js?v=18" defer></script>
 </body>
 </html>

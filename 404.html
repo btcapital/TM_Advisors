@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=9">
+<link rel="stylesheet" href="assets/css/main.css?v=18">
+<!-- Runs before first paint. If scripting is off it never runs, the class stays,
+     and the html.no-js floor in main.css keeps gated entrances visible. -->
+<script>document.documentElement.classList.remove("no-js");</script>
 </head>
 <body>
 
@@ -22,7 +25,6 @@
   <defs>
     <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.4 6.8 8.6 5.9 8.6-5.9"/></symbol>
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M8.4 4.4 10.5 9l-2.1 1.7a10.6 10.6 0 0 0 4.9 4.9L15 13.5l4.6 2.1v3.3a1.8 1.8 0 0 1-2 1.8C9.7 20.2 3.8 14.3 3.2 6.4a1.8 1.8 0 0 1 1.8-2h3.4Z"/></symbol>
-    <symbol id="i-caret-down" viewBox="0 0 24 24"><path d="m6 9.5 6 6 6-6"/></symbol>
     <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M3.5 12h17"/><path d="m13.5 5 7 7-7 7"/></symbol>
   </defs>
 </svg>
@@ -33,7 +35,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="./" aria-label="TM Advisors home">
-      <img src="assets/img/logo-white.png" alt="TM Advisors" width="220" height="42">
+      <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
     </a>
   </div>
 </header>
@@ -55,7 +57,7 @@
 <footer class="site-footer">
   <div class="shell">
     <div class="footer-top">
-      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="210" height="40" loading="lazy">
+      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120" loading="lazy">
       <div class="footer-contacts">
         <div class="footer-contact">
           <svg class="icon icon--lg" aria-hidden="true"><use href="#i-mail"/></svg>
@@ -85,6 +87,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=9" defer></script>
+<script src="assets/js/main.js?v=18" defer></script>
 </body>
 </html>

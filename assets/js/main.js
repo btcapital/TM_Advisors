@@ -48,8 +48,15 @@
       trigger.setAttribute('aria-expanded', String(state));
     };
     trigger.addEventListener('click', (e) => { e.preventDefault(); open(dd.dataset.open !== 'true'); });
-    dd.addEventListener('mouseenter', () => open(true));
-    dd.addEventListener('mouseleave', () => open(false));
+    /* Hover intent only where hovering is real. On a touch screen the browser
+       synthesises mouseenter just before click, so the tap opened the menu and
+       the click that followed immediately toggled it shut again. Reachable on
+       any touch device wide enough to show the desktop nav, such as a tablet in
+       landscape or a touchscreen laptop. */
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      dd.addEventListener('mouseenter', () => open(true));
+      dd.addEventListener('mouseleave', () => open(false));
+    }
     dd.addEventListener('focusout', (e) => { if (!dd.contains(e.relatedTarget)) open(false); });
     addEventListener('keydown', (e) => { if (e.key === 'Escape') open(false); });
     document.addEventListener('click', (e) => { if (!dd.contains(e.target)) open(false); });
@@ -60,11 +67,19 @@
   const burger = $('.burger');
   if (drawer && burger) {
     let lastFocus = null;
+    /* Everything that is not the drawer goes inert while it is open. Without it,
+       tabbing past the last drawer link walks straight into the header and page
+       behind the overlay, and a screen reader reads content the user cannot see.
+       The drawer is a direct child of body, so its siblings are the whole page. */
+    const siblings = [...document.body.children].filter((el) => el !== drawer);
     const setDrawer = (state) => {
       drawer.classList.toggle('is-open', state);
       drawer.setAttribute('aria-hidden', String(!state));
       burger.setAttribute('aria-expanded', String(state));
       document.body.style.overflow = state ? 'hidden' : '';
+      // Order matters on close: clear inert first, or the element we hand focus
+      // back to is still unfocusable and focus silently falls to <body>.
+      siblings.forEach((el) => state ? el.setAttribute('inert', '') : el.removeAttribute('inert'));
       if (state) { lastFocus = document.activeElement; $('.drawer-close', drawer)?.focus(); }
       else { lastFocus?.focus(); }
     };
@@ -92,15 +107,27 @@
     }
   }
 
-  /* ---------- 6. Contour field (replaces Three.js, ~1KB, no library) ---------- */
+  /* ---------- 6. Contour field (replaces Three.js, ~1KB, no library) ----------
+     On a phone this canvas is the single most expensive thing on the page: a
+     full-viewport repaint, forever, on a GPU with a fraction of a laptop's fill
+     rate. The lines are drawn at alpha 0.05 to 0.135 under a 0.55 opacity layer,
+     so on a small screen the motion is essentially imperceptible while the cost
+     is not. Small screens and weak devices therefore get ONE static frame: the
+     texture survives, the continuous cost goes to zero. */
   const canvas = $('#contour');
   if (canvas && !reduceMotion) {
     const ctx = canvas.getContext('2d', { alpha: true });
-    const LINES = 26;
+    const smallScreen = innerWidth <= 820;
+    const weakDevice = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+    const staticField = smallScreen || weakDevice;
+    // Fewer lines and a lower ceiling on the backing store cut fill cost roughly
+    // in half again for the one frame a small screen does paint.
+    const LINES = smallScreen ? 18 : 26;
+    const DPR_MAX = smallScreen ? 1.5 : 2;
     let w = 0, h = 0, dpr = 1, raf = 0, t = 0, visible = true;
 
     const resize = () => {
-      dpr = Math.min(devicePixelRatio || 1, 2);
+      dpr = Math.min(devicePixelRatio || 1, DPR_MAX);
       w = innerWidth; h = innerHeight;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
@@ -140,10 +167,31 @@
       draw();
     };
 
+    /* Mobile browsers fire `resize` every time the URL bar slides away, which is
+       to say constantly while scrolling. Reallocating the backing store there
+       clears and rebuilds a full-screen bitmap mid-scroll, which is exactly the
+       stutter people feel. Only a real width change (or a genuine orientation
+       change) counts, and even that is debounced. */
+    let lastW = innerWidth, lastH = innerHeight, resizeTimer = 0;
+    const onResize = () => {
+      if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 200) return;
+      lastW = innerWidth; lastH = innerHeight;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { resize(); draw(); }, 150);
+    };
+
     resize();
-    addEventListener('resize', () => { resize(); draw(); }, { passive: true });
-    document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
-    raf = requestAnimationFrame(loop);
+    addEventListener('resize', onResize, { passive: true });
+
+    if (staticField) {
+      // One frame, taken a little way into the motion so the curves sit in a
+      // pleasing phase rather than dead flat. Then nothing, for the whole visit.
+      t = 1.35;
+      draw();
+    } else {
+      document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
+      raf = requestAnimationFrame(loop);
+    }
   } else if (canvas) {
     canvas.remove();
   }
@@ -178,7 +226,10 @@
     };
 
     cards.forEach((card, i) => {
-      card.addEventListener('click', () => { render(i); dialog.showModal(); });
+      // The matching reset lives on the `close` handler below. It was clearing a
+      // lock that nothing ever set, so the page behind the open bio still
+      // scrolled under your finger on iOS.
+      card.addEventListener('click', () => { render(i); document.body.style.overflow = 'hidden'; dialog.showModal(); });
     });
     prevBtn?.addEventListener('click', () => render(Math.max(0, index - 1)));
     nextBtn?.addEventListener('click', () => render(Math.min(order.length - 1, index + 1)));

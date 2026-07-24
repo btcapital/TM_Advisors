@@ -25,12 +25,20 @@
   --gold-dk: #96754d;
   --grad-gold: linear-gradient(115deg, #e8d7b8 0%, #c5a47e 46%, #9c7f5c 100%);
 
-  /* Foreground. Alphas raised from the darker palette so muted copy still
-     clears 4.5:1 against the lighter field. */
+  /* Foreground. Measured against the COMPOSITED backdrop, not the linear stop.
+     #2a4058 is only the bottom layer of .bg-field::before: three radials paint
+     over it, and the first, rgba(94,134,178,0.40) at 12% -12%, lifts the top band
+     of the viewport to rgb(63,92,124). Measuring against #2a4058 alone is what
+     made an earlier pass at these tokens look like it cleared AA when it did not.
+     Because .bg-field is fixed, that bright band is pinned to the top of the
+     screen, so everything scrolls through it. With ::before compressed to
+     opacity 0.6 the worst painted point is rgb(46,69,93), and this ramp measures
+     4.77 / 5.78 / 6.91 there, 5.87 or better on panels and inputs. Every tier
+     clears AA in every context and the three steps still read apart. */
   --fg: #f2f5f8;
-  --fg-2: rgba(242, 245, 248, 0.78);
-  --fg-3: rgba(242, 245, 248, 0.58);
-  --fg-4: rgba(242, 245, 248, 0.38);
+  --fg-2: rgba(242, 245, 248, 0.84);
+  --fg-3: rgba(242, 245, 248, 0.74);
+  --fg-4: rgba(242, 245, 248, 0.64);
 
   /* Lines & surfaces */
   --line: rgba(255, 255, 255, 0.10);
@@ -128,6 +136,12 @@ ul, ol { list-style: none; }
 .bg-field { position: fixed; inset: 0; z-index: -2; pointer-events: none; background: var(--ink-950); }
 .bg-field::before {
   content: ""; position: absolute; inset: 0;
+  /* Compressed toward the --ink-950 base that .bg-field already paints beneath.
+     At full strength the top radial lifted the first band of the viewport to
+     rgb(63,92,124), which left muted copy under 4.5:1 no matter how the text
+     tokens were tuned. This keeps the shape and hue relationships of all four
+     layers intact and just seats them deeper into the navy. */
+  opacity: 0.6;
   background:
     radial-gradient(90rem 55rem at 12% -12%, rgba(94, 134, 178, 0.40) 0%, transparent 62%),
     radial-gradient(70rem 45rem at 96% 6%, rgba(197, 164, 126, 0.16) 0%, transparent 58%),
@@ -313,8 +327,8 @@ ul, ol { list-style: none; }
 .dropdown[data-open="true"] .dropdown-trigger .icon { transform: rotate(180deg); }
 .dropdown-menu {
   position: absolute; top: calc(100% + 1.1rem); right: 0; width: 250px;
+  /* 97% opaque, so the blur it used to carry was not visible through it. */
   background: rgba(28, 43, 60, 0.97);
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--line-2); border-radius: 6px;
   box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.8);
   padding: 0.4rem; overflow: hidden;
@@ -355,16 +369,32 @@ ul, ol { list-style: none; }
 /* ---------- 9. MOBILE DRAWER ---------- */
 .drawer {
   position: fixed; inset: 0; z-index: 1200;
+  /* No backdrop-filter here. At 98.5% opaque only 1.5% of the page shows
+     through, so a blur on it is invisible, yet it still forces the compositor
+     to snapshot and blur the whole screen every frame the drawer animates.
+     That is the entire cost with none of the effect. */
   background: rgba(24, 37, 52, 0.985);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 6rem var(--gutter) 3rem;
-  opacity: 0; visibility: hidden; transform: translateY(-1.5%);
-  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), visibility 0.5s;
+  /* The nav needs about 578px of height. Centred with no overflow, and with body
+     scroll locked while it is open, anything shorter than that silently cut the
+     top links off and pushed the Contact CTA entirely below the screen with no
+     way to reach it. That is every phone in landscape. flex-start plus auto
+     margins on the nav keeps it optically centred when it fits and falls back to
+     top aligned and scrollable when it does not. */
+  display: flex; flex-direction: column; justify-content: flex-start;
+  padding: clamp(5rem, 12vh, 6rem) var(--gutter) clamp(2rem, 6vh, 3rem);
+  overflow-y: auto; overscroll-behavior: contain;
+  /* No transform on the drawer itself. Any transformed ancestor becomes the
+     containing block for position:fixed descendants, which would pin the close
+     button to the drawer rather than the viewport and let it scroll away with
+     the content. The staggered link rise below already carries the entrance. */
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.5s var(--ease), visibility 0.5s;
 }
-.drawer.is-open { opacity: 1; visibility: visible; transform: none; }
-.drawer-close { position: absolute; top: 1.6rem; right: calc(var(--gutter) - 10px); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: var(--fg-2); }
-.drawer-nav { display: flex; flex-direction: column; gap: 0.15rem; }
+.drawer.is-open { opacity: 1; visibility: visible; }
+/* Fixed, not absolute: an absolutely positioned child of a scroll container
+   scrolls away with the content, taking the only close affordance with it. */
+.drawer-close { position: fixed; z-index: 1; top: 1.6rem; right: calc(var(--gutter) - 10px); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: var(--fg-2); }
+.drawer-nav { display: flex; flex-direction: column; gap: 0.15rem; flex: none; margin-block: auto; }
 .drawer-nav a {
   font-family: var(--serif); font-size: clamp(2rem, 8vw, 2.9rem); line-height: 1.25;
   color: var(--fg); padding-block: 0.35rem;
@@ -402,8 +432,17 @@ ul, ol { list-style: none; }
 .hero .eyebrow { margin-bottom: clamp(1.5rem, 3vw, 2.4rem); opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
 .is-ready .hero .eyebrow { opacity: 1; transform: none; transition-delay: 0.12s; }
 .hero .display { max-width: 16ch; }
-.hero .display .line { display: block; overflow: hidden; }
-.hero .display .line > span { display: block; transform: translateY(105%); transition: transform 1.15s var(--ease); }
+/* The clip box for the entrance IS the line box, and line-height 0.94 makes that
+   box shorter than the type is tall: at 49.6px the ink runs 37px up and 11px
+   down, 48px of it, inside a 46.6px box. So every descender was sliced off, the
+   g in Engineered and the p in Optimized most visibly. Pad the clip box down far
+   enough to hold the ink, then pull exactly the same amount back with a negative
+   margin, so the leading between the two lines and below the h1 is unchanged. */
+.hero .display .line { display: block; overflow: hidden; padding-bottom: 0.18em; margin-bottom: -0.18em; }
+/* Each line slides up from below its own clip box. That box is now 0.18em
+   taller, so the old 105% would leave the type peeking into the new padding
+   before it animates. 125% clears the taller box. */
+.hero .display .line > span { display: block; transform: translateY(125%); transition: transform 1.15s var(--ease); }
 .is-ready .hero .display .line > span { transform: none; }
 .hero .display .line:nth-child(2) > span { transition-delay: 0.13s; }
 
@@ -468,7 +507,12 @@ ul, ol { list-style: none; }
 /* Resting icons recede so gold-text and hover stay the jewel. */
 .svc .icon--lg { color: var(--gold); opacity: 0.72; transition: transform 0.55s var(--ease), opacity 0.55s var(--ease); }
 .svc:hover .icon--lg, .svc:focus-visible .icon--lg { opacity: 1; transform: translateY(-4px); }
-.svc h3 { font-family: var(--serif); font-size: var(--h4); letter-spacing: -0.015em; line-height: 1.12; }
+/* Explicit 400, like every other serif heading here. Without it these inherit
+   the UA's bold h3. Instrument Serif has no bold face so the webfont hides the
+   mistake, but Georgia does, and Georgia is what paints first under
+   display: swap. These titles were flashing bold and 17% wider on every cold
+   load, then snapping back and reflowing. */
+.svc h3 { font-family: var(--serif); font-weight: 400; font-size: var(--h4); letter-spacing: -0.015em; line-height: 1.12; }
 .svc p { font-size: 0.9rem; line-height: 1.68; color: var(--fg-2); font-weight: 400; flex: 1; }
 .svc .link-arrow { margin-top: 0.35rem; }
 .svc:hover .link-arrow, .svc:focus-visible .link-arrow { color: var(--gold); }
@@ -516,7 +560,7 @@ ul, ol { list-style: none; }
 }
 .member:hover .member-photo::after { opacity: 0.82; }
 .member-meta { position: absolute; inset: auto 0 0; padding: 1.4rem clamp(1.1rem, 1.8vw, 1.6rem); z-index: 2; }
-.member-meta h3 { font-family: var(--serif); font-size: var(--h4); line-height: 1.12; letter-spacing: -0.015em; }
+.member-meta h3 { font-family: var(--serif); font-weight: 400; font-size: var(--h4); line-height: 1.12; letter-spacing: -0.015em; }
 .member-meta .role { font-size: 0.7rem; letter-spacing: var(--track-cap-md); text-transform: uppercase; color: var(--gold); margin-top: 0.5rem; font-weight: 500; }
 .member-trigger {
   /* position:static so ::after resolves against .member and covers the whole card,
@@ -544,8 +588,9 @@ ul, ol { list-style: none; }
   width: min(1000px, calc(100vw - 2rem)); max-width: none;
   max-height: min(88vh, 820px);
   max-height: min(88svh, 820px);
+  /* Same reasoning as .drawer: 98.5% opaque, so the blur behind it was
+     imperceptible and cost a full-screen composite on open. */
   background: rgba(28, 43, 60, 0.985);
-  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
   color: var(--fg); overflow: hidden;
   box-shadow: 0 45px 110px -30px rgba(0, 0, 0, 0.9);
 }
@@ -561,7 +606,9 @@ ul, ol { list-style: none; }
 .bio-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; }
 .bio-side h2 { font-family: var(--serif); font-weight: 400; font-size: 1.65rem; line-height: 1.14; letter-spacing: -0.01em; }
 .bio-side .role { font-size: 0.68rem; letter-spacing: var(--track-cap-md); text-transform: uppercase; color: var(--gold); margin-top: 0.7rem; }
-.bio-main { padding: 3rem clamp(1.75rem, 3.5vw, 3.4rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+/* overscroll-behavior stops a flick that reaches the end of the bio from
+   chaining through to the page underneath and scrolling it away. */
+.bio-main { padding: 3rem clamp(1.75rem, 3.5vw, 3.4rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
 .bio-main p { font-size: 0.95rem; line-height: 1.85; color: var(--fg-2); font-weight: 300; }
 .bio-main p + p { margin-top: 1.15rem; }
 .bio-close { position: absolute; top: 0.9rem; right: 0.9rem; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; color: var(--fg-3); border-radius: 50%; z-index: 5; transition: color 0.3s, background 0.3s; }
@@ -598,7 +645,7 @@ ul, ol { list-style: none; }
 .footer-locations { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); padding-block: clamp(2.75rem, 5vw, 4rem); border-bottom: 1px solid var(--line); }
 .loc .eyebrow { font-size: 0.63rem; letter-spacing: var(--track-cap-sm); }
 .loc .eyebrow::before { width: 1.2rem; }
-.loc h3 { font-family: var(--serif); font-size: 1.32rem; margin: 0.9rem 0 0.75rem; letter-spacing: -0.01em; }
+.loc h3 { font-family: var(--serif); font-weight: 400; font-size: 1.32rem; margin: 0.9rem 0 0.75rem; letter-spacing: -0.01em; }
 .loc address { font-style: normal; font-size: 0.9rem; line-height: 1.72; color: var(--fg-3); font-weight: 400; }
 .loc a { transition: color 0.3s; }
 .loc a:hover { color: var(--gold); }
@@ -622,35 +669,42 @@ ul, ol { list-style: none; }
 .footer-bottom a:hover { color: var(--fg-2); }
 .footer-bottom nav { display: flex; gap: 1.6rem; }
 
-/* ---------- 17b. ACCOLADE (Accounting Today / third-party recognition) ---------- */
-.accolade {
-  display: inline-flex; align-items: center; gap: 1.05rem;
-  padding: 0.7rem 1.2rem 0.7rem 0.85rem;
-  border: 1px solid var(--line-2); border-radius: 5px;
-  background: linear-gradient(135deg, rgba(197, 164, 126, 0.09), var(--surface));
-  transition: border-color 0.45s var(--ease), transform 0.45s var(--ease);
+/* ---------- 17b. ACCOLADE (Accounting Today / third-party recognition) ----------
+   The official artwork already carries the publication wordmark, the year and the
+   award name, so it is shown on its own: no border, no plate, no repeated text.
+   Height is fixed and width is auto, so the box the browser reserves is stable
+   whatever the artwork's aspect ratio turns out to be, and there is no layout
+   shift when it decodes. */
+.accolade { display: inline-flex; align-items: center; }
+.accolade-badge {
+  height: clamp(54px, 7.2vw, 78px); width: auto; flex: none;
+  transition: transform 0.5s var(--ease);
 }
-.accolade:hover { border-color: rgba(197, 164, 126, 0.5); transform: translateY(-2px); }
-.accolade img { height: 54px; width: auto; flex: none; border-radius: 3px; }
-.accolade-text { display: flex; flex-direction: column; gap: 0.32rem; }
-.accolade-pub { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg-3); }
-.accolade-award { font-family: var(--serif); font-size: 1.05rem; line-height: 1.12; letter-spacing: -0.01em; }
-.accolade-award .yr { color: var(--gold); }
+/* The artwork is dark navy and the field behind it is dark slate. A whisper of
+   ambient separation lets its own edge register without drawing a box around it.
+   If the supplied file is a knockout (white or transparent) version, this costs
+   nothing visually. */
+.accolade-badge { filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.42)); }
+@media (hover: hover) and (pointer: fine) {
+  .accolade:hover .accolade-badge { transform: translateY(-2px); }
+}
 .hero-accolade {
   margin-top: clamp(2rem, 3.5vw, 2.8rem);
   opacity: 0; transform: translateY(16px);
   transition: opacity 0.9s var(--ease) 0.7s, transform 0.9s var(--ease) 0.7s;
 }
 .is-ready .hero-accolade { opacity: 1; transform: none; }
-/* Fallback text lockup shows only if the official badge file is absent */
+
+/* Fallback: only if the artwork fails to load does the text lockup stand in. */
 .accolade [data-badge-fallback] { display: none; }
-.accolade.no-badge img { display: none; }
+.accolade.no-badge .accolade-badge { display: none; }
 .accolade.no-badge [data-badge-fallback] {
-  display: grid; place-items: center; flex: none;
-  width: 54px; height: 54px; border-radius: 3px;
-  background: var(--navy); color: var(--gold);
-  font-family: var(--serif); font-size: 0.95rem; letter-spacing: 0.02em;
+  display: flex; flex-direction: column; gap: 0.32rem;
+  border-left: 2px solid var(--gold); padding-left: 1.05rem;
 }
+.accolade-pub { font-size: 0.62rem; font-weight: 600; letter-spacing: var(--track-cap-sm); text-transform: uppercase; color: var(--fg-3); }
+.accolade-award { font-family: var(--serif); font-size: 1.05rem; line-height: 1.12; letter-spacing: -0.01em; }
+.accolade-award .yr { color: var(--gold); }
 
 /* ---------- 17c. ALLOCATION STACK (Investment Strategies) ---------- */
 .stack { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--surface); box-shadow: var(--elev-1); }
@@ -718,7 +772,9 @@ ul, ol { list-style: none; }
 .step p { font-size: 0.86rem; line-height: 1.68; color: var(--fg-2); font-weight: 400; }
 
 /* ---------- 17f. NOTE / DISCLOSURE INLINE ---------- */
-.note { border: 1px solid var(--line); border-radius: 5px; padding: var(--pad-tile-sm); background: var(--surface); box-shadow: var(--elev-1); }
+/* Dark wash, not white: a raised surface should deepen against the field rather
+   than lighten it, or it eats the contrast budget of the muted copy it holds. */
+.note { border: 1px solid var(--line); border-radius: 5px; padding: var(--pad-tile-sm); background: var(--tile); box-shadow: var(--elev-1); }
 .note p { font-size: 0.78rem; line-height: 1.8; color: var(--fg-4); }
 
 /* ---------- 17g. SERVICES: THE LEDGER (services.html) ----------
@@ -811,21 +867,58 @@ ul, ol { list-style: none; }
 }
 
 @media (max-width: 900px) {
-  .ledger-row, .ledger-row:nth-child(even) { grid-template-columns: 1fr; grid-template-areas: "head" "caps"; gap: clamp(1.6rem, 4vw, 2.4rem); padding-block: clamp(3rem, 9vw, 4.5rem); }
+  /* The numeral stops being a watermark sitting BEHIND the headline and becomes
+     the row's masthead, in its own band above the content.
+     On a wide row there is empty column beside the text for a monumental figure
+     to occupy. At phone width there is not: the figure and the headline are
+     forced into the same few hundred pixels, so the outlined strokes cross the
+     letterforms of the eyebrow and the title, and two things fight for the same
+     space. Nothing is misaligned there, it is simply overcrowded.
+     Given its own band the figure keeps its scale and its outline, gains a
+     hairline that carries the eye across to the content, and reads as the
+     chapter number it always was. */
+  .ledger-row, .ledger-row:nth-child(even) { grid-template-columns: 1fr; grid-template-areas: "num" "head" "caps"; gap: clamp(1.6rem, 4vw, 2.4rem); padding-block: clamp(3rem, 9vw, 4.5rem); }
   .ledger-caps { align-self: start; }
-  .ledger-num, .ledger-row:nth-child(even) .ledger-num { left: -0.04em; right: auto; text-align: left; font-size: clamp(5.5rem, 26vw, 9rem); }
+  .ledger-num, .ledger-row:nth-child(even) .ledger-num {
+    grid-area: num; position: static; inset: auto; text-align: left;
+    display: flex; align-items: center; gap: clamp(0.9rem, 3.5vw, 1.5rem);
+    font-size: clamp(3.4rem, 15vw, 5.4rem); line-height: 0.86;
+    /* Gold at rest rather than a near invisible grey. In its own band this is a
+       deliberate element, not a ghost, so it is allowed to be seen. */
+    color: rgba(242, 245, 248, 0.05);
+    -webkit-text-stroke: 1px rgba(197, 164, 126, 0.55);
+    font-variant-numeric: tabular-nums lining-nums;
+    margin-bottom: calc(clamp(1.6rem, 4vw, 2.4rem) * -0.35);
+  }
+  /* The rule runs from the figure out to the edge of the measure and fades, so
+     the band is anchored on the left and open on the right. */
+  .ledger-num::after { content: ""; flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
+  /* The figure now states the number, so the eyebrow saying it again is noise.
+     Hidden visually, kept for screen readers, since .ledger-num is aria-hidden
+     and would otherwise take the number out of the accessible name entirely. */
+  .ledger-head .eyebrow-n { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  /* One horizontal stroke per band. The numeral's rule already does this job. */
+  .ledger-head .eyebrow::before { display: none; }
+  /* The icon sat inline before the headline, pushing it 48px in while the label,
+     the hook and every capability line stayed flush at the gutter. One indented
+     element in an otherwise flush column reads as a mistake, and it was the
+     headline, the thing that should anchor the left edge hardest. Stacking the
+     icon above it puts every line in the row on the same margin. */
+  .ledger-title { display: block; margin-top: 0.9rem; }
+  .ledger-title .icon--lg { margin-bottom: 0.75rem; }
   .ledger-row:nth-child(even)::before { right: auto; left: 0; transform-origin: top; }
   .ledger-row:nth-child(even)::after { background: radial-gradient(120% 140% at 12% 0%, rgba(197, 164, 126, 0.08), transparent 60%); }
   .ledger-index-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .ledger-caps { grid-template-columns: 1fr; }
-  .ledger-num { font-size: clamp(4.5rem, 24vw, 7rem); }
   .ledger-index-list { grid-template-columns: 1fr; }
 }
 
 /* ---------- 17h. FORMS (contact.html) ---------- */
-.panel { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: clamp(1.6rem, 3vw, 2.75rem); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: var(--elev-1); }
+/* Dark wash for the same reason as .note: this panel holds the form, whose
+   placeholder and disclaimer copy were the worst contrast cases on the site. */
+.panel { border: 1px solid var(--line); border-radius: 6px; background: var(--tile); padding: clamp(1.6rem, 3vw, 2.75rem); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: var(--elev-1); }
 .contact-layout { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: var(--gap-grid); align-items: start; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.1rem, 2vw, var(--space-md)); }
 .field { display: flex; flex-direction: column; gap: 0.55rem; }
@@ -837,13 +930,17 @@ ul, ol { list-style: none; }
 .input, .textarea {
   /* background-COLOR, not the shorthand. The shorthand would wipe the caret
      background-image that select.input relies on. */
-  width: 100%; background-color: rgba(255, 255, 255, 0.04);
+  width: 100%; background-color: rgba(10, 18, 27, 0.30);
   border: 1px solid var(--line); border-radius: 4px;
-  padding: 0.92rem 1.1rem; color: var(--fg); font-size: 0.95rem; font-weight: 300;
+  /* 16px is a hard floor, not a preference. iOS Safari zooms the whole page in
+     when you focus a control whose text is smaller than that, and it does not
+     zoom back out. Every field was 15.2px, so tapping any of them threw the
+     layout sideways. Weight matches body copy at 400 rather than a thin 300. */
+  padding: 0.92rem 1.1rem; color: var(--fg); font-size: 1rem; font-weight: 400;
   font-family: inherit; transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
 }
 .input::placeholder, .textarea::placeholder { color: var(--fg-4); }
-.input:focus, .textarea:focus { outline: none; border-color: var(--gold); background-color: rgba(255, 255, 255, 0.065); box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.13); }
+.input:focus, .textarea:focus { outline: none; border-color: var(--gold); background-color: rgba(10, 18, 27, 0.20); box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.13); }
 .textarea { min-height: 150px; resize: vertical; }
 select.input {
   appearance: none; cursor: pointer; padding-right: 2.6rem;
@@ -901,12 +998,11 @@ select.input:invalid { color: var(--fg-4); }
   .contact-layout { grid-template-columns: 1fr; }
   .strategy { grid-template-columns: 1fr; gap: 2rem; }
   .strategy-aside { position: static; }
-  .bio-grid { grid-template-columns: 1fr; }
   .bio-side { border-right: 0; border-bottom: 1px solid var(--line); padding: 2.2rem 1.5rem; }
   .bio-photo { width: 108px; margin-bottom: 1.1rem; }
   .bio-main { padding: 2rem 1.6rem 4.5rem; }
   .bio { max-height: 92vh; max-height: 92svh; }
-  .bio-grid { display: block; overflow-y: auto; max-height: 92vh; max-height: 92svh; }
+  .bio-grid { display: block; overflow-y: auto; overscroll-behavior: contain; max-height: 92vh; max-height: 92svh; }
   .bio-main { overflow: visible; }
 }
 
@@ -930,8 +1026,75 @@ select.input:invalid { color: var(--fg-4); }
   .hero-actions .btn { width: auto; flex: 1 1 auto; }
   .layer { grid-template-columns: 2rem minmax(0, 1fr); row-gap: 0.9rem; }
   .layer-tag { grid-column: 2; justify-self: start; }
-  .accolade { width: 100%; }
 }
+
+/* ---------- 20b. TOUCH TARGETS ----------
+   Measured on a 360px viewport, the footer links came in between 14px and 20px
+   tall. WCAG 2.5.8 sets the floor at 24px and Apple's guidance at 44px, so these
+   were a genuine thumb problem on the two things people most want to tap: the
+   phone number and the email address. The padding below expands the hit area
+   into gaps that already existed, so nothing moves visually.
+   Both halves of the query are needed: a real phone reports `pointer: coarse`,
+   but some touch laptops report `fine`, and a narrow viewport is a phone anyway. */
+@media (pointer: coarse), (max-width: 820px) {
+  .footer-contact a, .footer-bottom a, .loc address a {
+    display: inline-block; padding-block: 0.78rem;
+  }
+  .footer-bottom nav { gap: 1.9rem; flex-wrap: wrap; }
+  .legal summary { padding-block: 0.85rem; }
+  /* The brand mark is the tap target back to home. */
+  .brand { padding-block: 0.3rem; }
+  /* The six "Start a conversation" links on services are 0.76rem type on a 1.65
+     line height, so their box was about 20px: the smallest touch target on the
+     site, on that page's primary conversion path. The negative top margin
+     cancels the new top padding so the text does not move, and the extra height
+     below is absorbed by the row's own padding. */
+  .ledger-cta { padding-block: 0.75rem; margin-top: -0.55rem; }
+}
+
+/* ---------- 20c. MOBILE RENDER BUDGET ----------
+   backdrop-filter makes the compositor snapshot everything behind an element and
+   blur it, and it redoes that work every frame the backdrop moves. On a sticky
+   header that is the full width of the screen on every single scroll frame,
+   which is where a mid-range Android loses its smoothness. At phone size the
+   blur is only sampling a few hundred pixels of a dark gradient, so a slightly
+   more opaque flat fill reads the same and costs nothing. */
+@media (max-width: 820px) {
+  .site-header::before {
+    background: rgba(26, 40, 56, 0.96);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  .panel {
+    background: var(--tile);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  .bio::backdrop {
+    background: rgba(12, 20, 29, 0.94);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  /* The film grain is a fixed full-viewport layer in overlay blend mode. Blend
+     modes cost an extra compositing pass, and the turbulence tile behind it has
+     to be rasterised first. At 3.5% opacity on a high density phone screen none
+     of that is perceptible, so it comes off entirely. */
+  .bg-field::after { display: none; }
+}
+
+/* ---------- 20d. NO-JS FLOOR ----------
+   Everything listed here starts at opacity 0 and is lifted only when main.js adds
+   .is-ready or .is-in. If scripting is disabled, or main.js is blocked, 404s or
+   throws a parse error, that class never arrives and the hero plus every scroll
+   revealed section stays invisible permanently, with no way to recover. The
+   html.no-js class ships in the markup and is removed by an inline head script,
+   so this block applies exactly when scripting did not run. The `.line > span`
+   rule matters most: the home H1 is clipped by an overflow:hidden parent rather
+   than faded, so opacity alone would not bring it back. */
+html.no-js .reveal, html.no-js .hero-lead, html.no-js .hero-actions,
+html.no-js .hero-accolade, html.no-js .hero .eyebrow,
+html.no-js .page-hero .eyebrow, html.no-js .page-hero .display,
+html.no-js .page-hero .lead, html.no-js .hero--full .cta-inner > *,
+html.no-js .ledger-cta { opacity: 1 !important; transform: none !important; }
+html.no-js .hero .display .line > span { transform: none !important; }
+html.no-js .intro { display: none !important; }
 
 /* ---------- 21. MOTION / PRINT ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -953,6 +1116,19 @@ select.input:invalid { color: var(--fg-4); }
   .site-header, .drawer, #contour, .bg-field, .hero-scroll, .cta-band { display: none !important; }
   body { background: #fff; color: #000; }
   a { color: #000; }
+  /* Nothing has been scrolled when a page is sent to the printer, so every
+     entrance is still sitting at opacity 0 and those sections came out blank.
+     Same selector list as the reduced-motion reset, for the same reason. */
+  .reveal, .hero-lead, .hero-actions, .hero-accolade,
+  .hero .eyebrow, .page-hero .eyebrow, .page-hero .display, .page-hero .lead,
+  .hero--full .cta-inner > *, .ledger-cta { opacity: 1 !important; transform: none !important; }
+  .hero .display .line > span { transform: none !important; }
+  /* `body { color }` only reaches text that inherits it. Anything carrying an
+     explicit token stayed near white and printed invisibly on white paper. */
+  *, *::before, *::after { color: #000 !important; }
+  /* .gold-text is transparent text over a clipped gradient, and print drops the
+     gradient, so it printed as nothing at all. */
+  .gold-text { background: none !important; -webkit-text-fill-color: #000 !important; }
 }
 
 /* Full-viewport centred page used by 404 and thank-you */

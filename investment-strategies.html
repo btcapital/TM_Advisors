@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=9">
+<link rel="stylesheet" href="assets/css/main.css?v=18">
+<!-- Runs before first paint. If scripting is off it never runs, the class stays,
+     and the html.no-js floor in main.css keeps gated entrances visible. -->
+<script>document.documentElement.classList.remove("no-js");</script>
 </head>
 <body>
 
@@ -50,7 +53,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="index.html" aria-label="TM Advisors home">
-      <img src="assets/img/logo-white.png" alt="TM Advisors" width="220" height="42">
+      <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
     </a>
     <nav class="nav" aria-label="Primary">
       <a class="nav-link" href="index.html">Home</a>
@@ -268,7 +271,7 @@
 <footer class="site-footer">
   <div class="shell">
     <div class="footer-top">
-      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="210" height="40" loading="lazy">
+      <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120" loading="lazy">
       <div class="footer-contacts">
         <div class="footer-contact">
           <svg class="icon icon--lg" aria-hidden="true"><use href="#i-mail"/></svg>
@@ -320,6 +323,6 @@
   </nav>
 </div>
 
-<script src="assets/js/main.js?v=9" defer></script>
+<script src="assets/js/main.js?v=18" defer></script>
 </body>
 </html>
