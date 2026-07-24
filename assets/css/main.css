@@ -148,9 +148,14 @@ ul, ol { list-style: none; }
     radial-gradient(80rem 60rem at 50% 108%, rgba(38, 60, 84, 0.65) 0%, transparent 65%),
     linear-gradient(180deg, #2a4058 0%, #24374c 45%, #1d2d3f 100%);
 }
-/* Film grain: kills gradient banding, adds a printed-paper quality */
+/* Film grain: kills gradient banding, adds a printed-paper quality.
+   No mix-blend-mode. A blend mode on a fixed, full-viewport layer makes the
+   compositor run a blend pass over the whole screen on every composited frame,
+   which is every frame of every scroll. At 3.5% opacity the overlay maths was
+   doing almost nothing visible for that price, so this is a plain alpha wash at
+   a slightly higher opacity to match the old density. */
 .bg-field::after {
-  content: ""; position: absolute; inset: 0; opacity: 0.035; mix-blend-mode: overlay;
+  content: ""; position: absolute; inset: 0; opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 #contour { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; opacity: 0.55; }
@@ -292,8 +297,11 @@ ul, ol { list-style: none; }
 }
 .site-header::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: rgba(26, 40, 56, 0.82);
-  backdrop-filter: blur(22px) saturate(1.4); -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  /* The blur is re-sampled every scroll frame the header is stuck. Blur cost
+     scales with the radius, so the radius comes down and the fill goes up a
+     little to keep the same density behind the type. */
+  background: rgba(26, 40, 56, 0.88);
+  backdrop-filter: blur(12px) saturate(1.3); -webkit-backdrop-filter: blur(12px) saturate(1.3);
   border-bottom: 1px solid var(--line);
   opacity: 0; transition: opacity 0.45s var(--ease);
 }
