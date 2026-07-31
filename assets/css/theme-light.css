@@ -1,0 +1,39 @@
+/* PREVIEW THEME B: Light & airy (soft light background, dark navy text, gold).
+   Temporary override layered over main.css for side-by-side comparison.
+   Delete once a direction is chosen. A production version would also ship a
+   dark logo asset (this preview darkens the white logo with a filter). */
+:root {
+  --fg: #1a2a39 !important;
+  --fg-2: rgba(26, 42, 57, 0.84) !important;
+  --fg-3: rgba(26, 42, 57, 0.66) !important;
+  --fg-4: rgba(26, 42, 57, 0.52) !important;
+  --line: rgba(22, 38, 54, 0.14) !important;
+  --line-2: rgba(22, 38, 54, 0.24) !important;
+  --surface: rgba(22, 38, 54, 0.035) !important;
+  --surface-2: rgba(22, 38, 54, 0.06) !important;
+  --tile: rgba(255, 255, 255, 0.72) !important;
+  --gold: #9a7a49 !important;
+  --grad-gold: linear-gradient(115deg, #b0894f, #977640 55%, #7e6236) !important;
+}
+body, .bg-field { background: #eaeef3 !important; }
+.bg-field::before {
+  opacity: 1 !important;
+  background:
+    radial-gradient(90rem 55rem at 12% -12%, rgba(150, 175, 205, 0.30) 0%, transparent 60%),
+    radial-gradient(70rem 45rem at 96% 6%, rgba(200, 168, 120, 0.14) 0%, transparent 58%),
+    linear-gradient(180deg, #f4f7fb 0%, #e9eef4 60%, #dfe6ee 100%) !important;
+}
+.bg-field::after { opacity: 0.02 !important; }
+#contour { opacity: 0.35 !important; filter: invert(1) brightness(0.7) !important; }
+.hero::before { background: none !important; }
+.site-header::before { background: rgba(247, 249, 252, 0.88) !important; border-bottom: 1px solid rgba(22, 38, 54, 0.10) !important; }
+.brand img, .footer-logo, .intro-logo { filter: brightness(0.16) !important; }
+.intro { background: radial-gradient(60rem 60rem at 50% 42%, #eef2f7 0%, #dfe6ee 70%) !important; }
+.site-footer { background: #e2e8f0 !important; border-top: 1px solid rgba(22, 38, 54, 0.12) !important; }
+.btn--primary { background: #16283d !important; color: #f4f6f9 !important; }
+.btn--ghost { color: #16283d !important; box-shadow: inset 0 0 0 1px rgba(22, 38, 54, 0.30) !important; }
+.svc, .member, .cap-grid li, .step, .panel, .stack, .note { background: rgba(255, 255, 255, 0.74) !important; box-shadow: 0 14px 34px -20px rgba(22, 38, 54, 0.30) !important; }
+.svc-grid, .process-grid, .cap-grid { background: rgba(22, 38, 54, 0.14) !important; }
+.member-meta h3 { color: #f6f8fa !important; }
+.member-meta .role { color: #e2c79b !important; }
+.dropdown-menu, .drawer, .bio { background: #f4f6f9 !important; }

@@ -1,0 +1,19 @@
+/* PREVIEW THEME A: Lighter navy (dark theme pushed toward its readable limit).
+   Temporary override layered over main.css for side-by-side comparison.
+   Delete once a direction is chosen. */
+:root {
+  --tile: rgba(22, 34, 48, 0.40) !important;
+  --fg-2: rgba(242, 245, 248, 0.90) !important;
+  --fg-3: rgba(242, 245, 248, 0.82) !important;
+  --fg-4: rgba(242, 245, 248, 0.74) !important;
+}
+body, .bg-field { background: #26405a !important; }
+.bg-field::before {
+  opacity: 0.8 !important;
+  background:
+    radial-gradient(90rem 55rem at 12% -12%, rgba(126, 158, 196, 0.34) 0%, transparent 62%),
+    radial-gradient(70rem 45rem at 96% 6%, rgba(197, 164, 126, 0.15) 0%, transparent 58%),
+    radial-gradient(80rem 60rem at 50% 108%, rgba(64, 92, 124, 0.5) 0%, transparent 65%),
+    linear-gradient(180deg, #3f5c7c 0%, #33506e 45%, #2b4a63 100%) !important;
+}
+.site-footer { background: #22384c !important; }
