@@ -229,6 +229,13 @@ ul, ol { list-style: none; }
   background: var(--grad-gold);
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
+  /* background-clip:text fills the glyphs from the gradient, but the gradient is
+     only painted within the element's box. With the display line-height (0.94)
+     the box stops above the italic descender, so the tail of a "p" or "g" gets
+     no gradient and renders transparent (visible only when you select the text,
+     which repaints it normally). Bottom padding extends the paint box below the
+     baseline; inline vertical padding does not affect layout, so nothing moves. */
+  padding-bottom: 0.2em;
 }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 0.7rem;
@@ -445,11 +452,11 @@ ul, ol { list-style: none; }
    g in Engineered and the p in Optimized most visibly. Pad the clip box down far
    enough to hold the ink, then pull exactly the same amount back with a negative
    margin, so the leading between the two lines and below the h1 is unchanged. */
-/* The reveal needs overflow:hidden, which clips glyph descenders (the italic
-   "p" in "Optimized"). Padding opens the clip box below the baseline and the
-   equal negative margin cancels it in layout, so nothing shifts. 0.18em was not
-   enough for the deeper italic descender; 0.3em clears it. */
-.hero .display .line { display: block; overflow: hidden; padding-bottom: 0.3em; margin-bottom: -0.3em; }
+/* overflow:hidden powers the slide-up reveal; the padding/negative-margin pair
+   keeps plain (non-gold) descenders clear of the clip without shifting layout.
+   The italic gold descender is handled on .gold-text (background-clip paint box),
+   not here. */
+.hero .display .line { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
 /* Each line slides up from below its own clip box. That box is now 0.18em
    taller, so the old 105% would leave the type peeking into the new padding
    before it animates. 125% clears the taller box. */
