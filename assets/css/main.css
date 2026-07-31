@@ -25,20 +25,18 @@
   --gold-dk: #96754d;
   --grad-gold: linear-gradient(115deg, #e8d7b8 0%, #c5a47e 46%, #9c7f5c 100%);
 
-  /* Foreground. Measured against the COMPOSITED backdrop, not the linear stop.
-     #2a4058 is only the bottom layer of .bg-field::before: three radials paint
-     over it, and the first, rgba(94,134,178,0.40) at 12% -12%, lifts the top band
-     of the viewport to rgb(63,92,124). Measuring against #2a4058 alone is what
-     made an earlier pass at these tokens look like it cleared AA when it did not.
-     Because .bg-field is fixed, that bright band is pinned to the top of the
-     screen, so everything scrolls through it. With ::before compressed to
-     opacity 0.6 the worst painted point is rgb(46,69,93), and this ramp measures
-     4.77 / 5.78 / 6.91 there, 5.87 or better on panels and inputs. Every tier
-     clears AA in every context and the three steps still read apart. */
+  /* Foreground alphas measured against the COMPOSITED field, not a flat stop.
+     The field was lifted a step lighter per client feedback; its lightest painted
+     point is the top-left blue glow, which at ::before opacity 0.64 composites to
+     about rgb(58,81,105). Because .bg-field is fixed, everything scrolls through
+     that band, so it is the worst case. Over it this ramp measures 4.63 / 5.49 /
+     6.25 (fg-4 / fg-3 / fg-2), higher on the darker panels and inputs. The alphas
+     were raised together with the lift so brightening did not cost contrast:
+     every muted tier still clears AA and the three steps still read apart. */
   --fg: #f2f5f8;
-  --fg-2: rgba(242, 245, 248, 0.84);
-  --fg-3: rgba(242, 245, 248, 0.74);
-  --fg-4: rgba(242, 245, 248, 0.64);
+  --fg-2: rgba(242, 245, 248, 0.88);
+  --fg-3: rgba(242, 245, 248, 0.80);
+  --fg-4: rgba(242, 245, 248, 0.70);
 
   /* Lines & surfaces */
   --line: rgba(255, 255, 255, 0.10);
@@ -136,17 +134,18 @@ ul, ol { list-style: none; }
 .bg-field { position: fixed; inset: 0; z-index: -2; pointer-events: none; background: var(--ink-950); }
 .bg-field::before {
   content: ""; position: absolute; inset: 0;
-  /* Compressed toward the --ink-950 base that .bg-field already paints beneath.
-     At full strength the top radial lifted the first band of the viewport to
-     rgb(63,92,124), which left muted copy under 4.5:1 no matter how the text
-     tokens were tuned. This keeps the shape and hue relationships of all four
-     layers intact and just seats them deeper into the navy. */
-  opacity: 0.6;
+  /* Slate-navy field, lifted one step lighter per client feedback while keeping
+     muted copy over AA (see the --fg tokens for the measured ratios). .bg-field
+     paints --ink-950 beneath, so this opacity seats the layers into the navy; at
+     0.64 the lightest point (top-left blue glow) composites to ~rgb(58,81,105).
+     Hue and layer relationships are unchanged, everything is just a shade
+     brighter and a touch more saturated. */
+  opacity: 0.64;
   background:
-    radial-gradient(90rem 55rem at 12% -12%, rgba(94, 134, 178, 0.40) 0%, transparent 62%),
+    radial-gradient(90rem 55rem at 12% -12%, rgba(116, 154, 192, 0.40) 0%, transparent 62%),
     radial-gradient(70rem 45rem at 96% 6%, rgba(197, 164, 126, 0.16) 0%, transparent 58%),
-    radial-gradient(80rem 60rem at 50% 108%, rgba(38, 60, 84, 0.65) 0%, transparent 65%),
-    linear-gradient(180deg, #2a4058 0%, #24374c 45%, #1d2d3f 100%);
+    radial-gradient(80rem 60rem at 50% 108%, rgba(48, 72, 98, 0.62) 0%, transparent 65%),
+    linear-gradient(180deg, #344c65 0%, #2c3f54 45%, #24384c 100%);
 }
 /* Film grain: kills gradient banding, adds a printed-paper quality.
    No mix-blend-mode. A blend mode on a fixed, full-viewport layer makes the
@@ -446,7 +445,11 @@ ul, ol { list-style: none; }
    g in Engineered and the p in Optimized most visibly. Pad the clip box down far
    enough to hold the ink, then pull exactly the same amount back with a negative
    margin, so the leading between the two lines and below the h1 is unchanged. */
-.hero .display .line { display: block; overflow: hidden; padding-bottom: 0.18em; margin-bottom: -0.18em; }
+/* The reveal needs overflow:hidden, which clips glyph descenders (the italic
+   "p" in "Optimized"). Padding opens the clip box below the baseline and the
+   equal negative margin cancels it in layout, so nothing shifts. 0.18em was not
+   enough for the deeper italic descender; 0.3em clears it. */
+.hero .display .line { display: block; overflow: hidden; padding-bottom: 0.3em; margin-bottom: -0.3em; }
 /* Each line slides up from below its own clip box. That box is now 0.18em
    taller, so the old 105% would leave the type peeking into the new padding
    before it animates. 125% clears the taller box. */
@@ -685,7 +688,8 @@ ul, ol { list-style: none; }
    shift when it decodes. */
 .accolade { display: inline-flex; align-items: center; }
 .accolade-badge {
-  height: clamp(54px, 7.2vw, 78px); width: auto; flex: none;
+  /* ~50% larger per client feedback (was clamp(54px, 7.2vw, 78px)). */
+  height: clamp(81px, 10.8vw, 117px); width: auto; flex: none;
   transition: transform 0.5s var(--ease);
 }
 /* The artwork is dark navy and the field behind it is dark slate. A whisper of
