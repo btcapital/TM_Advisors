@@ -504,36 +504,26 @@ ul, ol { list-style: none; }
 .cap:hover .cap-title .icon { transform: translateY(-3px) rotate(-4deg); }
 .cap-body { color: var(--fg-2); font-weight: 300; font-size: 0.99rem; line-height: 1.78; max-width: 60ch; }
 
-/* ---------- 13. SERVICES ---------- */
-.svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-2); border: 1px solid var(--line); box-shadow: var(--elev-1); }
+/* ---------- 13. SERVICES (home) ----------
+   Light blue-gray cards (#b2bdc7) that lift out of the dark field to break the
+   section up (client request). Every element flips to dark for contrast on the
+   light card; measured on #b2bdc7 (lum .50): heading 8.4, body 5.2, link 4.7,
+   deep-gold icon 4.0. The .svc component is used only on the home page. */
+.svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(22, 35, 47, 0.35); border: 1px solid rgba(22, 35, 47, 0.30); box-shadow: var(--elev-1); }
 .svc {
-  /* Top bevel + a faint top-lit sheen so the tile catches light instead of
-     reading as a flat dark block. */
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.028), transparent 42%), var(--tile);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: #b2bdc7;
   padding: var(--pad-tile);
   display: flex; flex-direction: column; gap: 1rem;
   min-height: 17rem; position: relative; isolation: isolate;
-  transition: background 0.5s var(--ease);
+  transition: background 0.45s var(--ease);
 }
-.svc::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(155deg, rgba(197, 164, 126, 0.10), rgba(255, 255, 255, 0.02) 55%, transparent);
-  opacity: 0; transition: opacity 0.55s var(--ease);
-}
-.svc:hover::before, .svc:focus-visible::before { opacity: 1; }
-/* Resting icons recede so gold-text and hover stay the jewel. */
-.svc .icon--lg { color: var(--gold); opacity: 0.72; transition: transform 0.55s var(--ease), opacity 0.55s var(--ease); }
-.svc:hover .icon--lg, .svc:focus-visible .icon--lg { opacity: 1; transform: translateY(-4px); }
-/* Explicit 400, like every other serif heading here. Without it these inherit
-   the UA's bold h3. Instrument Serif has no bold face so the webfont hides the
-   mistake, but Georgia does, and Georgia is what paints first under
-   display: swap. These titles were flashing bold and 17% wider on every cold
-   load, then snapping back and reflowing. */
-.svc h3 { font-family: var(--serif); font-weight: 400; font-size: var(--h4); letter-spacing: -0.015em; line-height: 1.12; }
-.svc p { font-size: 0.9rem; line-height: 1.68; color: var(--fg-2); font-weight: 400; flex: 1; }
-.svc .link-arrow { margin-top: 0.35rem; }
-.svc:hover .link-arrow, .svc:focus-visible .link-arrow { color: var(--gold); }
+.svc:hover, .svc:focus-visible { background: #bdc7cf; }
+.svc .icon--lg { color: #6a4e26; transition: transform 0.55s var(--ease); }
+.svc:hover .icon--lg, .svc:focus-visible .icon--lg { transform: translateY(-4px); }
+.svc h3 { font-family: var(--serif); font-weight: 400; font-size: var(--h4); letter-spacing: -0.015em; line-height: 1.12; color: #16232f; }
+.svc p { font-size: 0.9rem; line-height: 1.68; color: rgba(22, 35, 47, 0.78); font-weight: 400; flex: 1; }
+.svc .link-arrow { margin-top: 0.35rem; color: rgba(22, 35, 47, 0.74); }
+.svc:hover .link-arrow, .svc:focus-visible .link-arrow { color: #16232f; }
 .svc:hover .link-arrow .icon, .svc:focus-visible .link-arrow .icon { transform: translateX(5px); }
 
 /* ---------- 14. TEAM ---------- */
