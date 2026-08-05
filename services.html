@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=23">
+<link rel="stylesheet" href="assets/css/main.css?v=24">
 <!-- Runs before first paint. If scripting is off it never runs, the class stays,
      and the html.no-js floor in main.css keeps gated entrances visible. -->
 <script>document.documentElement.classList.remove("no-js");</script>
@@ -97,154 +97,91 @@
     </div>
   </section>
 
-  <!-- Desktop-only live position rail: a pointer mini-map, removed from the a11y
-       tree. Keyboard and screen-reader users navigate via the contents index. -->
-  <nav class="ledger-rail" aria-hidden="true">
-    <a href="#investment"    data-spy="rail" tabindex="-1"><span class="num">01</span><span class="tick"></span></a>
-    <a href="#tax"           data-spy="rail" tabindex="-1"><span class="num">02</span><span class="tick"></span></a>
-    <a href="#ma"            data-spy="rail" tabindex="-1"><span class="num">03</span><span class="tick"></span></a>
-    <a href="#retirement"    data-spy="rail" tabindex="-1"><span class="num">04</span><span class="tick"></span></a>
-    <a href="#nil"           data-spy="rail" tabindex="-1"><span class="num">05</span><span class="tick"></span></a>
-    <a href="#family-office" data-spy="rail" tabindex="-1"><span class="num">06</span><span class="tick"></span></a>
-  </nav>
-
   <section class="section section--intro">
     <div class="shell">
+      <div class="svc-cards">
 
-      <!-- Orientation: contents index (accessible jump nav + scroll-spy target) -->
-      <nav class="ledger-index" aria-label="Services index">
-        <span class="eyebrow">The Practice</span>
-        <ol class="ledger-index-list">
-          <li class="ledger-index-item"><a href="#investment" data-spy="index"><span class="ledger-index-num">01</span><span class="ledger-index-title">Investment Planning</span></a></li>
-          <li class="ledger-index-item"><a href="#tax" data-spy="index"><span class="ledger-index-num">02</span><span class="ledger-index-title">Tax Planning</span></a></li>
-          <li class="ledger-index-item"><a href="#ma" data-spy="index"><span class="ledger-index-num">03</span><span class="ledger-index-title">M&amp;A Advisory</span></a></li>
-          <li class="ledger-index-item"><a href="#retirement" data-spy="index"><span class="ledger-index-num">04</span><span class="ledger-index-title">Retirement Planning</span></a></li>
-          <li class="ledger-index-item"><a href="#nil" data-spy="index"><span class="ledger-index-num">05</span><span class="ledger-index-title">NIL Advisory</span></a></li>
-          <li class="ledger-index-item"><a href="#family-office" data-spy="index"><span class="ledger-index-num">06</span><span class="ledger-index-title">Family Office Advisory</span></a></li>
-        </ol>
-      </nav>
-
-      <!-- The ledger -->
-      <div class="ledger">
-
-        <article class="ledger-row reveal" id="investment" style="--i:0" aria-labelledby="svc-investment-t">
-          <span class="ledger-num" aria-hidden="true">01</span>
-          <div class="ledger-head">
-            <span class="eyebrow">Discipline <span class="eyebrow-n">01</span></span>
-            <div class="ledger-title">
-              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-chart"/></svg>
-              <h2 id="svc-investment-t">Investment <span class="gold-text">Planning</span></h2>
-            </div>
-            <p class="ledger-hook">Bespoke portfolios engineered for preservation and growth, calibrated to your risk profile.</p>
-            <a class="link-arrow ledger-cta" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </div>
-          <ul class="ledger-caps">
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Custom asset allocation and risk modeling</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Equities, fixed income and real estate</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Liquidity analysis and tax impact sizing</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Dynamic rebalancing to market conditions</li>
+        <article class="svc-card reveal" id="investment" style="--i:0">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-chart"/></svg>
+          <h2>Investment Planning</h2>
+          <p class="svc-card-hook">Bespoke portfolios engineered for preservation and growth, calibrated to your risk profile.</p>
+          <ul class="svc-card-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Custom asset allocation and risk modeling</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Equities, fixed income and real estate</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Liquidity analysis and tax impact sizing</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Dynamic rebalancing to market conditions</li>
           </ul>
+          <a class="link-arrow" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </article>
 
-        <article class="ledger-row reveal" id="tax" style="--i:1" aria-labelledby="svc-tax-t">
-          <span class="ledger-num" aria-hidden="true">02</span>
-          <div class="ledger-head">
-            <span class="eyebrow">Discipline <span class="eyebrow-n">02</span></span>
-            <div class="ledger-title">
-              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-calc"/></svg>
-              <h2 id="svc-tax-t">Tax <span class="gold-text">Planning</span></h2>
-            </div>
-            <p class="ledger-hook">Proactive liability minimization designed to help you keep more of what you earn.</p>
-            <a class="link-arrow ledger-cta" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </div>
-          <ul class="ledger-caps">
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Regulatory compliance and filing</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Capital gains and loss harvesting strategies</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Retirement account optimization</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Business succession tax structuring</li>
+        <article class="svc-card reveal" id="tax" style="--i:1">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-calc"/></svg>
+          <h2>Tax Planning</h2>
+          <p class="svc-card-hook">Proactive liability minimization designed to help you keep more of what you earn.</p>
+          <ul class="svc-card-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Regulatory compliance and filing</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Capital gains and loss harvesting strategies</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Retirement account optimization</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Business succession tax structuring</li>
           </ul>
+          <a class="link-arrow" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </article>
 
-        <article class="ledger-row reveal" id="ma" style="--i:2" aria-labelledby="svc-ma-t">
-          <span class="ledger-num" aria-hidden="true">03</span>
-          <div class="ledger-head">
-            <span class="eyebrow">Discipline <span class="eyebrow-n">03</span></span>
-            <div class="ledger-title">
-              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-venn"/></svg>
-              <h2 id="svc-ma-t">M&amp;A <span class="gold-text">Advisory</span></h2>
-            </div>
-            <p class="ledger-hook">Guiding strategic transactions to maximize valuation and minimize risk at the exit.</p>
-            <a class="link-arrow ledger-cta" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </div>
-          <ul class="ledger-caps">
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Pre-sale valuation and due diligence</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Deal structuring and negotiation</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Strategic buyer identification</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Post-transaction wealth integration</li>
+        <article class="svc-card reveal" id="ma" style="--i:2">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-venn"/></svg>
+          <h2>M&amp;A Advisory</h2>
+          <p class="svc-card-hook">Guiding strategic transactions to maximize valuation and minimize risk at the exit.</p>
+          <ul class="svc-card-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Pre-sale valuation and due diligence</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Deal structuring and negotiation</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Strategic buyer identification</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Post-transaction wealth integration</li>
           </ul>
+          <a class="link-arrow" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </article>
 
-        <article class="ledger-row reveal" id="retirement" style="--i:3" aria-labelledby="svc-retirement-t">
-          <span class="ledger-num" aria-hidden="true">04</span>
-          <div class="ledger-head">
-            <span class="eyebrow">Discipline <span class="eyebrow-n">04</span></span>
-            <div class="ledger-title">
-              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-umbrella"/></svg>
-              <h2 id="svc-retirement-t">Retirement <span class="gold-text">Planning</span></h2>
-            </div>
-            <p class="ledger-hook">A roadmap to long-term income security, factoring in inflation, healthcare and lifestyle.</p>
-            <a class="link-arrow ledger-cta" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </div>
-          <ul class="ledger-caps">
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Income replacement strategy</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Social Security and pension analysis</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Healthcare cost projection</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Withdrawal rate stress testing</li>
+        <article class="svc-card reveal" id="retirement" style="--i:0">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-umbrella"/></svg>
+          <h2>Retirement Planning</h2>
+          <p class="svc-card-hook">A roadmap to long-term income security, factoring in inflation, healthcare and lifestyle.</p>
+          <ul class="svc-card-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Income replacement strategy</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Social Security and pension analysis</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Healthcare cost projection</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Withdrawal rate stress testing</li>
           </ul>
+          <a class="link-arrow" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </article>
 
-        <article class="ledger-row reveal" id="nil" style="--i:4" aria-labelledby="svc-nil-t">
-          <span class="ledger-num" aria-hidden="true">05</span>
-          <div class="ledger-head">
-            <span class="eyebrow">Discipline <span class="eyebrow-n">05</span></span>
-            <div class="ledger-title">
-              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-sign"/></svg>
-              <h2 id="svc-nil-t">NIL <span class="gold-text">Advisory</span></h2>
-            </div>
-            <p class="ledger-hook">Converting a short earning window into durable financial independence.</p>
-            <a class="link-arrow ledger-cta" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </div>
-          <ul class="ledger-caps">
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Income structuring and asset protection</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Brand monetization strategy</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Tax compliance for multi-state income</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Long-term investment allocation</li>
+        <article class="svc-card reveal" id="nil" style="--i:1">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-sign"/></svg>
+          <h2>NIL Advisory</h2>
+          <p class="svc-card-hook">Converting a short earning window into durable financial independence.</p>
+          <ul class="svc-card-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Income structuring and asset protection</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Brand monetization strategy</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Tax compliance for multi-state income</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Long-term investment allocation</li>
           </ul>
+          <a class="link-arrow" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </article>
 
-        <article class="ledger-row reveal" id="family-office" style="--i:5" aria-labelledby="svc-family-t">
-          <span class="ledger-num" aria-hidden="true">06</span>
-          <div class="ledger-head">
-            <span class="eyebrow">Discipline <span class="eyebrow-n">06</span></span>
-            <div class="ledger-title">
-              <svg class="icon icon--lg" aria-hidden="true"><use href="#i-bank"/></svg>
-              <h2 id="svc-family-t">Family Office <span class="gold-text">Advisory</span></h2>
-            </div>
-            <p class="ledger-hook">A personal CFO service dedicated to the stewardship of multi-generational wealth.</p>
-            <a class="link-arrow ledger-cta" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-          </div>
-          <ul class="ledger-caps">
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Holistic financial and tax management</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Philanthropic structuring</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Intergenerational estate planning</li>
-            <li class="ledger-cap"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Private deal flow and direct investment</li>
+        <article class="svc-card reveal" id="family-office" style="--i:2">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-bank"/></svg>
+          <h2>Family Office Advisory</h2>
+          <p class="svc-card-hook">A personal CFO service dedicated to the stewardship of multi-generational wealth.</p>
+          <ul class="svc-card-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Holistic financial and tax management</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Philanthropic structuring</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Intergenerational estate planning</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Private deal flow and direct investment</li>
           </ul>
+          <a class="link-arrow" href="contact.html">Start a conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </article>
 
       </div>
     </div>
   </section>
-
   <section class="section cta-band">
     <div class="shell shell--narrow cta-inner reveal">
       <span class="eyebrow">Get in touch</span>
@@ -317,6 +254,6 @@
   </nav>
 </div>
 
-<script src="assets/js/main.js?v=23" defer></script>
+<script src="assets/js/main.js?v=24" defer></script>
 </body>
 </html>

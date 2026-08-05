@@ -52,15 +52,17 @@
   --gutter: clamp(1.5rem, 4vw, 4.5rem);   /* 24px floor, was 20px */
   --max: 1440px;
   --max-narrow: 980px;
-  --section-y: clamp(5rem, 11vw, 10.5rem);
+  /* Vertical rhythm, tightened per client feedback (padding between elements
+     was too large across the site). Roughly 35-40% less than before. */
+  --section-y: clamp(3.25rem, 6.5vw, 6rem);
 
   /* Spacing scale + shared gaps/tile padding, so gaps stop being ad hoc */
-  --space-2xs: 0.5rem; --space-xs: 0.75rem; --space-sm: 1rem;
-  --space-md: 1.5rem; --space-lg: 2rem; --space-xl: 3rem;
-  --gap-grid: clamp(1.25rem, 2.4vw, 2.2rem);
-  --gap-flow: clamp(2rem, 4vw, 3.5rem);
-  --pad-tile: clamp(1.9rem, 3.2vw, 2.9rem);
-  --pad-tile-sm: clamp(1.35rem, 2.4vw, 2rem);
+  --space-2xs: 0.5rem; --space-xs: 0.7rem; --space-sm: 0.9rem;
+  --space-md: 1.3rem; --space-lg: 1.7rem; --space-xl: 2.4rem;
+  --gap-grid: clamp(1.1rem, 2vw, 1.8rem);
+  --gap-flow: clamp(1.5rem, 3vw, 2.6rem);
+  --pad-tile: clamp(1.7rem, 2.9vw, 2.5rem);
+  --pad-tile-sm: clamp(1.25rem, 2.2vw, 1.8rem);
 
   /* Type: one mid-heading step + a size-keyed uppercase tracking ramp
      (tighter as caps grow), so every label reads typeset by one hand. */
@@ -68,6 +70,14 @@
   --track-cap-lg: 0.14em;   /* ~0.76-0.85rem caps */
   --track-cap-md: 0.2em;    /* ~0.68-0.72rem caps */
   --track-cap-sm: 0.24em;   /* ~0.6-0.63rem caps */
+
+  /* Body / narrative / box text scale. Raised ~40% per client feedback; the
+     display and heading sizes stay as they were. Change these to retune the
+     whole reading size of the site in one place. */
+  --lead: clamp(1.35rem, 1.7vw, 1.62rem);
+  --body: 1.24rem;       /* card + section body copy */
+  --body-sm: 1.12rem;    /* dense lists / secondary copy */
+  --body-lh: 1.6;
 
   /* Depth: one ambient elevation tier between the flat field and the deep
      overlay shadows on the dialog/dropdown. */
@@ -220,7 +230,7 @@ ul, ol { list-style: none; }
 }
 .h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.14; letter-spacing: -0.015em; }
 /* Serif optical rendering + balanced rag: heads are judged on their line breaks. */
-.display, .h2, .h3, .strategy-aside h2, .bio-side h2, .svc-detail h2, .ledger-title h2 {
+.display, .h2, .h3, .strategy-aside h2, .bio-side h2, .svc-card h2 {
   text-rendering: optimizeLegibility; font-feature-settings: "kern" 1, "liga" 1;
   text-wrap: balance;
 }
@@ -245,8 +255,8 @@ ul, ol { list-style: none; }
 .eyebrow::before { content: ""; width: 1.9rem; height: 1px; background: var(--gold); opacity: 0.65; }
 /* Weight 300 is reserved for the display-sized lead only. All body-sized running
    text sits at 400 so it holds its ink over the moving field. */
-.lead { font-size: clamp(1.02rem, 1.35vw, 1.2rem); line-height: 1.72; color: var(--fg-2); font-weight: 300; max-width: 58ch; text-wrap: pretty; }
-.body-sm { font-size: 0.94rem; line-height: 1.68; color: var(--fg-2); font-weight: 400; text-wrap: pretty; }
+.lead { font-size: var(--lead); line-height: 1.5; color: var(--fg-2); font-weight: 300; max-width: 48ch; text-wrap: pretty; }
+.body-sm { font-size: var(--body-sm); line-height: 1.55; color: var(--fg-2); font-weight: 400; text-wrap: pretty; }
 
 .section-head { margin-bottom: calc(var(--section-y) * 0.5); }
 .section-head .h2 { margin-top: 1.4rem; max-width: 20ch; }
@@ -486,7 +496,7 @@ ul, ol { list-style: none; }
 .cap {
   display: grid; grid-template-columns: 5.5rem minmax(0, 22rem) minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 4rem); align-items: start;
-  padding-block: clamp(2.4rem, 4vw, 3.6rem);
+  padding-block: clamp(1.5rem, 3vw, 2.4rem);
   border-bottom: 1px solid var(--line);
   position: relative; transition: background 0.5s var(--ease);
 }
@@ -502,7 +512,7 @@ ul, ol { list-style: none; }
 .cap-title { display: flex; align-items: flex-start; gap: 1.1rem; }
 .cap-title .icon { color: var(--gold); margin-top: 0.15rem; opacity: 0.85; transition: transform 0.6s var(--ease); }
 .cap:hover .cap-title .icon { transform: translateY(-3px) rotate(-4deg); }
-.cap-body { color: var(--fg-2); font-weight: 300; font-size: 0.99rem; line-height: 1.78; max-width: 60ch; }
+.cap-body { color: var(--fg-2); font-weight: 400; font-size: var(--body); line-height: var(--body-lh); max-width: 48ch; }
 
 /* ---------- 13. SERVICES (home) ----------
    Light blue-gray cards (#b2bdc7) that lift out of the dark field to break the
@@ -511,17 +521,17 @@ ul, ol { list-style: none; }
    deep-gold icon 4.0. The .svc component is used only on the home page. */
 .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(22, 35, 47, 0.35); border: 1px solid rgba(22, 35, 47, 0.30); box-shadow: var(--elev-1); }
 .svc {
-  background: #b2bdc7;
+  background: #c7cfd6;
   padding: var(--pad-tile);
-  display: flex; flex-direction: column; gap: 1rem;
-  min-height: 17rem; position: relative; isolation: isolate;
+  display: flex; flex-direction: column; gap: 0.85rem;
+  min-height: 16rem; position: relative; isolation: isolate;
   transition: background 0.45s var(--ease);
 }
-.svc:hover, .svc:focus-visible { background: #bdc7cf; }
+.svc:hover, .svc:focus-visible { background: #d2d8de; }
 .svc .icon--lg { color: #6a4e26; transition: transform 0.55s var(--ease); }
 .svc:hover .icon--lg, .svc:focus-visible .icon--lg { transform: translateY(-4px); }
 .svc h3 { font-family: var(--serif); font-weight: 400; font-size: var(--h4); letter-spacing: -0.015em; line-height: 1.12; color: #16232f; }
-.svc p { font-size: 0.9rem; line-height: 1.68; color: rgba(22, 35, 47, 0.78); font-weight: 400; flex: 1; }
+.svc p { font-size: var(--body); line-height: var(--body-lh); color: rgba(22, 35, 47, 0.78); font-weight: 400; flex: 1; }
 .svc .link-arrow { margin-top: 0.35rem; color: rgba(22, 35, 47, 0.74); }
 .svc:hover .link-arrow, .svc:focus-visible .link-arrow { color: #16232f; }
 .svc:hover .link-arrow .icon, .svc:focus-visible .link-arrow .icon { transform: translateX(5px); }
@@ -617,7 +627,7 @@ ul, ol { list-style: none; }
 /* overscroll-behavior stops a flick that reaches the end of the bio from
    chaining through to the page underneath and scrolling it away. */
 .bio-main { padding: 3rem clamp(1.75rem, 3.5vw, 3.4rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
-.bio-main p { font-size: 0.95rem; line-height: 1.85; color: var(--fg-2); font-weight: 300; }
+.bio-main p { font-size: var(--body); line-height: 1.68; color: var(--fg-2); font-weight: 400; }
 .bio-main p + p { margin-top: 1.15rem; }
 .bio-close { position: absolute; top: 0.9rem; right: 0.9rem; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; color: var(--fg-3); border-radius: 50%; z-index: 5; transition: color 0.3s, background 0.3s; }
 .bio-close:hover { color: var(--fg); background: var(--surface-2); }
@@ -640,21 +650,21 @@ ul, ol { list-style: none; }
 
 /* ---------- 17. FOOTER ---------- */
 .site-footer { background: var(--ink-950); border-top: 1px solid var(--line); position: relative; z-index: 1; }
-.footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem; padding-block: clamp(2.75rem, 5vw, 4rem); border-bottom: 1px solid var(--line); }
+.footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem; padding-block: clamp(1.9rem, 3.5vw, 3rem); border-bottom: 1px solid var(--line); }
 .footer-logo { height: 40px; width: auto; filter: brightness(0) invert(1); opacity: 0.9; }
 .footer-contacts { display: flex; flex-wrap: wrap; gap: 1.5rem 3.5rem; }
 .footer-contact { display: flex; align-items: center; gap: 1rem; }
 .footer-contact .icon--lg { color: var(--gold); width: 1.35rem; height: 1.35rem; }
 .footer-contact .label { display: block; font-size: 0.63rem; letter-spacing: var(--track-cap-sm); text-transform: uppercase; color: var(--fg-4); margin-bottom: 0.28rem; }
 /* Sans so the serif stays reserved for true headings. */
-.footer-contact a { font-family: var(--sans); font-weight: 500; font-size: 1rem; transition: color 0.3s; }
+.footer-contact a { font-family: var(--sans); font-weight: 500; font-size: 1.16rem; transition: color 0.3s; }
 .footer-contact a:hover { color: var(--gold); }
 
-.footer-locations { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); padding-block: clamp(2.75rem, 5vw, 4rem); border-bottom: 1px solid var(--line); }
+.footer-locations { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); padding-block: clamp(1.9rem, 3.5vw, 3rem); border-bottom: 1px solid var(--line); }
 .loc .eyebrow { font-size: 0.63rem; letter-spacing: var(--track-cap-sm); }
 .loc .eyebrow::before { width: 1.2rem; }
 .loc h3 { font-family: var(--serif); font-weight: 400; font-size: 1.32rem; margin: 0.9rem 0 0.75rem; letter-spacing: -0.01em; }
-.loc address { font-style: normal; font-size: 0.9rem; line-height: 1.72; color: var(--fg-3); font-weight: 400; }
+.loc address { font-style: normal; font-size: var(--body-sm); line-height: 1.55; color: var(--fg-3); font-weight: 400; }
 .loc a { transition: color 0.3s; }
 .loc a:hover { color: var(--gold); }
 
@@ -733,7 +743,7 @@ ul, ol { list-style: none; }
 .layer:hover::before { transform: scaleY(1); }
 .layer-idx { font-family: var(--serif); font-size: 1rem; color: var(--fg-4); font-variant-numeric: tabular-nums lining-nums; }
 .layer-name { font-family: var(--serif); font-size: var(--h4); line-height: 1.12; letter-spacing: -0.015em; }
-.layer-desc { font-size: 0.86rem; color: var(--fg-3); font-weight: 400; margin-top: 0.32rem; }
+.layer-desc { font-size: var(--body-sm); color: var(--fg-3); font-weight: 400; margin-top: 0.32rem; line-height: 1.5; }
 .layer-tag {
   font-size: 0.6rem; font-weight: 600; letter-spacing: 0.19em; text-transform: uppercase;
   color: var(--gold); border: 1px solid rgba(197, 164, 126, 0.35); border-radius: 999px;
@@ -744,7 +754,7 @@ ul, ol { list-style: none; }
 .strategy {
   display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap: clamp(2rem, 5vw, 5rem);
-  padding-block: clamp(3rem, 6vw, 5.5rem);
+  padding-block: clamp(1.9rem, 3.5vw, 3.2rem);
   border-top: 1px solid var(--line);
 }
 .strategy { scroll-margin-top: calc(var(--header-h) + 1.5rem); }
@@ -755,12 +765,12 @@ ul, ol { list-style: none; }
 .strategy-role { display: block; margin-top: 1rem; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg-3); }
 
 .cap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-2); border: 1px solid var(--line); margin-top: 2rem; }
-.cap-grid li { background: var(--tile); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06); padding: 1.05rem 1.2rem; font-size: 0.87rem; line-height: 1.5; color: var(--fg-2); font-weight: 400; display: flex; gap: 0.7rem; align-items: flex-start; }
+.cap-grid li { background: var(--tile); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06); padding: 1.05rem 1.2rem; font-size: var(--body-sm); line-height: 1.5; color: var(--fg-2); font-weight: 400; display: flex; gap: 0.7rem; align-items: flex-start; }
 .cap-grid .icon { color: var(--gold); width: 1.05em; height: 1.05em; margin-top: 0.28em; }
 
 .designed-to { margin-top: 2rem; border-left: 2px solid var(--gold); padding: 0.4rem 0 0.4rem clamp(1.2rem, 2vw, 1.8rem); }
 .designed-to .label { display: block; font-size: 0.61rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.7rem; }
-.designed-to p { font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 1.5vw, 1.28rem); line-height: 1.55; color: var(--fg-2); }
+.designed-to p { font-family: var(--serif); font-style: italic; font-size: clamp(1.35rem, 1.9vw, 1.6rem); line-height: 1.45; color: var(--fg-2); }
 
 /* ---------- 17e. PROCESS ---------- */
 .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-2); border: 1px solid var(--line); box-shadow: var(--elev-1); }
@@ -778,7 +788,7 @@ ul, ol { list-style: none; }
 .step:hover::after { transform: scaleX(1); }
 .step-num { font-family: var(--serif); font-size: 0.92rem; color: var(--fg-4); font-variant-numeric: tabular-nums lining-nums; }
 .step h3 { font-family: var(--serif); font-weight: 400; font-size: 1.28rem; line-height: 1.2; margin: 0.85rem 0 0.6rem; letter-spacing: -0.01em; }
-.step p { font-size: 0.86rem; line-height: 1.68; color: var(--fg-2); font-weight: 400; }
+.step p { font-size: var(--body); line-height: var(--body-lh); color: var(--fg-2); font-weight: 400; }
 
 /* ---------- 17f. NOTE / DISCLOSURE INLINE ---------- */
 /* Dark wash, not white: a raised surface should deepen against the field rather
@@ -786,159 +796,32 @@ ul, ol { list-style: none; }
 .note { border: 1px solid var(--line); border-radius: 5px; padding: var(--pad-tile-sm); background: var(--tile); box-shadow: var(--elev-1); }
 .note p { font-size: 0.78rem; line-height: 1.8; color: var(--fg-4); }
 
-/* ---------- 17g. SERVICES: THE LEDGER (services.html) ----------
-   Six full-width, unboxed, hairline-ruled editorial rows with monumental
-   outlined serif numerals that mirror left to right. Nothing is boxed, so the
-   fixed gradient, grain and contour show through. Scales up HOME's numbered
-   .cap index and the numbered .strategy rows into a house style. */
-
-/* Orientation A: contents index ("The Practice") */
-.ledger-index { border-top: 1px solid var(--line); }
-.ledger-index .eyebrow { margin: clamp(1.6rem, 3vw, 2.2rem) 0 clamp(1rem, 2.2vw, 1.6rem); }
-.ledger-index-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(1.5rem, 3vw, 3rem); }
-.ledger-index-item a { position: relative; display: flex; align-items: baseline; gap: 0.8rem; padding: clamp(0.85rem, 1.5vw, 1.1rem) 0; border-top: 1px solid var(--line); color: var(--fg-3); transition: color 0.4s var(--ease); }
-.ledger-index-item a::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; background: var(--grad-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.6s var(--ease); }
-.ledger-index-item a:hover, .ledger-index-item a.is-active { color: var(--fg); }
-.ledger-index-item a:hover::after, .ledger-index-item a.is-active::after { transform: scaleX(1); }
-.ledger-index-num { flex: none; font-family: var(--serif); font-size: 1rem; letter-spacing: 0.05em; color: var(--gold); opacity: 0.7; font-variant-numeric: tabular-nums lining-nums; transition: opacity 0.4s var(--ease); }
-.ledger-index-item a.is-active .ledger-index-num { opacity: 1; }
-.ledger-index-title { font-family: var(--serif); font-size: clamp(1.05rem, 1.4vw, 1.28rem); line-height: 1.2; }
-
-/* Orientation B: desktop live position rail (revealed >=1181 while ledger in view) */
-.ledger-rail { display: none; }
-
-/* The ledger rows */
-.ledger { border-top: 1px solid var(--line); margin-top: clamp(2.5rem, 5vw, 4rem); }
-.ledger-row {
-  position: relative; isolation: isolate;
-  /* The numeral gets its own band above the head, and the capability list spans
-     both bands on the opposite side. Previously the numeral was a ghost pinned
-     over the head column, which is the same column the eyebrow and the headline
-     occupy, so at its full size its strokes ran straight through both. Row gap is
-     zero: the spacing under the numeral is carried by its own margin. */
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  grid-template-areas: "num  caps"
-                       "head caps";
-  grid-template-rows: auto 1fr;
-  column-gap: clamp(2.5rem, 6vw, 6rem); row-gap: 0;
-  padding-block: clamp(3.5rem, 8vw, 7rem);
-  border-bottom: 1px solid var(--line);
-  scroll-margin-top: calc(var(--header-h) + 2rem);
+/* ---------- 17g. SERVICES: CARD GRID (services.html) ----------
+   One light blue-gray card per discipline, matching the home services boxes, so
+   the whole "services" idea reads as one card/box system (client request). All
+   content is dark for contrast on the light card: heading ~10:1, hook/features
+   ~6:1, deep-gold icons ~4.8:1 on #c7cfd6. */
+.svc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(22, 35, 47, 0.35); border: 1px solid rgba(22, 35, 47, 0.30); box-shadow: var(--elev-1); }
+.svc-card {
+  background: #c7cfd6; padding: var(--pad-tile);
+  display: flex; flex-direction: column;
+  scroll-margin-top: calc(var(--header-h) + 1.5rem);
+  transition: background 0.45s var(--ease);
 }
-/* Mirror is VISUAL only (grid-template-areas), DOM order stays head-then-caps. */
-.ledger-row:nth-child(even) {
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  grid-template-areas: "caps num"
-                       "caps head";
-}
+.svc-card:hover, .svc-card:focus-within { background: #d2d8de; }
+.svc-card .icon--lg { color: #6a4e26; margin-bottom: 1rem; transition: transform 0.55s var(--ease); }
+.svc-card:hover .icon--lg { transform: translateY(-4px); }
+.svc-card h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.55rem, 2.2vw, 1.95rem); line-height: 1.1; letter-spacing: -0.015em; color: #16232f; }
+.svc-card-hook { color: rgba(22, 35, 47, 0.82); font-size: var(--body); line-height: var(--body-lh); margin: 0.85rem 0 1.3rem; }
+.svc-card-list { margin-bottom: 1.5rem; }
+.svc-card-list li { display: flex; gap: 0.7rem; align-items: flex-start; padding-block: 0.62rem; border-top: 1px solid rgba(22, 35, 47, 0.15); font-size: var(--body-sm); line-height: 1.45; color: rgba(22, 35, 47, 0.82); }
+.svc-card-list .icon { color: #6a4e26; width: 1.05em; height: 1.05em; margin-top: 0.22em; flex: none; }
+.svc-card .link-arrow { margin-top: auto; color: rgba(22, 35, 47, 0.74); }
+.svc-card:hover .link-arrow, .svc-card:focus-within .link-arrow { color: #16232f; }
+.svc-card:hover .link-arrow .icon, .svc-card:focus-within .link-arrow .icon { transform: translateX(5px); }
 
-/* gold vertical accent bar on the head side (echoes .layer::before) */
-.ledger-row::before { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; z-index: 1; background: var(--grad-gold); transform: scaleY(0); transform-origin: top; transition: transform 0.6s var(--ease); }
-.ledger-row:nth-child(odd)::before { left: 0; }
-.ledger-row:nth-child(even)::before { right: 0; transform-origin: bottom; }
-.ledger-row:hover::before, .ledger-row:focus-within::before, .ledger-row.is-active::before { transform: scaleY(1); }
-
-/* radial gold depth wash anchored to the head-side top corner */
-.ledger-row::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(120% 140% at 12% 0%, rgba(197, 164, 126, 0.08), transparent 60%); opacity: 0; transition: opacity 0.6s var(--ease); }
-.ledger-row:nth-child(even)::after { background: radial-gradient(120% 140% at 88% 0%, rgba(197, 164, 126, 0.08), transparent 60%); }
-.ledger-row:hover::after, .ledger-row:focus-within::after, .ledger-row.is-active::after { opacity: 1; }
-
-/* Masthead numeral: outlined figure on its own band, with a rule running out
-   from it to carry the eye across to the content. Faint fill is the fallback for
-   anything without text-stroke; the stroke is the detail. */
-.ledger-num {
-  grid-area: num; z-index: 0;
-  pointer-events: none; user-select: none;
-  display: flex; align-items: center; gap: clamp(1rem, 2vw, 1.7rem);
-  font-family: var(--serif); line-height: 0.86;
-  font-size: clamp(3.4rem, 8vw, 8.5rem);
-  letter-spacing: -0.02em; color: rgba(242, 245, 248, 0.05);
-  font-variant-numeric: tabular-nums lining-nums;
-  margin-bottom: clamp(1.2rem, 2.4vw, 2.2rem);
-  -webkit-text-stroke: 1px rgba(197, 164, 126, 0.42);
-  transition: -webkit-text-stroke-color 0.6s var(--ease);
-}
-.ledger-num::after { content: ""; flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
-.ledger-row:hover .ledger-num, .ledger-row:focus-within .ledger-num, .ledger-row.is-active .ledger-num { -webkit-text-stroke-color: rgba(197, 164, 126, 0.8); }
-/* The figure stays at the head column's leading edge on both sides. The mirror
-   is carried by the columns swapping, which is where it always lived. Pushing
-   the figure to the outer edge on even rows would strand it a full column away
-   from the eyebrow and headline it belongs to. */
-
-/* The figure states the number, so the eyebrow repeating it is noise. Hidden
-   visually, kept for screen readers, because .ledger-num is aria-hidden and
-   dropping the digits outright would take the number out of the accessible
-   name entirely. */
-.ledger-head .eyebrow-n { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-/* One horizontal stroke per band. The numeral's rule already does that job, so
-   the eyebrow's leading dash would be a second rule two lines below the first. */
-.ledger-head .eyebrow::before { display: none; }
-
-/* head */
-.ledger-head { grid-area: head; position: relative; z-index: 1; }
-/* The icon sits above the headline rather than inline before it. Inline, it
-   pushed the h2 in by roughly 50px while the eyebrow, the hook and every
-   capability line stayed flush at the column's leading edge, so the one element
-   that should anchor that edge hardest was the only one off it. */
-.ledger-title { display: block; margin-top: 1.15rem; }
-.ledger-title .icon--lg { color: var(--gold); flex: none; margin-bottom: 0.8rem; transition: transform 0.55s var(--ease); }
-.ledger-row:hover .ledger-title .icon--lg { transform: translateY(-4px); }
-.ledger-title h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.05; letter-spacing: -0.02em; }
-.ledger-hook { font-family: var(--serif); font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.5; color: var(--fg-2); margin: 1.4rem 0 1.9rem; max-width: 32ch; }
-.ledger-cta { margin-top: 0.2rem; }
-
-/* caps: open hairlines, never boxed */
-.ledger-caps { grid-area: caps; align-self: center; display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1.4rem, 3vw, 2.6rem) clamp(2rem, 4vw, 3.5rem); }
-.ledger-cap { display: flex; gap: 0.8rem; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 1.05rem; font-size: 0.95rem; line-height: 1.55; color: var(--fg-2); font-weight: 400; transition: border-color 0.5s var(--ease); }
-.ledger-cap .icon { color: var(--gold); width: 1.05em; height: 1.05em; margin-top: 0.18em; flex: none; }
-.ledger-row:hover .ledger-cap, .ledger-row:focus-within .ledger-cap, .ledger-row.is-active .ledger-cap { border-color: var(--line-2); }
-
-/* CTA reveals on hover only where hover is real; always visible on touch and keyboard */
-@media (hover: hover) and (pointer: fine) {
-  .ledger-cta { opacity: 0; transform: translateY(6px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), color 0.35s var(--ease); }
-  .ledger-row:hover .ledger-cta, .ledger-row:focus-within .ledger-cta { opacity: 1; transform: none; }
-}
-
-/* desktop live rail */
-@media (min-width: 1181px) {
-  .ledger-rail { display: flex; flex-direction: column; align-items: flex-end; gap: 1.1rem; position: fixed; top: 50%; right: clamp(1rem, 2.5vw, 2rem); transform: translateY(-50%); z-index: 5; opacity: 0; visibility: hidden; transition: opacity 0.5s var(--ease), visibility 0.5s; }
-  .ledger-rail.is-visible { opacity: 1; visibility: visible; }
-  .ledger-rail a { position: relative; display: flex; align-items: center; justify-content: flex-end; height: 12px; }
-  .ledger-rail .tick { width: 22px; height: 1px; background: var(--line-2); transition: width 0.4s var(--ease), background 0.4s var(--ease); }
-  .ledger-rail .num { position: absolute; right: 32px; font-family: var(--serif); font-size: 0.85rem; color: var(--gold); opacity: 0; transition: opacity 0.35s var(--ease); }
-  .ledger-rail a:hover .tick, .ledger-rail a.is-active .tick { width: 34px; background: var(--gold); }
-  .ledger-rail a:hover .num, .ledger-rail a.is-active .num { opacity: 1; }
-}
-
-@media (max-width: 900px) {
-  /* One column, so the three bands stack and the left-right mirror switches off:
-     every band opens to the left, including the even rows the wide layout
-     mirrors. Spacing is carried by row-gap here rather than the numeral's own
-     margin, so the three bands share one rhythm. */
-  .ledger-row, .ledger-row:nth-child(even) {
-    grid-template-columns: 1fr;
-    grid-template-areas: "num" "head" "caps";
-    grid-template-rows: auto auto auto;
-    column-gap: 0; row-gap: clamp(1.5rem, 3.6vw, 2.2rem);
-    padding-block: clamp(3rem, 9vw, 4.5rem);
-  }
-  .ledger-caps { align-self: start; }
-  .ledger-num {
-    gap: clamp(0.9rem, 3.5vw, 1.5rem);
-    font-size: clamp(3.4rem, 15vw, 5.4rem);
-    margin-bottom: 0;   /* row-gap carries the rhythm at this width */
-    -webkit-text-stroke-color: rgba(197, 164, 126, 0.55);
-  }
-  .ledger-title { margin-top: 0.9rem; }
-  .ledger-title .icon--lg { margin-bottom: 0.75rem; }
-  .ledger-row:nth-child(even)::before { right: auto; left: 0; transform-origin: top; }
-  .ledger-row:nth-child(even)::after { background: radial-gradient(120% 140% at 12% 0%, rgba(197, 164, 126, 0.08), transparent 60%); }
-  .ledger-index-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 640px) {
-  .ledger-caps { grid-template-columns: 1fr; }
-  .ledger-index-list { grid-template-columns: 1fr; }
-}
+@media (max-width: 1024px) { .svc-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .svc-cards { grid-template-columns: 1fr; } }
 
 /* ---------- 17h. FORMS (contact.html) ---------- */
 /* Dark wash for the same reason as .note: this panel holds the form, whose
@@ -981,10 +864,10 @@ select.input:invalid { color: var(--fg-4); }
 .office + .office { margin-top: 1.6rem; }
 .office:hover { border-color: var(--gold); }
 .office h3 { font-family: var(--serif); font-weight: 400; font-size: 1.3rem; margin-bottom: 0.5rem; }
-.office address { font-style: normal; font-size: 0.9rem; line-height: 1.7; color: var(--fg-3); font-weight: 400; }
+.office address { font-style: normal; font-size: var(--body-sm); line-height: 1.55; color: var(--fg-3); font-weight: 400; }
 .office address a { color: inherit; transition: color 0.3s var(--ease); }
 .office:hover address a, .office address a:hover { color: var(--gold); }
-.direct-line { display: flex; align-items: center; gap: 0.85rem; padding-block: 0.7rem; font-size: 1.02rem; transition: color 0.3s; }
+.direct-line { display: flex; align-items: center; gap: 0.85rem; padding-block: 0.7rem; font-size: 1.28rem; transition: color 0.3s; }
 .direct-line .icon { color: var(--gold); }
 .direct-line:hover { color: var(--gold); }
 .panel-label { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem; }
@@ -1074,7 +957,7 @@ select.input:invalid { color: var(--fg-4); }
      site, on that page's primary conversion path. The negative top margin
      cancels the new top padding so the text does not move, and the extra height
      below is absorbed by the row's own padding. */
-  .ledger-cta { padding-block: 0.75rem; margin-top: -0.55rem; }
+  .svc-card .link-arrow { padding-block: 0.5rem; }
 }
 
 /* ---------- 20c. MOBILE RENDER BUDGET ----------
