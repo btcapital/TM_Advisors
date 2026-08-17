@@ -1,7 +1,7 @@
-/* PREVIEW THEME C: "Refined" — the design-teardown findings as a layered override.
+/* PREVIEW THEME C: "Refined". The design-teardown findings as a layered override.
    Same pattern as theme-navy.css / theme-light.css: load AFTER main.css to compare
    without touching production CSS. When approved, fold these declarations into
-   main.css and delete this file (all of it is deletions + token changes).
+   main.css and delete this file (all of it is deletions plus token changes).
 
    Findings applied:
    01 no card chrome        05 gold gets one job
@@ -11,22 +11,22 @@
 */
 
 :root {
-  /* 06 — one radius pair, one spacing rhythm */
+  /* 06 - one radius pair, one spacing rhythm */
   --radius: 4px;
   --radius-pill: 999px;
-  --section-y: clamp(4.5rem, 8.5vw, 8.5rem) !important;  /* was 3.25–6rem */
-  --gap-grid: clamp(2rem, 3.4vw, 3rem) !important;       /* was 1.1–1.8rem */
+  --section-y: clamp(4.5rem, 8.5vw, 8.5rem) !important;  /* was 3.25-6rem */
+  --gap-grid: clamp(2rem, 3.4vw, 3rem) !important;       /* was 1.1-1.8rem */
   --gap-flow: clamp(2rem, 3.6vw, 3.2rem) !important;
 
-  /* 05 — gold is flat. No gradient anywhere in UI. */
+  /* 05 - gold is flat. No gradient anywhere in UI. */
   --grad-gold: #c5a47e !important;
 
-  /* 04 — body copy lighter and slightly smaller for a longer measure */
+  /* 04 - body copy lighter and slightly smaller for a longer measure */
   --body: 1.14rem !important;
   --lead: clamp(1.24rem, 1.5vw, 1.45rem) !important;
 }
 
-/* ── 02 · One flat surface ─────────────────────────────────────────────── */
+/* -- 02 · One flat surface ----------------------------------------------- */
 body, .bg-field { background: #16232f !important; }
 .bg-field::before, .bg-field::after { display: none !important; }
 .hero::before { background: none !important; }
@@ -41,7 +41,7 @@ body, .bg-field { background: #16232f !important; }
 }
 .site-header::before { background: rgba(22, 35, 47, 0.94) !important; }
 
-/* ── 01 · No card chrome — separation comes from air ───────────────────── */
+/* -- 01 · No card chrome - separation comes from air --------------------- */
 .svc, .member, .cap-grid li, .step, .stack, .note, .accolade {
   background: transparent !important;
   border: 0 !important;
@@ -72,7 +72,7 @@ body, .bg-field { background: #16232f !important; }
   box-shadow: none !important;
 }
 
-/* ── 04 · Tighter display, lighter body ────────────────────────────────── */
+/* -- 04 · Tighter display, lighter body ---------------------------------- */
 .display { letter-spacing: -0.04em !important; line-height: 0.94 !important; }
 .h2 { letter-spacing: -0.035em !important; }
 .h3, .svc h3, .member-meta h3, .layer-name, .svc-card h2 { letter-spacing: -0.025em !important; }
@@ -82,7 +82,7 @@ body, p, .lead, .hero-lead, .svc p, .step p {
 }
 .lead, .hero-lead { max-width: 60ch !important; }
 
-/* ── 03 · Hierarchy by scale, not costume ──────────────────────────────── */
+/* -- 03 · Hierarchy by scale, not costume -------------------------------- */
 /* demote the second tier of uppercase-tracked micro-labels to plain text */
 .creds-label, .footer-contact .label, .accolade-pub, .strategy-role, .hero-scroll {
   letter-spacing: 0.08em !important;
@@ -97,7 +97,7 @@ body, p, .lead, .hero-lead, .svc p, .step p {
 .designed-to p { font-style: normal !important; color: var(--fg-2) !important; }
 .designed-to .label { color: var(--fg-4) !important; letter-spacing: 0.14em !important; }
 
-/* ── 05 · Gold does one job: the primary action + section eyebrows ──────── */
+/* -- 05 · Gold does one job: the primary action + section eyebrows -------- */
 .btn--gold, .btn--primary {
   background: #c5a47e !important;
   color: #16232f !important;
@@ -112,7 +112,7 @@ body, p, .lead, .hero-lead, .svc p, .step p {
   border-radius: var(--radius) !important;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22) !important;
 }
-/* one filled button per view — the hero's second CTA becomes a text link */
+/* one filled button per view - the hero's second CTA becomes a text link */
 .hero-actions .btn--ghost {
   box-shadow: none !important;
   padding-left: 0 !important;
@@ -124,15 +124,15 @@ body, p, .lead, .hero-lead, .svc p, .step p {
 .layer-tag { color: var(--fg-3) !important; border-color: rgba(255,255,255,0.16) !important; }
 .confirm-mark { background: transparent !important; }
 
-/* ── 06 · One radius everywhere it remains ─────────────────────────────── */
+/* -- 06 · One radius everywhere it remains ------------------------------- */
 .member, .field input, .field textarea, .field select, .note, .svc-card,
 .dropdown-menu, .drawer, .bio { border-radius: var(--radius) !important; }
 .btn, .layer-tag { border-radius: var(--radius-pill) !important; }
 
-/* ── Team: portraits float, no frames ──────────────────────────────────── */
+/* -- Team: portraits float, no frames ------------------------------------ */
 .member { border: 0 !important; overflow: visible !important; }
 .member img { border-radius: var(--radius) !important; }
 .team-grid { gap: clamp(2rem, 3.4vw, 3.2rem) !important; }
 
-/* ── Footer: quieter, same rhythm ──────────────────────────────────────── */
+/* -- Footer: quieter, same rhythm ---------------------------------------- */
 .site-footer { background: #142029 !important; border-top: 1px solid rgba(255,255,255,0.10) !important; }
