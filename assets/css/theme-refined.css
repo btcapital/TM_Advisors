@@ -42,7 +42,7 @@ body, .bg-field { background: #16232f !important; }
 .site-header::before { background: rgba(22, 35, 47, 0.94) !important; }
 
 /* -- 01 · No card chrome - separation comes from air --------------------- */
-.svc, .member, .cap-grid li, .step, .stack, .note, .accolade {
+.member, .cap-grid li, .step, .stack, .note, .accolade {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -51,11 +51,33 @@ body, .bg-field { background: #16232f !important; }
   padding-right: 0 !important;
 }
 /* the grids used a background to fake 1px dividers between tiles */
-.svc-grid, .process-grid, .cap-grid {
+.process-grid, .cap-grid {
   background: transparent !important;
   gap: var(--gap-grid) !important;
 }
-.svc-grid > *, .process-grid > *, .cap-grid > * { border: 0 !important; }
+.process-grid > *, .cap-grid > * { border: 0 !important; }
+
+/* The services tiles (.svc on the home page, .svc-card on services.html) are a
+   deliberate LIGHT band: navy text, #6a4e26 icons, #d2d8de hover. They keep
+   their surface. Refined here rather than stripped: flat fill instead of a
+   translucent one, hairline dividers instead of a 60px shadow, one radius. */
+.svc-grid, .svc-cards {
+  background: rgba(22, 35, 47, 0.16) !important;   /* the 1px hairline colour */
+  border: 0 !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  gap: 1px !important;
+}
+.svc, .svc-card {
+  background: #eef1f4 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.svc:hover, .svc:focus-visible, .svc-card:hover, .svc-card:focus-within {
+  background: #e4e9ee !important;
+}
 
 /* single hairline where a divider genuinely helps reading order */
 .cap-grid li + li, .stack .layer + .layer {
@@ -125,7 +147,7 @@ body, p, .lead, .hero-lead, .svc p, .step p {
 .confirm-mark { background: transparent !important; }
 
 /* -- 06 · One radius everywhere it remains ------------------------------- */
-.member, .field input, .field textarea, .field select, .note, .svc-card,
+.member, .field input, .field textarea, .field select, .note,
 .dropdown-menu, .drawer, .bio { border-radius: var(--radius) !important; }
 .btn, .layer-tag { border-radius: var(--radius-pill) !important; }
 
