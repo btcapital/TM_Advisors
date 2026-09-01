@@ -1,0 +1,10 @@
+{
+  "outDir": "shots/copy",
+  "width": 1440,
+  "height": 900,
+  "wait": 3200,
+  "jobs": [
+    { "name": "services-card", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/index.html", "atY": 2330, "prescroll": false },
+    { "name": "disciplines", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/index.html", "atY": 3300, "prescroll": false }
+  ]
+}
