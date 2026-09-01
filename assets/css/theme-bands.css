@@ -1,0 +1,479 @@
+/* ============================================================
+   PREVIEW THEME: "Bands"
+   Load AFTER main.css. Same layered-override pattern as
+   theme-navy.css / theme-light.css / theme-refined.css, so production
+   CSS is untouched until this is approved.
+
+   Answers Bryan's feedback:
+     - the fixed full-page field goes away; every section owns a flat,
+       full-bleed background and the page reads as a stack of bands
+     - the value swings dark to light and back, more than once
+     - one band is a real tint, not another step on the navy ramp
+     - "Our Services" becomes one sliding track of wide cards driven by
+       a tab row plus circular arrows, on the home page and on Services
+
+   Architecture: a .band wrapper redefines the foreground tokens locally.
+   Because main.css addresses colour only through var(), every existing
+   component inverts correctly inside a light band with no per-component
+   rewrite.
+   ============================================================ */
+
+/* ---------- 1. BAND TOKENS ---------- */
+:root {
+  /* Dark end: one step below --ink-950, same hue family. */
+  --band-deep: #0d151d;   /* footer, credential rule */
+  --band-navy: var(--ink-950);
+
+  /* Light end. Meridian has no light-surface tokens at all, so these are
+     additions rather than contradictions. Neutral-warm, so the gold accent
+     sits on them without fighting. */
+  --band-bone: #f3f2ee;
+  --band-paper: #ffffff;
+
+  /* THE TINT BAND. Meridian's defining constraint is one accent hue, so
+     this stays inside the gold family (hue ~38deg) rather than introducing
+     a second: a champagne wash, clearly not another step on the
+     navy-to-bone neutral ramp, but not a new colour in the brand either.
+     Swap this single pair to compare. Sage was the first attempt and does
+     read as a stronger third note, at the cost of a second hue at
+     full-bleed scale:
+       sage        #dde5dd / #f3f7f2   (hue 120, off-brand family)
+       periwinkle  #dee3f2 / #f2f4fb   (hue 225, off-brand family) */
+  --band-tint: #ecdfc7;
+  --band-tint-paper: #fdf8ee;
+
+  /* Gold has to darken on light bands or small caps fail AA. The existing
+     --gold-dk #96754d only reaches 3.76:1 on bone, so this is a fourth
+     step on the gold ramp rather than a new colour. Measured: 6.3:1 on
+     bone, 5.3:1 on the champagne tint, 6.9:1 on paper. */
+  --gold-ink: #6f5430;
+  /* For type that sits on a photograph rather than on a band, so it must
+     stay light even where --fg has been inverted to ink. */
+  --fg-on-media: #f2f5f8;
+
+  --track-gap: clamp(1rem, 1.5vw, 1.4rem);
+  /* One card radius, used by every new card surface. The reference boxes
+     measure 20 to 24px; Meridian's existing cards are 4 to 6px. 20px is the
+     reference figure rather than a split down the middle, because a
+     half-measure reads as neither. THIS IS A REAL TENSION: if it is
+     approved, main.css's radii should move with it, or the site carries two
+     card languages. */
+  --card-radius: 20px;
+}
+
+/* ---------- 2. RETIRE THE FIXED FIELD ---------- */
+/* This is the change Bryan actually asked for. The field was fixed, so
+   every section scrolled through the same gradient and no section could
+   own a colour. */
+.bg-field { display: none !important; }
+#contour { display: none !important; }
+body { background: var(--band-navy); }
+
+/* The hero is a band like any other, so it is FLAT. main.css paints it with
+   a large vertical gradient plus a texture pass, which was fine when the
+   whole document shared one field but is exactly what breaks the band
+   read: it is the biggest region on the page, and a 1000px ramp beside six
+   flat bands reads as the odd one out. */
+.hero::before, .hero::after { display: none !important; }
+/* Same reason: main.css floats a radial gold wash behind the CTA, which
+   reads as a halo across an otherwise flat band. */
+.band.cta-band::before { display: none !important; }
+.band--navy.hero { background: var(--band-navy); }
+.hero .hero-inner, .hero .hero-scroll { position: relative; z-index: 1; }
+
+/* ---------- 3. THE BANDS ---------- */
+.band {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Sections inside a band get their padding from the band, so two adjacent
+   bands meet on a hard edge with no doubled gap and no collapsed one.
+   main.css zeroes padding between consecutive sections and before a
+   .cta-band, both of which assumed a single continuous field; inside a
+   band stack every band has to keep its own full padding or the hard
+   edge lands in the middle of the content. */
+.band > .section, .band.section { padding-block: var(--section-y); }
+.band + .band > .section, .band + .band.section { padding-top: var(--section-y); }
+.band.section:has(+ .band), .band:has(+ .band) > .section { padding-bottom: var(--section-y); }
+.band.section.cta-band { padding-block: var(--section-y); }
+
+.band--deep { background: var(--band-deep); }
+.band--navy { background: var(--band-navy); }
+
+/* -- light bands: flip the token set ------------------------------------ */
+.band--bone, .band--tint, .band--paper {
+  --fg: var(--ink-950);
+  --fg-2: rgba(22, 35, 47, 0.86);
+  --fg-3: rgba(22, 35, 47, 0.70);
+  --fg-4: rgba(22, 35, 47, 0.66);
+  --line: rgba(22, 35, 47, 0.13);
+  --line-2: rgba(22, 35, 47, 0.24);
+  --surface: rgba(255, 255, 255, 0.66);
+  --surface-2: #ffffff;
+  --tile: var(--band-paper);
+  --elev-1: 0 22px 50px -34px rgba(22, 35, 47, 0.30);
+  color: var(--fg);
+}
+.band--bone { background: var(--band-bone); --tile: #fffefb; }   /* card steps up */
+.band--paper { background: var(--band-paper); --tile: #f7f6f2; }  /* card steps down */
+.band--tint {
+  background: var(--band-tint);
+  --tile: var(--band-tint-paper);
+  --surface: rgba(255, 255, 255, 0.55);
+  --elev-1: 0 22px 50px -34px rgba(22, 35, 47, 0.26);
+}
+
+/* Gold: fills stay brand gold, text-weight gold darkens for contrast. */
+.band--bone .eyebrow, .band--tint .eyebrow, .band--paper .eyebrow { color: var(--gold-ink); }
+.band--bone .eyebrow::before, .band--tint .eyebrow::before, .band--paper .eyebrow::before,
+.band--bone .creds-list li + li::before, .band--tint .creds-list li + li::before,
+.band--paper .creds-list li + li::before { opacity: 1; background: var(--gold-ink); }
+.band--bone .gold-text, .band--tint .gold-text, .band--paper .gold-text {
+  background: none; -webkit-text-fill-color: currentColor; color: var(--gold-ink);
+}
+.band--bone .designed-to, .band--tint .designed-to, .band--paper .designed-to { border-left-color: var(--gold-ink); }
+.band--bone .designed-to .label, .band--tint .designed-to .label,
+.band--paper .designed-to .label { color: var(--gold-ink); }
+
+.band--bone .footer-contact .icon--lg, .band--tint .footer-contact .icon--lg,
+.band--paper .footer-contact .icon--lg { color: var(--gold-ink); }
+
+/* Buttons have to be rebuilt on light: .btn--primary is ink-on-ink there. */
+.band--bone .btn--primary, .band--tint .btn--primary, .band--paper .btn--primary {
+  background: var(--ink-950); color: var(--band-bone);
+}
+.band--bone .btn--primary:hover, .band--tint .btn--primary:hover, .band--paper .btn--primary:hover {
+  background: var(--ink-800); box-shadow: var(--elev-1);
+}
+.band--bone .btn--ghost:hover, .band--tint .btn--ghost:hover, .band--paper .btn--ghost:hover {
+  color: var(--ink-950); box-shadow: inset 0 0 0 1px var(--gold-ink); background: color-mix(in srgb, var(--gold-ink) 7%, transparent);
+}
+.band--bone .btn--gold, .band--tint .btn--gold, .band--paper .btn--gold { color: var(--ink-950); }
+.band--bone ::selection, .band--tint ::selection, .band--paper ::selection { background: var(--gold); color: var(--ink-950); }
+.band--bone :focus-visible, .band--tint :focus-visible, .band--paper :focus-visible { outline-color: var(--gold-ink); }
+.band--bone .link-arrow:hover, .band--tint .link-arrow:hover, .band--paper .link-arrow:hover { color: var(--gold-ink); }
+
+/* Cards on a light band: paper fill plus a hairline, no glow. */
+.band--bone .member, .band--tint .member, .band--paper .member {
+  background: var(--tile); border-color: var(--line);
+}
+.band--bone .member:hover, .band--tint .member:hover, .band--paper .member:hover {
+  background: #ffffff; border-color: var(--line-2);
+}
+
+/* The member name and role sit ON the portrait, not on the band, so they
+   must stay light whatever the band does. Without this the name inherits
+   the light band's ink colour and disappears into the photo. */
+.band--bone .member-meta, .band--tint .member-meta, .band--paper .member-meta { color: var(--fg-on-media); }
+.band--bone .member-meta h3, .band--tint .member-meta h3, .band--paper .member-meta h3 { color: var(--fg-on-media); }
+.band--bone .member-meta .role, .band--tint .member-meta .role, .band--paper .member-meta .role { color: var(--gold-lt); }
+
+/* ---------- 4. TWO-TONE HEADLINE ---------- */
+/* First line muted, second line full contrast, one size and one weight.
+   Compound's signature move. */
+.tone-mute { color: var(--fg-4); display: block; }
+.h2 .tone-mute, .display .tone-mute { color: var(--fg-4); }
+
+/* ---------- 5. CREDENTIAL RULE ---------- */
+/* A thin dark strip that gives the hero a hard bottom edge. */
+.band--deep .creds { border-block: 0; padding-block: 1.15rem; }
+
+/* ---------- 6. SERVICE TRACK ---------- */
+.track-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.track-head .h2 { margin-top: 1.4rem; max-width: 26ch; }
+
+/* Tab row plus arrows, sharing one baseline, directly above the track. */
+.track-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+  margin-top: clamp(2.2rem, 4vw, 3.4rem);
+  border-bottom: 1px solid var(--line);
+}
+.track-tabs {
+  display: flex; align-items: flex-end; gap: clamp(1.1rem, 2.2vw, 2.2rem);
+  overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+  /* Room for the focus ring inside the scroller, which would otherwise
+     clip it against the overflow edge. */
+  padding: 6px 6px 0;
+  margin-inline: -6px;
+  margin-bottom: -1px;
+  scroll-padding-inline: 6px;
+}
+.track-tabs::-webkit-scrollbar { display: none; }
+.track-tab {
+  position: relative; flex: none;
+  padding: 0.35rem 0 0.85rem;
+  font-family: var(--sans); font-size: 1.02rem; font-weight: 400;
+  color: var(--fg-4); white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease);
+}
+.track-tab::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--fg); transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+.track-tab:hover { color: var(--fg-2); }
+.track-tab[aria-current="true"] { color: var(--fg); }
+.track-tab[aria-current="true"]::after { transform: scaleX(1); }
+
+.track-arrows { display: flex; gap: 0.6rem; flex: none; padding-bottom: 0.55rem; }
+.track-arrow {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg-2); background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.track-arrow:hover:not([aria-disabled="true"]) { color: var(--fg); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-2); }
+.track-arrow:active:not([aria-disabled="true"]) { transform: scale(0.94); }
+/* 0.3 rendered as absent rather than disabled; 0.45 still reads muted
+   while staying visible. */
+.track-arrow[aria-disabled="true"] { opacity: 0.45; cursor: default; }
+.track-arrow .icon { width: 20px; height: 20px; }
+
+/* The rail. Native scroll with snap, so a trackpad swipe and a touch
+   drag work without any of it being reimplemented in JS, and the arrows
+   and tabs just call scrollTo. */
+.track-bleed {
+  --edge: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+  margin-top: clamp(1.8rem, 3vw, 2.6rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--edge);
+  scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+}
+.track-bleed::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-motion: reduce) { .track-bleed { scroll-behavior: auto; } }
+
+.track-rail {
+  display: flex;
+  gap: var(--track-gap);
+  padding-inline: var(--edge);
+  align-items: stretch;
+}
+/* One card holds the content width; the next is clipped by the window
+   edge so the track visibly continues. */
+.track-card {
+  flex: 0 0 min(calc(100vw - var(--edge) - 11rem), 1180px);
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3.2rem);
+  padding: var(--pad-tile);
+  border-radius: var(--card-radius);
+  background: var(--tile);
+  border: 1px solid var(--line);
+}
+.band--navy .track-card, .band--deep .track-card {
+  /* one step lighter than the band, not a shadow */
+  background: var(--ink-850);
+  border-color: var(--line);
+}
+.band--navy .track-card { box-shadow: none; }
+/* No resting shadow: the card's fill already steps off the band, and the
+   hairline draws the edge. A shadow on top of both is what M4 forbids. */
+.band--bone .track-card, .band--tint .track-card, .band--paper .track-card { box-shadow: none; }
+
+.track-card-copy { display: flex; flex-direction: column; min-width: 0; }
+.track-card-title {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.95rem, 3vw, 2.85rem); line-height: 1.1; letter-spacing: -0.02em;
+}
+.track-card-copy > p {
+  font-size: var(--body); line-height: var(--body-lh); color: var(--fg-2);
+  margin-top: 1.3rem; max-width: 44ch; text-wrap: pretty;
+}
+.track-list { margin-top: 1.4rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.track-list li {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  font-size: var(--body-sm); line-height: 1.5; color: var(--fg-2);
+}
+.track-list .icon { color: var(--gold); width: 1.05em; height: 1.05em; margin-top: 0.3em; flex: none; }
+.band--bone .track-list .icon, .band--tint .track-list .icon, .band--paper .track-list .icon { color: var(--gold-ink); }
+
+/* Footnote pinned to the bottom of the card, clear of the body copy. */
+.track-card-foot {
+  margin-top: auto; padding-top: 1.15rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.82rem; line-height: 1.5; color: var(--fg-4); max-width: 46ch;
+}
+.track-card-cta { margin-top: 1.6rem; }
+
+/* The supporting visual. Deliberately abstract: TM has no product UI to
+   screenshot, and inventing a dashboard with invented numbers would be
+   worse than a mark. No frame either: a bordered box around a light line
+   drawing reads as an empty placeholder rather than a composition. */
+.track-card-visual {
+  position: relative;
+  min-height: clamp(220px, 24vw, 320px);
+  display: grid; place-items: center;
+  padding: 0.5rem;
+}
+.track-card-visual svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.track-card-visual .stroke { fill: none; stroke: var(--fg-4); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.track-card-visual .stroke-soft { fill: none; stroke: var(--line-2); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.track-card-visual .accent { fill: none; stroke: var(--gold); stroke-width: 2.4; vector-effect: non-scaling-stroke; }
+.track-card-visual .accent-fill { fill: var(--gold); stroke: none; }
+.track-card-visual .lens { fill: var(--gold); fill-opacity: 0.14; stroke: none; }
+.band--bone .track-card-visual .lens, .band--tint .track-card-visual .lens,
+.band--paper .track-card-visual .lens { fill: var(--gold-ink); fill-opacity: 0.12; }
+.band--bone .track-card-visual .accent, .band--tint .track-card-visual .accent,
+.band--paper .track-card-visual .accent { stroke: var(--gold-ink); }
+.band--bone .track-card-visual .accent-fill, .band--tint .track-card-visual .accent-fill,
+.band--paper .track-card-visual .accent-fill { fill: var(--gold-ink); }
+
+.track-count {
+  margin-top: 1.4rem; display: flex; align-items: center; gap: 0.9rem;
+  font-size: 0.78rem; letter-spacing: var(--track-cap-md); text-transform: uppercase; color: var(--fg-4);
+}
+.track-count .bar { flex: 1; max-width: 220px; height: 1px; background: var(--line); position: relative; overflow: hidden; }
+.track-count .bar span { position: absolute; inset: 0 auto 0 0; background: var(--gold); transition: width var(--dur) var(--ease); }
+.band--bone .track-count .bar span, .band--tint .track-count .bar span,
+.band--paper .track-count .bar span { background: var(--gold-ink); }
+
+/* The four disciplines. These live on the Services page now; the home
+   page carries the matrix instead. */
+.adv-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 1.8vw, 1.6rem);
+  margin-top: clamp(2.6rem, 5vw, 4.2rem);
+}
+.adv {
+  display: flex; flex-direction: column; gap: 0.85rem;
+  padding: var(--pad-tile-sm);
+  background: var(--tile);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.adv:hover { border-color: var(--line-2); transform: translateY(-3px); box-shadow: var(--elev-1); }
+.adv-top { display: flex; align-items: baseline; gap: 0.9rem; }
+.adv-num {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--fg-4);
+  font-variant-numeric: tabular-nums lining-nums; flex: none;
+}
+.adv h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.5rem, 2.1vw, 1.92rem); line-height: 1.14; letter-spacing: -0.015em;
+}
+.adv p { font-size: var(--body-sm); line-height: 1.6; color: var(--fg-2); text-wrap: pretty; }
+
+@media (max-width: 900px) {
+  .adv-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- 6c. THE TM ADVANTAGE: THE MATRIX ----------
+   Second approach. The first was a funnel diagram above the firm's four
+   capability paragraphs, and it failed for a reason no tweak would fix: the
+   diagram's four labels restated the four cards underneath it, so the
+   reader got the same list twice and the section was still a list.
+
+   This is not a list. The argument the section is actually making is that
+   almost nothing a client walks in with needs only one discipline, and that
+   all of those disciplines are in the building. A matrix of situations
+   against disciplines makes that checkable at a glance, and the column
+   credentials are the same ones in the hero's credential strip. The four
+   capability paragraphs move to the Services page, where they belong. */
+.matrix-wrap {
+  margin-top: clamp(2.4rem, 4.5vw, 3.6rem);
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--tile);
+}
+.matrix { width: 100%; border-collapse: collapse; min-width: 720px; }
+.matrix caption { text-align: left; padding: 0 0 1rem; color: var(--fg-3); font-size: var(--body-sm); }
+
+.matrix th, .matrix td { padding: 1rem 1.1rem; text-align: left; vertical-align: middle; }
+.matrix thead th { border-bottom: 1px solid var(--line-2); vertical-align: bottom; }
+.matrix tbody tr + tr th, .matrix tbody tr + tr td { border-top: 1px solid var(--line); }
+.matrix tbody th { font-weight: 400; font-size: var(--body-sm); line-height: 1.4; color: var(--fg); max-width: 34ch; }
+.matrix .disc { text-align: center; width: 15%; }
+
+.disc-name {
+  display: block; font-family: var(--serif); font-weight: 400;
+  font-size: 1.28rem; line-height: 1.15; letter-spacing: -0.01em;
+}
+.disc-cred {
+  display: block; margin-top: 0.42rem;
+  font-size: 0.63rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--track-cap-sm); color: var(--gold-ink);
+}
+.band--navy .disc-cred, .band--deep .disc-cred { color: var(--gold); }
+
+/* A dot means the discipline is in play; a rule means it usually is not.
+   Every cell also carries a visually-hidden word, so the table is readable
+   without seeing the marks. */
+.mark { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--gold-ink); }
+.band--navy .mark, .band--deep .mark { background: var(--gold); }
+.mark--no { width: 15px; height: 1px; border-radius: 0; background: var(--line-2); }
+
+/* Text variant, for comparing three things across several attributes rather
+   than marking a grid. Same table, same hairlines, left-aligned cells. */
+.matrix--text .disc { text-align: left; width: 26%; }
+.matrix--text thead th { padding-bottom: 1.1rem; }
+.matrix--text tbody th {
+  width: 22%; color: var(--fg-4);
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--track-cap-sm); line-height: 1.4;
+  padding-top: 1.15rem;
+}
+.matrix--text tbody td {
+  font-size: var(--body-sm); line-height: 1.5; color: var(--fg-2);
+  padding-top: 1.15rem;
+}
+.disc-name a { color: inherit; transition: color var(--dur-fast) var(--ease); }
+.disc-name a:hover { color: var(--gold); }
+.band--bone .disc-name a:hover, .band--tint .disc-name a:hover,
+.band--paper .disc-name a:hover { color: var(--gold-ink); }
+
+.track-all { margin-top: clamp(1.4rem, 2.4vw, 2rem); display: inline-flex; }
+
+.matrix-note {
+  margin-top: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-size: var(--body); line-height: var(--body-lh); color: var(--fg-2);
+  max-width: 62ch;
+}
+.matrix-note strong { font-weight: 500; color: var(--fg); }
+
+@media (max-width: 760px) {
+  .matrix th, .matrix td { padding: 0.85rem 0.8rem; }
+  .disc-name { font-size: 1.08rem; }
+}
+
+/* ---------- 7. HEADER OVER A LIGHT BAND ---------- */
+/* The header is fixed with a white logo and light text, so it has to
+   invert whenever a light band is behind it. main.js gets a companion
+   observer in bands.js that toggles .on-light. */
+.site-header.on-light { color: var(--ink-950); }
+.site-header.on-light .brand img { filter: none; }
+.site-header.on-light .nav-link { color: rgba(22, 35, 47, 0.72); }
+.site-header.on-light .nav-link:hover, .site-header.on-light .nav-link[aria-current="page"] { color: var(--ink-950); }
+.site-header.on-light .nav-link::after { background: var(--gold-ink); }
+.site-header.on-light .nav-divider { background: rgba(22, 35, 47, 0.2); }
+.site-header.on-light .burger { color: var(--ink-950); }
+.site-header.on-light .btn--primary { background: var(--ink-950); color: var(--band-bone); }
+.site-header.on-light .btn--primary:hover { background: var(--ink-800); }
+.site-header.on-light::before {
+  background: color-mix(in srgb, var(--hdr-scrim, #f3f2ee) 90%, transparent);
+  border-bottom-color: rgba(22, 35, 47, 0.10);
+}
+
+/* ---------- 8. RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .track-card {
+    flex-basis: min(calc(100vw - var(--edge) - 3.5rem), 620px);
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .track-card-visual { min-height: 190px; order: -1; }
+  .track-arrows { display: none; }  /* swipe is the gesture on touch */
+}
+@media (max-width: 640px) {
+  .track-arrow { width: 42px; height: 42px; }
+  .track-card { padding: 1.5rem; }
+}

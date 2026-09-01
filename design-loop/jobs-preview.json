@@ -1,0 +1,11 @@
+{
+  "outDir": "shots/preview",
+  "width": 1440,
+  "height": 900,
+  "wait": 4200,
+  "jobs": [
+    { "name": "home-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/preview-bands.html", "full": true },
+    { "name": "services-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/preview-bands-services.html", "full": true },
+    { "name": "strategies-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/preview-bands-strategies.html", "full": true }
+  ]
+}

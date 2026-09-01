@@ -10,3 +10,17 @@ Desktop.ini
 # Local scratch
 *.log
 *.tmp
+
+# design-loop working output: rendered screenshots and blind-comparison
+# crops generated while iterating on a design. The deliverables (preview
+# pages, theme CSS/JS) are tracked normally; the methodology (bar.md,
+# progress.html, the rendering scripts) is tracked too. The renders
+# themselves are reproducible from jobs-*.json and are not.
+design-loop/rounds/
+design-loop/shots/
+design-loop/blind/
+design-loop/blind2/
+design-loop/bar/
+design-loop/champion/
+design-loop/work/
+**/.chrome-profile/

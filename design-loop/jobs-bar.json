@@ -1,0 +1,14 @@
+{
+  "outDir": "bar",
+  "width": 1440,
+  "height": 900,
+  "wait": 4000,
+  "jobs": [
+    { "name": "compound-membership-full", "url": "https://compoundplanning.com/membership", "full": true },
+    { "name": "compound-membership", "url": "https://compoundplanning.com/membership", "frames": [0, 0.18, 0.32, 0.46] },
+    { "name": "mercury-full", "url": "https://mercury.com/", "full": true },
+    { "name": "mercury", "url": "https://mercury.com/", "frames": [0, 0.14, 0.26, 0.38, 0.52, 0.68] },
+    { "name": "glassnode-full", "url": "https://glassnode.com/", "full": true },
+    { "name": "glassnode", "url": "https://glassnode.com/", "frames": [0, 0.16, 0.34, 0.52, 0.7, 0.88] }
+  ]
+}

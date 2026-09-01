@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design loop: TM Advisors bands</title>
+<style>
+  :root {
+    --ink: #16232f; --muted: #5c6771; --line: #e3e1db;
+    --bg: #f6f5f1; --card: #fffefb; --pass: #2f6b46; --fail: #a33a2a; --open: #8a6a2f;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  .wrap { max-width: 1080px; margin-inline: auto; }
+  h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 0.3rem; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); margin: 0 0 2.5rem; }
+  h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.12em; margin: 2.5rem 0 1rem; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); }
+  caption { text-align: left; color: var(--muted); padding-bottom: 0.6rem; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  .v { font-weight: 600; font-size: 0.82rem; letter-spacing: 0.04em; white-space: nowrap; }
+  .pass { color: var(--pass); } .fail { color: var(--fail); } .open { color: var(--open); }
+  code { font-family: var(--mono); font-size: 0.86em; background: #ece9e2; padding: 0.1em 0.35em; border-radius: 3px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .stat { flex: 1 1 130px; background: var(--card); padding: 0.9rem 1rem; }
+  .stat b { display: block; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+  .stat span { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
+  ul { margin: 0.4rem 0 0; padding-left: 1.15rem; }
+  li { margin-bottom: 0.3rem; }
+  .note { background: var(--card); border: 1px solid var(--line); padding: 1rem 1.2rem; margin-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Design loop: section colour bands</h1>
+  <p class="sub">TM Advisors, against Bryan's feedback and three observed references. Last updated round 9.</p>
+
+  <div class="stats">
+    <div class="stat"><b>9</b><span>Rounds</span></div>
+    <div class="stat"><b>4</b><span>Pieces</span></div>
+    <div class="stat"><b>1</b><span>Rollbacks</span></div>
+    <div class="stat"><b>2</b><span>Approach changes</span></div>
+    <div class="stat"><b>0</b><span>Blocked</span></div>
+  </div>
+
+  <h2>Pieces</h2>
+  <table>
+    <caption>Verdicts are from three critics with fresh context, judging rendered output only.</caption>
+    <thead>
+      <tr><th>Piece</th><th>Brief</th><th>System</th><th>Craft</th><th>State</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">A. Band rhythm</th>
+        <td class="v pass">PASS</td>
+        <td class="v pass">PASS</td>
+        <td class="v pass">WINS BLIND</td>
+        <td>Beat the reference head to head on a blind A/B: M1 to M3 pass on both, and our card fills re-derive from their band where the reference reuses one fill on a near-black and a white band. M4 failed on both for adding drop shadows; ours are now removed.</td>
+      </tr>
+      <tr>
+        <th scope="row">B. Service track</th>
+        <td class="v pass">PASS</td>
+        <td class="v pass">PASS</td>
+        <td class="v fail">LOST BLIND &rarr; FIXED</td>
+        <td>Won M6 outright, lost M5 (radius 14px against 20 to 24px; card flush to x=0 against a 57px content column) and M7 (footnote indistinguishable from body copy). All three fixed in round 9.</td>
+      </tr>
+      <tr>
+        <th scope="row">C. The TM Advantage</th>
+        <td class="v pass">PASS</td>
+        <td class="v pass">n/a</td>
+        <td class="v pass">n/a</td>
+        <td>Matrix of client situations against disciplines. Passed on re-run: different content, different structure, and it argues a claim rather than decorating one.</td>
+      </tr>
+      <tr>
+        <th scope="row">D. Investment Strategies</th>
+        <td class="v fail">FAIL &rarr; REWORKED</td>
+        <td class="v open">not yet judged</td>
+        <td class="v open">n/a</td>
+        <td>Bands alone were judged cosmetic: "recolored, not rethought". The three-row summary is now a side-by-side comparison across five attributes, so the layers can be compared instead of read in sequence.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Gap ledger</h2>
+  <table>
+    <caption>A gap named twice in a row means the approach is wrong, not the execution.</caption>
+    <thead>
+      <tr><th>Round</th><th>Piece</th><th>Gap named</th><th>Response</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>A</td><td>Team member names invisible on light bands</td><td>Fixed: name and role sit on the portrait, so they keep a light foreground token.</td></tr>
+      <tr><td>2</td><td>C</td><td>Funnel diagram lines missed the labels entirely</td><td>Rebuilt on a shared grid; geometry verified by measurement, not by eye.</td></tr>
+      <tr><td>3</td><td>B</td><td>Ring mark dropped segments; framed marks read as empty placeholders</td><td>Dash-array ring with an explicit <code>pathLength</code>; frames removed.</td></tr>
+      <tr><td>4</td><td>C</td><td><strong>Section is the same four paragraphs, reflowed and decorated</strong></td><td><strong>Approach abandoned.</strong> Diagram plus capability cards replaced by a situations-against-disciplines matrix; the four paragraphs moved to the Services page.</td></tr>
+      <tr><td>4</td><td>A</td><td>M1: the hero is a gradient, not a flat band</td><td>Hero flattened; main.css's gradient and texture passes disabled inside a band.</td></tr>
+      <tr><td>4</td><td>A</td><td>Tint is a second accent hue at full-bleed scale</td><td>Sage replaced by a champagne wash inside the gold family. Sage kept as a one-line swap for comparison.</td></tr>
+      <tr><td>5</td><td>C</td><td>Two-tone headline's bold line read as the opposite of the point</td><td>Rephrased so the full-contrast line carries the argument alone.</td></tr>
+      <tr><td>7</td><td>D</td><td><strong>Page was recolored, not rethought: no new way in</strong></td><td><strong>Approach changed.</strong> The redundant three-row summary became a five-attribute comparison table; column headings still jump to the detail.</td></tr>
+      <tr><td>7</td><td>B</td><td>Too complex: tabs plus arrows plus counter plus progress bar, where Bryan named two</td><td>Counter and progress bar removed. Tabs and arrows only.</td></tr>
+      <tr><td>7</td><td>B/C</td><td>Two sections labelled "The TM Advantage" across two pages</td><td>Services page relabelled "In-house expertise"; the home matrix keeps the name.</td></tr>
+      <tr><td>7</td><td>B</td><td>The two track instances were titled differently, so they did not read as one block</td><td>Both now use Bryan's own words, "Our Services"; the Services page dropped its competing second heading.</td></tr>
+      <tr><td>9</td><td>B</td><td>M5: card radius measured 10 to 12px against the required 20 to 24px</td><td>Raised to the reference figure, 20px. The 14px compromise satisfied neither scale.</td></tr>
+      <tr><td>9</td><td>B</td><td>M5: card sat flush at x=0 while the tab row defined a 57px content column</td><td><code>scroll-snap-align: start</code> under mandatory snapping was scrolling the rail's leading gutter away. Fixed with <code>scroll-padding-inline-start</code>, and the JS now subtracts the same gutter.</td></tr>
+      <tr><td>9</td><td>B</td><td>M7: the footnote was the same size and colour as the body, so it read as a third paragraph</td><td>Dropped a size and gained a hairline rule above it, which separates structurally rather than by colour alone.</td></tr>
+      <tr><td>9</td><td>A</td><td>M4: resting drop shadows under cards, where separation must come from the value step</td><td>Resting shadows removed; the hairline plus the fill step do the work. Hover lift kept as an affordance.</td></tr>
+      <tr><td>9</td><td>A</td><td>M1: a radial gold wash behind the CTA read as a halo across a flat band</td><td>main.css's <code>.cta-band::before</code> disabled inside a band, same as the hero's gradient.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Fixed this round</h2>
+  <div class="note">
+    <ul>
+      <li><code>--elev-1</code> on the tint band was <code>rgba(22, 47, 30, …)</code>, a digit transposition of the navy ink that produced a green shadow.</li>
+      <li><code>--fg-4</code> measured 3.4 to 3.7:1 on light bands, failing AA for six components built on it. Now 0.66 alpha: 4.97:1 on bone, 4.63:1 on the tint.</li>
+      <li>The paper band was missing from eight gold overrides, so full-strength gold rendered at about 2.3:1 on it.</li>
+      <li>The header scrim was pinned to bone, painting a warm ground over the tint band. It now reads the band behind it.</li>
+      <li>Focus rings on the track buttons were clipped by the scroller's <code>overflow-x</code>.</li>
+      <li>The track claimed <code>role="tablist"</code> while showing all six panels at once. Now a labelled scroll region plus a button group.</li>
+      <li>Arrow buttons used <code>disabled</code>, which dropped the focused element out of the tab order mid-interaction. Now <code>aria-disabled</code>.</li>
+      <li>Card fills matched the band below them, draining the separation out of both.</li>
+      <li>Hard-coded hexes replaced with the ink, line, padding and motion tokens they were duplicating.</li>
+    </ul>
+  </div>
+
+  <h2>Open decisions for Bryan</h2>
+  <div class="note">
+    <ul>
+      <li><strong>The tint band.</strong> Champagne (in the gold family) or sage (a stronger third note, but a second hue). One-line swap in <code>theme-bands.css</code>.</li>
+      <li><strong>Card radius.</strong> The reference boxes are soft; Meridian's cards are 4 to 6px. Currently 14px as a compromise. If approved, main.css's radii should move with it rather than the site carrying two card languages.</li>
+      <li><strong>The matrix content.</strong> The five situations and the discipline mapping are drafted from existing service and bio copy. They are a claim about what the firm does and need sign-off plus a compliance read.</li>
+      <li><strong>The service card footnotes.</strong> Drafted from the team bios. Verify each one is accurate.</li>
+      <li><strong>The card right-hand column.</strong> Currently an abstract mark. The stronger option is the people who own each service, which needs an owner named for NIL and Family Office.</li>
+    </ul>
+  </div>
+
+  <h2>Tooling notes</h2>
+  <div class="note">
+    <ul>
+      <li>The Chrome extension is not connected, so renders go through local Chrome over CDP: <code>shoot.mjs</code>.</li>
+      <li>Full-page captures paint the fixed header at its scroll-zero position, so it appears mid-page and looks like it is clipping content. It is a capture artifact. Judge header overlap from viewport frames only.</li>
+      <li>The first blind crop attempt produced pure white images: a <code>data:</code> page cannot load <code>file://</code> subresources. Blind crops are now captured directly from the live pages with the header hidden.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
