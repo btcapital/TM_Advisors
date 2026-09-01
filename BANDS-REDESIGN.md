@@ -124,7 +124,7 @@ with a hard edge against its neighbours: `--band-deep`, `--band-navy`
 (reuses `--ink-950`), `--band-bone`, `--band-paper`, and `--band-tint`.
 Light bands invert the whole Meridian foreground token set locally
 (`--fg`, `--fg-2` etc.), so every existing component just works on a
-light background with no per-component rewrite — that's the load-bearing
+light background with no per-component rewrite: that's the load-bearing
 trick in `theme-bands.css`.
 
 **"Our Services" (wants to appear on both Home and Services).** One
@@ -132,15 +132,15 @@ component, `.track-*` in `theme-bands.css` plus the track logic in
 `bands.js`: a tab row above a horizontally-snapping rail of wide cards,
 one card at full width with the next visibly clipped at the edge, prev/
 next circular buttons, no fake pagination beyond that (an earlier version
-had a "1 of 6" counter and a progress bar on top of the tabs and arrows —
+had a "1 of 6" counter and a progress bar on top of the tabs and arrows,
 removed for being more machinery than Bryan asked for). Same component
 appears on the home page (navy) and the Services page (bone), and both
-say "Our Services" — Bryan's own words — so they read as one named block.
+say "Our Services", Bryan's own words, so they read as one named block.
 
 **"The TM Advantage" (he wanted something different, didn't know what).**
 The old section was four numbered rows with four paragraphs. The first
 replacement attempt kept those same four paragraphs and just added a
-diagram above them restating the same four items — both the brief and
+diagram above them restating the same four items: both the brief and
 craft critics failed it for that reason (a list twice is still a list).
 It was rebuilt as a matrix: five real client situations (selling a
 business, unwinding a concentrated position, retirement, wealth transfer,
@@ -154,8 +154,8 @@ than being duplicated under the same "TM Advantage" label in two places.
 
 **Investment Strategies (same ask, same uncertainty).** First pass just
 gave each of the three portfolio layers its own band and left everything
-else — same hero, same three-row summary, same three detail sections,
-same wording — untouched. The brief critic called this what it was:
+else (same hero, same three-row summary, same three detail sections,
+same wording) untouched. The brief critic called this what it was:
 "recolored, not rethought," no new way to understand the page. The
 three-row summary (which just repeated the three section headers in
 sequence) became a five-attribute side-by-side comparison table (job to
@@ -164,7 +164,7 @@ reader can compare the layers instead of holding three blocks in their
 head while scrolling past them one at a time. Column headers still link
 down to each layer's detail section.
 
-## Open decisions — need Bryan, not a developer
+## Open decisions: need Bryan, not a developer
 
 These are flagged in the CSS with comments; do not resolve them
 unilaterally if you pick this back up.
@@ -174,12 +174,12 @@ unilaterally if you pick this back up.
    rather than introduce a second brand colour. A sage alternative
    (`#dde5dd`) reads as a stronger "third note" in blind comparison but is
    a genuinely different hue outside the brand. Both values are
-   documented as a comment right above `--band-tint` in `theme-bands.css`
-   — it's a one-line swap either way.
+   documented as a comment right above `--band-tint` in `theme-bands.css`:
+   it's a one-line swap either way.
 2. **Card radius.** Set to 20px, matching the reference sites measured in
    `bar.md`. Every other card in Meridian (`main.css`) uses 4-6px. If this
    whole direction is approved, `main.css`'s radius tokens should move
-   with it — otherwise the site ends up with two card languages.
+   with it, otherwise the site ends up with two card languages.
 3. **The TM Advantage matrix's content.** The five situations and which
    disciplines apply to each are a judgement call assembled from the
    firm's own service and bio copy, not verified facts. Needs Bryan's
@@ -190,10 +190,10 @@ unilaterally if you pick this back up.
    drafted from the team bios already on the site. Verify each is
    accurate before shipping.
 5. **The card's right-hand visual.** Currently an abstract line-art mark
-   per service (no invented dashboards, no fake numbers — see the
+   per service (no invented dashboards, no fake numbers, see the
    craft-critic note on why literal illustration was avoided). The
    stronger option, if the firm wants it, is naming the person who owns
-   each service — this exists for four of six already (Investment, Tax,
+   each service. This exists for four of six already (Investment, Tax,
    M&A, Retirement map to named team members in the bios) but NIL and
    Family Office would need an owner named before that swap is made.
 
@@ -203,7 +203,7 @@ The Accounting Today badge (`assets/img/accounting-today-2026.png`) has a
 solid near-black background baked into the file. On the flattened hero
 band this now reads as a visible dark rectangle rather than sitting
 invisibly on the old gradient. Needs a transparent-background version of
-the artwork from the publisher — same requirement the README already
+the artwork from the publisher, the same requirement the README already
 flagged before this redesign, just newly visible.
 
 ## If this gets approved for production
@@ -215,8 +215,8 @@ Rough shape of the work, not a full plan:
    override) and delete the override file, same pattern the repo already
    uses for retiring `theme-refined.css` etc. once a preview is accepted
    (see README's "Editing notes").
-3. Rename `preview-bands.html` → `index.html` (etc.) or port the markup
-   changes into the existing production files — whichever the person doing
+3. Rename `preview-bands.html` to `index.html` (etc.) or port the markup
+   changes into the existing production files, whichever the person doing
    it prefers, but not both at once.
 4. Every other production page (`contact.html`, `thank-you.html`,
    `404.html`) still uses the old fixed-field look and will look
@@ -231,36 +231,37 @@ Rough shape of the work, not a full plan:
 ## Re-running or extending this
 
 `design-loop/` keeps the reusable tooling, trimmed of the actual renders
-(those are gitignored — regenerate them, don't expect them in the repo):
+(those are gitignored, regenerate them rather than expecting them in the
+repo):
 
-- `shoot.mjs` — headless-Chrome screenshot harness driven over CDP.
+- `shoot.mjs`: headless-Chrome screenshot harness driven over CDP.
   Useful because the Claude-in-Chrome browser extension was not connected
   this session; this drives the machine's local Chrome install instead, no
   npm install required. Takes a `jobs-*.json` config; see
   `jobs-preview.json` for the current pattern (full-page renders of all
   three preview pages) and `jobs-bar.json` for how the three reference
   sites were captured.
-- `probe-geom.mjs` — reports exact pixel geometry (position, size,
+- `probe-geom.mjs`: reports exact pixel geometry (position, size,
   computed style) for CSS selectors on a page. This is what caught the
   service-track alignment bug; eyeballing a screenshot would not have.
-- `find-y.mjs` — finds the absolute document Y of an element by its exact
+- `find-y.mjs`: finds the absolute document Y of an element by its exact
   text content, for aiming a blind-comparison crop at a specific
   component without guessing an offset.
-- `crop.mjs` — crops a screenshot by re-rendering it in Chrome (a `data:`
+- `crop.mjs`: crops a screenshot by re-rendering it in Chrome (a `data:`
   page can't load `file://` images directly, which is why this exists
   rather than a simpler approach).
-- `bar.md` / `bar-mechanisms.md` — the observed standard (M1-M7) this
+- `bar.md` / `bar-mechanisms.md`: the observed standard (M1-M7) this
   round was judged against. Reusable if the same three references get
   revisited, or as a template for teardown-writing on a future round.
-- `progress.html` — the full round-by-round record: every piece's
+- `progress.html`: the full round-by-round record, every piece's
   verdicts, the complete gap ledger, what was fixed each round. Open it in
   a browser.
 
 None of `design-loop/rounds/`, `shots/`, `blind*/`, `bar/` (the reference
-screenshots), or `champion/` are committed — they're bulky, fully
+screenshots), or `champion/` are committed. They're bulky, fully
 reproducible from the jobs configs and the live reference URLs, and an
 earlier version of `shoot.mjs` was also accidentally writing full
 headless-Chrome browser profiles (50-150MB each) into every output
 directory. That bug is fixed (profiles now go to the OS temp directory),
 but if you regenerate renders, expect the output directories to still be
-too large for git — that's expected and correct.
+too large for git. That's expected and correct.
