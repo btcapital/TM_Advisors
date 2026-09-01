@@ -1,24 +1,33 @@
 # The "Bands" redesign: context for future sessions
 
-Status as of 2026-09-01: **three preview pages, not yet in production.**
-`index.html`, `services.html` and `investment-strategies.html` are
-untouched. Nothing here has been folded into `main.css`. This document
-exists so a future session (or a future you) can pick this up without
-replaying the whole conversation.
+Status as of 2026-09-01: **live in production**, promoted from preview the
+same day it was built. `index.html`, `services.html` and
+`investment-strategies.html` now carry this design. **This happened before
+Bryan signed off on the 5 open decisions in this document** (the brand
+owner asked to see it live rather than wait), so anyone picking this up
+should treat those 5 items as still unresolved, not merely nice-to-haves.
+This document exists so a future session (or a future you) can pick this
+up without replaying the whole conversation.
 
 ## Where things are
 
 ```
-preview-bands.html               Home
-preview-bands-services.html      Services
-preview-bands-strategies.html    Investment Strategies
+index.html                       Home. Was preview-bands.html.
+services.html                    Was preview-bands-services.html.
+investment-strategies.html       Was preview-bands-strategies.html.
 assets/css/theme-bands.css       The redesign, as a layered override on main.css
 assets/js/bands.js               Behaviour for the service track + header inversion
 design-loop/                     The methodology and tooling used to build this
 ```
 
-Open `preview-bands.html` directly in a browser. No build step, no server.
-The three preview pages link to each other and to the real `contact.html`.
+The three preview files (`preview-bands*.html`) no longer exist: their
+`<body>` content was ported into the production files above, keeping each
+production file's original `<head>` (canonical URL, Open Graph tags,
+JSON-LD, the session-based intro-curtain gate) untouched. `theme-bands.css`
+and `bands.js` are loaded via `<link>`/`<script>` after `main.css`/
+`main.js`, exactly like the repo's other `theme-*.css` previews, they were
+never folded into `main.css` itself. See "If this gets approved for
+production" below for why that's still a reasonable follow-up, not a bug.
 
 ## Why this exists
 
@@ -206,27 +215,37 @@ invisibly on the old gradient. Needs a transparent-background version of
 the artwork from the publisher, the same requirement the README already
 flagged before this redesign, just newly visible.
 
-## If this gets approved for production
+## Cleanup still worth doing
 
-Rough shape of the work, not a full plan:
+This shipped fast, at the request of the site owner, ahead of Bryan's
+sign-off. What's left, roughly in order:
 
-1. Resolve the five open decisions above with Bryan first.
+1. **Get Bryan's answers on the 5 open decisions above.** This is live
+   with unresolved judgement calls in it (a matrix of claims about the
+   firm's own capabilities, drafted footnotes attributed to specific team
+   members, an unapproved accent colour). Treat this as the priority, not
+   the polish items below.
 2. Fold `theme-bands.css` into `main.css` as real rules (not a loaded-after
    override) and delete the override file, same pattern the repo already
    uses for retiring `theme-refined.css` etc. once a preview is accepted
-   (see README's "Editing notes").
-3. Rename `preview-bands.html` to `index.html` (etc.) or port the markup
-   changes into the existing production files, whichever the person doing
-   it prefers, but not both at once.
-4. Every other production page (`contact.html`, `thank-you.html`,
+   (see README's "Editing notes"). Not done. The two files are simply
+   both linked from the production `<head>`, in the same layered pattern
+   the repo already uses for its other `theme-*.css` previews. This is
+   functionally fine (browsers load and apply both stylesheets in order,
+   same result either way) but leaves the redesign correctly described as
+   "still a preview architecturally," just deployed.
+3. Every other production page (`contact.html`, `thank-you.html`,
    `404.html`) still uses the old fixed-field look and will look
    inconsistent next to the new bands. They weren't in scope for this
    round (Bryan named home, Services, and Investment Strategies only) but
-   will need the same treatment or the site will feel unfinished.
-5. Bump the `?v=` cache-busting query on `main.css` and `main.js` per the
-   README's existing rule.
-6. Fix the Accounting Today badge asset (above) before or alongside this
-   ship, since the redesign is what exposes the problem.
+   will need the same treatment or the site will feel unfinished, and
+   right now that inconsistency is live, not hypothetical.
+4. Fix the Accounting Today badge asset (above). The flattened hero now
+   shows this defect to every visitor, not just to reviewers.
+5. Bump the `?v=` cache-busting query on `main.css`/`main.js` the next
+   time either changes, per the README's existing rule (`theme-bands.css`
+   and `bands.js` already carry their own `?v=1`, bump those instead when
+   only they change).
 
 ## Re-running or extending this
 

@@ -1,0 +1,11 @@
+{
+  "outDir": "shots/sanity",
+  "width": 1440,
+  "height": 900,
+  "wait": 3000,
+  "jobs": [
+    { "name": "home-hero", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/index.html", "prescroll": false },
+    { "name": "services-hero", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/services.html", "prescroll": false },
+    { "name": "strategies-hero", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/investment-strategies.html", "prescroll": false }
+  ]
+}

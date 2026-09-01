@@ -1,0 +1,13 @@
+{
+  "outDir": "shots/promoted",
+  "width": 1440,
+  "height": 900,
+  "wait": 4200,
+  "jobs": [
+    { "name": "home-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/index.html", "full": true },
+    { "name": "home-hero", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/index.html" },
+    { "name": "services-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/services.html", "full": true },
+    { "name": "strategies-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/investment-strategies.html", "full": true },
+    { "name": "contact-full", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/contact.html", "full": true }
+  ]
+}
