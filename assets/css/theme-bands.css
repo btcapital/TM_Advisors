@@ -237,6 +237,7 @@ body { background: var(--band-navy); }
    and tabs just call scrollTo. */
 .track-bleed {
   --edge: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+  --card-w: min(calc(100vw - var(--edge) - 11rem), 1180px);
   margin-top: clamp(1.8rem, 3vw, 2.6rem);
   overflow-x: auto;
   overflow-y: hidden;
@@ -252,13 +253,29 @@ body { background: var(--band-navy); }
 .track-rail {
   display: flex;
   gap: var(--track-gap);
-  padding-inline: var(--edge);
+  padding-inline-start: var(--edge);
   align-items: stretch;
+}
+/* A trailing SPACER, not trailing padding. The last card has to be able to
+   scroll to the same left gutter as every other card, and Chrome leaves a
+   flex container's end padding out of the scrollable overflow area, so
+   padding there buys no scroll travel at all: the sixth card parked
+   wherever the scroll limit happened to leave it, framed differently from
+   the other five. A pseudo-element is a real flex item and does count.
+   Width = whatever is left once one card and one gap are accounted for,
+   floored at a gutter so the card never touches the edge on narrow screens.
+   Note the percentage: flex-basis resolves against the flex container's
+   CONTENT box, which already excludes the start gutter, so --edge must not
+   be subtracted here as well. Doing so left the last card exactly one
+   gutter short of the others. */
+.track-rail::after {
+  content: "";
+  flex: 0 0 max(var(--edge), calc(100% - var(--card-w) - var(--track-gap)));
 }
 /* One card holds the content width; the next is clipped by the window
    edge so the track visibly continues. */
 .track-card {
-  flex: 0 0 min(calc(100vw - var(--edge) - 11rem), 1180px);
+  flex: 0 0 var(--card-w);
   scroll-snap-align: start;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
@@ -335,8 +352,8 @@ body { background: var(--band-navy); }
 .band--bone .track-count .bar span, .band--tint .track-count .bar span,
 .band--paper .track-count .bar span { background: var(--gold-ink); }
 
-/* The four disciplines. These live on the Services page now; the home
-   page carries the matrix instead. */
+/* The four disciplines. The Services page is gone, so these now sit on the
+   home page directly below the services track, above the team. */
 .adv-grid {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1rem, 1.8vw, 1.6rem);
@@ -367,84 +384,142 @@ body { background: var(--band-navy); }
   .adv-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ---------- 6c. THE TM ADVANTAGE: THE MATRIX ----------
-   Second approach. The first was a funnel diagram above the firm's four
-   capability paragraphs, and it failed for a reason no tweak would fix: the
-   diagram's four labels restated the four cards underneath it, so the
-   reader got the same list twice and the section was still a list.
+/* ---------- 6c. THE TM ADVANTAGE: BENTO ----------
+   Third approach. The four-paragraph list was replaced by a
+   situations-against-disciplines matrix, which argued the right thing but
+   read as a spreadsheet and put the reader on the defensive. Same argument,
+   bento layout, friendlier framing: one anchor tile carries the claim, and
+   each situation tile shows which disciplines actually engage.
 
-   This is not a list. The argument the section is actually making is that
-   almost nothing a client walks in with needs only one discipline, and that
-   all of those disciplines are in the building. A matrix of situations
-   against disciplines makes that checkable at a glance, and the column
-   credentials are the same ones in the hero's credential strip. The four
-   capability paragraphs move to the Services page, where they belong. */
-.matrix-wrap {
-  margin-top: clamp(2.4rem, 4.5vw, 3.6rem);
-  overflow-x: auto;
+   The four capability paragraphs that used to live here now sit below the
+   services track as their own section, so nothing is duplicated. */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.7rem, 1.1vw, 1rem);
+  margin-top: clamp(2.2rem, 4vw, 3.2rem);
+}
+.bento-tile {
+  display: flex; flex-direction: column;
+  padding: var(--pad-tile-sm);
+  background: var(--tile);
   border: 1px solid var(--line);
   border-radius: var(--card-radius);
-  background: var(--tile);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
-.matrix { width: 100%; border-collapse: collapse; min-width: 720px; }
-.matrix caption { text-align: left; padding: 0 0 1rem; color: var(--fg-3); font-size: var(--body-sm); }
+.bento-tile:hover { border-color: var(--line-2); transform: translateY(-2px); }
+.band--navy .bento-tile, .band--deep .bento-tile { background: var(--ink-850); }
 
-.matrix th, .matrix td { padding: 1rem 1.1rem; text-align: left; vertical-align: middle; }
-.matrix thead th { border-bottom: 1px solid var(--line-2); vertical-align: bottom; }
-.matrix tbody tr + tr th, .matrix tbody tr + tr td { border-top: 1px solid var(--line); }
-.matrix tbody th { font-weight: 400; font-size: var(--body-sm); line-height: 1.4; color: var(--fg); max-width: 34ch; }
-.matrix .disc { text-align: center; width: 15%; }
-
-.disc-name {
-  display: block; font-family: var(--serif); font-weight: 400;
-  font-size: 1.28rem; line-height: 1.15; letter-spacing: -0.01em;
-}
-.disc-cred {
-  display: block; margin-top: 0.42rem;
-  font-size: 0.63rem; font-weight: 600; text-transform: uppercase;
+/* The anchor: two columns wide, two rows tall, so the grid reads as a bento
+   rather than a row of equal cards. */
+.bento-tile--anchor { grid-column: span 2; grid-row: span 2; justify-content: space-between; gap: 1.4rem; }
+.bento-label {
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
   letter-spacing: var(--track-cap-sm); color: var(--gold-ink);
 }
-.band--navy .disc-cred, .band--deep .disc-cred { color: var(--gold); }
-
-/* A dot means the discipline is in play; a rule means it usually is not.
-   Every cell also carries a visually-hidden word, so the table is readable
-   without seeing the marks. */
-.mark { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--gold-ink); }
-.band--navy .mark, .band--deep .mark { background: var(--gold); }
-.mark--no { width: 15px; height: 1px; border-radius: 0; background: var(--line-2); }
-
-/* Text variant, for comparing three things across several attributes rather
-   than marking a grid. Same table, same hairlines, left-aligned cells. */
-.matrix--text .disc { text-align: left; width: 26%; }
-.matrix--text thead th { padding-bottom: 1.1rem; }
-.matrix--text tbody th {
-  width: 22%; color: var(--fg-4);
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: var(--track-cap-sm); line-height: 1.4;
-  padding-top: 1.15rem;
+.band--navy .bento-label, .band--deep .bento-label { color: var(--gold); }
+.bento-tile--anchor h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.9rem, 3vw, 2.7rem); line-height: 1.1; letter-spacing: -0.02em;
+  margin-top: 1rem; max-width: 24ch;
 }
-.matrix--text tbody td {
-  font-size: var(--body-sm); line-height: 1.5; color: var(--fg-2);
-  padding-top: 1.15rem;
-}
-.disc-name a { color: inherit; transition: color var(--dur-fast) var(--ease); }
-.disc-name a:hover { color: var(--gold); }
-.band--bone .disc-name a:hover, .band--tint .disc-name a:hover,
-.band--paper .disc-name a:hover { color: var(--gold-ink); }
-
-.track-all { margin-top: clamp(1.4rem, 2.4vw, 2rem); display: inline-flex; }
-
-.matrix-note {
-  margin-top: clamp(1.6rem, 2.6vw, 2.2rem);
+.bento-tile--anchor p {
   font-size: var(--body); line-height: var(--body-lh); color: var(--fg-2);
-  max-width: 62ch;
+  margin-top: 1rem; max-width: 48ch;
 }
-.matrix-note strong { font-weight: 500; color: var(--fg); }
+.bento-creds { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: auto; padding-top: 1.6rem; }
+.bento-creds li {
+  font-size: 0.84rem; font-weight: 500; letter-spacing: var(--track-cap-lg);
+  text-transform: uppercase; color: var(--fg-3);
+}
 
-@media (max-width: 760px) {
-  .matrix th, .matrix td { padding: 0.85rem 0.8rem; }
-  .disc-name { font-size: 1.08rem; }
+/* Situation tiles. */
+.bento-tile h4 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.28rem, 1.8vw, 1.55rem); line-height: 1.16; letter-spacing: -0.015em;
+  text-wrap: balance;
 }
+.bento-tile:not(.bento-tile--anchor) { justify-content: center; gap: 1.05rem; }
+.bento-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.bento-chips li {
+  font-size: 0.74rem; letter-spacing: 0.04em;
+  padding: 0.3rem 0.62rem;
+  border-radius: 999px;
+  color: var(--fg-3);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+@media (max-width: 860px) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bento-tile--anchor { grid-column: span 2; grid-row: auto; }
+}
+@media (max-width: 560px) {
+  .bento { grid-template-columns: minmax(0, 1fr); }
+  .bento-tile--anchor { grid-column: span 1; }
+}
+
+/* ---------- 6d. STRATEGY LAYERS, REORIENTED ----------
+   The checklist used to sit in the right column, wedged between the
+   narrative and the pull quote, which broke the reading line in two. It
+   moves under the layer title in the left column instead: the title anchors
+   the top, the visual drops in beneath it, and the narrative runs
+   uninterrupted alongside. Columns are equal width, and the boxes are
+   normalised so every layer matches. */
+.band .strategy {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.75rem, 3.2vw, 3.25rem);
+  padding-block: 0;
+  border-top: 0;
+}
+/* Not sticky any more: both columns now carry comparable weight, and a
+   sticky left column against a short right column just drifts. */
+.band .strategy-aside { position: static; top: auto; }
+.band .strategy-aside .cap-grid { margin-top: clamp(1.5rem, 2.4vw, 2rem); }
+/* Equal box heights across all three layers, not just within one. */
+.band .cap-grid li { min-height: 5.25rem; align-items: center; }
+.band .designed-to { margin-top: clamp(1.3rem, 2.1vw, 1.75rem); }
+/* Tighter than the default section rhythm: Bryan flagged too much air
+   above, below and between the layers. */
+.band.section--layer { padding-block: clamp(2.4rem, 4.2vw, 3.6rem); }
+
+@media (max-width: 900px) {
+  .band .strategy { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .band .cap-grid li { min-height: 0; }
+}
+
+/* ---------- 6e. CONTACT PANELS AND FORM ON A LIGHT BAND ----------
+   The form controls hard-code a dark translucent fill and a gold caret,
+   both of which were fine on a single dark field and become a smudge and a
+   2.3:1 icon on a light band. The panel's glass blur goes too: there is
+   nothing behind it to blur on a flat band. */
+.band--bone .panel, .band--tint .panel, .band--paper .panel {
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: none;
+  border-color: var(--line);
+}
+.band--bone .input, .band--bone .textarea,
+.band--tint .input, .band--tint .textarea,
+.band--paper .input, .band--paper .textarea {
+  background-color: #ffffff;
+  border-color: var(--line-2);
+}
+.band--bone .input::placeholder, .band--tint .input::placeholder,
+.band--paper .input::placeholder, .band--bone .textarea::placeholder,
+.band--tint .textarea::placeholder, .band--paper .textarea::placeholder { color: var(--fg-4); }
+.band--bone .panel-label, .band--tint .panel-label, .band--paper .panel-label { color: var(--gold-ink); }
+.band--bone .field .req, .band--tint .field .req, .band--paper .field .req { color: var(--gold-ink); }
+.band--bone .field:focus-within label, .band--tint .field:focus-within label,
+.band--paper .field:focus-within label { color: var(--gold-ink); }
+.band--bone .direct-line .icon, .band--tint .direct-line .icon,
+.band--paper .direct-line .icon { color: var(--gold-ink); }
+.band--bone .direct-line:hover, .band--tint .direct-line:hover,
+.band--paper .direct-line:hover { color: var(--gold-ink); }
+/* Same caret, redrawn in the darker gold so it clears 3:1 as a UI glyph. */
+.band--bone select.input, .band--tint select.input, .band--paper select.input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236f5430' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E");
+}
+.band--bone select.input:invalid, .band--tint select.input:invalid,
+.band--paper select.input:invalid { color: var(--fg-4); }
 
 /* ---------- 7. HEADER OVER A LIGHT BAND ---------- */
 /* The header is fixed with a white logo and light text, so it has to
@@ -466,10 +541,8 @@ body { background: var(--band-navy); }
 
 /* ---------- 8. RESPONSIVE ---------- */
 @media (max-width: 900px) {
-  .track-card {
-    flex-basis: min(calc(100vw - var(--edge) - 3.5rem), 620px);
-    grid-template-columns: minmax(0, 1fr);
-  }
+  .track-bleed { --card-w: min(calc(100vw - var(--edge) - 3.5rem), 620px); }
+  .track-card { grid-template-columns: minmax(0, 1fr); }
   .track-card-visual { min-height: 190px; order: -1; }
   .track-arrows { display: none; }  /* swipe is the gesture on touch */
 }

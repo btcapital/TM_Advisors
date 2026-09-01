@@ -1,8 +1,8 @@
 # The "Bands" redesign: context for future sessions
 
 Status as of 2026-09-01: **live in production**, promoted from preview the
-same day it was built. `index.html`, `services.html` and
-`investment-strategies.html` now carry this design. **This happened before
+same day it was built, then revised once against a live-demo review with
+Bryan (see "Round 2" below). Every page now carries this design. **This happened before
 Bryan signed off on the 5 open decisions in this document** (the brand
 owner asked to see it live rather than wait), so anyone picking this up
 should treat those 5 items as still unresolved, not merely nice-to-haves.
@@ -12,13 +12,22 @@ up without replaying the whole conversation.
 ## Where things are
 
 ```
-index.html                       Home. Was preview-bands.html.
-services.html                    Was preview-bands-services.html.
-investment-strategies.html       Was preview-bands-strategies.html.
+index.html                       Home. Carries services + team as anchors.
+investment-strategies.html       The three portfolio layers.
+contact.html                     Form. Banded as of round 2.
+thank-you.html / 404.html        Banded as of round 2.
 assets/css/theme-bands.css       The redesign, as a layered override on main.css
 assets/js/bands.js               Behaviour for the service track + header inversion
 design-loop/                     The methodology and tooling used to build this
 ```
+
+**There is no `services.html`.** It was deleted in round 2: it repeated the
+same service track the home page already carried, so everything moved to the
+home page and `Services` in the nav is now an in-page anchor
+(`index.html#services`), matching how `Team` already behaved. Nav order is
+Home, Services, Team, Investment Strategies. If you are looking for the
+four capability paragraphs that used to live on that page, they are now a
+section on the home page directly below the services track.
 
 The three preview files (`preview-bands*.html`) no longer exist: their
 `<body>` content was ported into the production files above, keeping each
@@ -136,7 +145,9 @@ Light bands invert the whole Meridian foreground token set locally
 light background with no per-component rewrite: that's the load-bearing
 trick in `theme-bands.css`.
 
-**"Our Services" (wants to appear on both Home and Services).** One
+**"Our Services".** Originally asked for on both the home page and the
+Services page; round 2 deleted the Services page, so this now appears once,
+on the home page, reached by the `Services` nav anchor. One
 component, `.track-*` in `theme-bands.css` plus the track logic in
 `bands.js`: a tab row above a horizontally-snapping rail of wide cards,
 one card at full width with the next visibly clipped at the edge, prev/
@@ -189,11 +200,12 @@ unilaterally if you pick this back up.
    `bar.md`. Every other card in Meridian (`main.css`) uses 4-6px. If this
    whole direction is approved, `main.css`'s radius tokens should move
    with it, otherwise the site ends up with two card languages.
-3. **The TM Advantage matrix's content.** The five situations and which
-   disciplines apply to each are a judgement call assembled from the
-   firm's own service and bio copy, not verified facts. Needs Bryan's
-   sign-off and, given this is a registered investment adviser, probably
-   a compliance read before it ships.
+3. **The TM Advantage bento's content.** The five situation tiles and
+   which disciplines are shown as engaging on each are a judgement call
+   assembled from the firm's own service and bio copy, not verified
+   facts. Same for the anchor tile's claim that "the people who plan it
+   are the people who file it". Needs Bryan's sign-off and, given this is
+   a registered investment adviser, probably a compliance read.
 4. **The service card footnotes** ("Portfolios are constructed and
    monitored in-house by our Chief Investment Officer..." etc.) are
    drafted from the team bios already on the site. Verify each is
@@ -206,6 +218,33 @@ unilaterally if you pick this back up.
    M&A, Retirement map to named team members in the bios) but NIL and
    Family Office would need an owner named before that swap is made.
 
+### Carried in from Bryan's round 2 review, still unresolved
+
+6. **"Rework the team manage session."** The transcript is unclear on
+   whether this means the Meet the Team section, a management-specific
+   subsection, or wealth-management copy. The feedback doc flags it as
+   needing a follow-up with Bryan before any build. Nothing was changed
+   here: Meet the Team is on the confirmed-keeps list, so it was left
+   exactly as it was.
+7. **Flint.** A possible palette move to Flint, pending Brandon
+   confirming with John. The current palette is deliberately held until
+   that lands. Note this interacts with open decision 1: settle Flint
+   before spending time on champagne vs sage, or the tint decision gets
+   made twice.
+8. **Four explanation boxes against six services.** The relocated
+   in-house expertise block explains four disciplines while the track
+   above it carries six services. They were moved across as-is, per the
+   instruction, but whether the four should be expanded to map to all six
+   is still an open question for Bryan.
+9. **A venture/infrastructure inconsistency, introduced by the fix.** The
+   portfolio architecture table now ends its Alternative Investments list
+   with "infrastructure" as instructed, but the Alternative Investments
+   layer further down the same page still lists "Private equity &
+   venture capital access" in its checklist. The instruction was
+   explicitly "one content change", so the checklist was left alone
+   rather than silently editing a second service claim. If venture is
+   genuinely out of the offering, that line needs to change too.
+
 ## Known asset gap
 
 The Accounting Today badge (`assets/img/accounting-today-2026.png`) has a
@@ -214,6 +253,40 @@ band this now reads as a visible dark rectangle rather than sitting
 invisibly on the old gradient. Needs a transparent-background version of
 the artwork from the publisher, the same requirement the README already
 flagged before this redesign, just newly visible.
+
+## Round 2: the in-room demo review
+
+Source: `TM_Advisors_Website_Feedback_9-1-26.md` (Brandon's OneDrive, under
+Engagements/Websites/TM Advisors), organised from a Teams transcript of a
+live walkthrough with Bryan. What changed as a result:
+
+| Feedback | What was done |
+|---|---|
+| Services page "regurgitates the same slideshow", delete it | `services.html` removed. Its four capability paragraphs moved to the home page below the services track. Nav reordered to Home, Services, Team, with Services as an in-page anchor. |
+| Last slideshow card does not land like the first | Fixed, and verified at 12 viewport widths from 390 to 1920px. See the flex gotcha below. |
+| TM Advantage: dislikes it, wants a bento, copy too aggressive | Matrix replaced with a bento (one 2x2 anchor tile plus five situation tiles). Headline softened from "Most of what you bring us needs more than one discipline" to "One conversation, every discipline at the table." |
+| Strategies layer boxes wedged between quote and narrative | Checklist moved under the layer title in the left column; equal-width columns; boxes normalised to a common height; vertical rhythm tightened. The page is 766px shorter. |
+| Asset class list should end in infrastructure, not venture | Changed in the portfolio architecture table. |
+| Contact page still on the old look | Banded (navy hero, bone form band, deep footer). `thank-you.html` and `404.html` were done at the same time so nothing is left on the old treatment. |
+| Colour system, Meet the Team, portfolio architecture block | Confirmed keeps. Untouched. |
+
+**A third scroll-snap gotcha, worth knowing before touching the track
+again.** Making the last card land at the same gutter as the first needs
+extra scroll travel past it, and two obvious ways to get that both fail:
+
+1. `padding-inline-end` on the rail is applied to the box but **Chrome
+   leaves a flex container's end padding out of the scrollable overflow
+   area**, so it buys no travel. Measured: the padding computed to 181px and
+   `scrollWidth` did not move.
+2. A trailing pseudo-element spacer does work, but `flex-basis` percentages
+   resolve against the flex container's **content** box, which already
+   excludes the start gutter. Subtracting `--edge` in that calc as well left
+   the last card exactly one gutter short at every width.
+
+The working version is `.track-rail::after` with
+`flex: 0 0 max(var(--edge), calc(100% - var(--card-w) - var(--track-gap)))`.
+The invariant to test is `scrollWidth - clientWidth === lastCardOffset -
+scrollPaddingInlineStart`. Check that rather than eyeballing a screenshot.
 
 ## Cleanup still worth doing
 

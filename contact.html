@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="assets/css/main.css?v=25">
+<link rel="stylesheet" href="assets/css/theme-bands.css?v=1">
 <!-- Runs before first paint. If scripting is off it never runs, the class stays,
      and the html.no-js floor in main.css keeps gated entrances visible. -->
 <script>document.documentElement.classList.remove("no-js");</script>
@@ -43,9 +44,6 @@
   </defs>
 </svg>
 
-<div class="bg-field" aria-hidden="true"></div>
-<canvas id="contour" aria-hidden="true"></canvas>
-
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="index.html" aria-label="TM Advisors home">
@@ -53,8 +51,8 @@
     </a>
     <nav class="nav" aria-label="Primary">
       <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="index.html#services">Services</a>
       <a class="nav-link" href="index.html#team">Team</a>
-      <a class="nav-link" href="services.html">Services</a>
       <a class="nav-link" href="investment-strategies.html">Investment Strategies</a>
       <span class="nav-divider" aria-hidden="true"></span>
       <div class="dropdown" data-open="false">
@@ -78,7 +76,7 @@
 
 <main id="main">
 
-  <section class="page-hero">
+  <section class="page-hero band band--navy">
     <div class="shell">
       <span class="eyebrow">Get in Touch</span>
       <h1 class="display">Start the <span class="gold-text">conversation.</span></h1>
@@ -89,7 +87,7 @@
     </div>
   </section>
 
-  <section class="section section--intro">
+  <section class="section band band--bone">
     <div class="shell">
       <div class="contact-layout">
 
@@ -182,7 +180,7 @@
 
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer band band--deep">
   <div class="shell">
     <div class="footer-top">
       <img class="footer-logo" src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120" loading="lazy">
@@ -215,7 +213,7 @@
     <div class="footer-bottom">
       <p>&copy; <span id="year">2026</span> TM Advisors, LLC. All rights reserved.</p>
       <nav aria-label="Footer">
-        <a href="services.html">Services</a>
+        <a href="index.html#services">Services</a>
         <a href="investment-strategies.html">Investment Strategies</a>
         <a href="contact.html">Contact</a>
       </nav>
@@ -227,8 +225,8 @@
   <button class="drawer-close" aria-label="Close menu"><svg class="icon" aria-hidden="true" style="width:26px;height:26px"><use href="#i-close"/></svg></button>
   <nav class="drawer-nav" aria-label="Mobile">
     <a href="index.html" style="--i:0">Home</a>
-    <a href="index.html#team" style="--i:1">Team</a>
-    <a href="services.html" style="--i:2">Services</a>
+    <a href="index.html#services" style="--i:1">Services</a>
+    <a href="index.html#team" style="--i:2">Team</a>
     <a href="investment-strategies.html" style="--i:3">Investment Strategies</a>
     <span class="drawer-group">Client Portals</span>
     <a class="drawer-sub" style="--i:4" href="https://client.schwab.com/Areas/Access/Login" target="_blank" rel="noopener noreferrer">Schwab Login <svg class="icon" aria-hidden="true"><use href="#i-arrow-ne"/></svg></a>
@@ -238,5 +236,6 @@
 </div>
 
 <script src="assets/js/main.js?v=25" defer></script>
+<script src="assets/js/bands.js?v=1" defer></script>
 </body>
 </html>
