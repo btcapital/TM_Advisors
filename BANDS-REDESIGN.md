@@ -1,13 +1,14 @@
 # The "Bands" redesign: context for future sessions
 
 Status as of 2026-09-01: **live in production**, promoted from preview the
-same day it was built, then revised once against a live-demo review with
-Bryan (see "Round 2" below). Every page now carries this design. **This happened before
-Bryan signed off on the 5 open decisions in this document** (the brand
-owner asked to see it live rather than wait), so anyone picking this up
-should treat those 5 items as still unresolved, not merely nice-to-haves.
-This document exists so a future session (or a future you) can pick this
-up without replaying the whole conversation.
+same day it was built, then revised against a live-demo review with Bryan
+(round 2) and de-slopped for AI writing patterns (round 3). Every page now
+carries this design. **This happened before Bryan signed off on the open
+decisions in this document** (the brand owner asked to see it live rather
+than wait), so anyone picking this up should treat those items as still
+unresolved, not merely nice-to-haves. This document exists so a future
+session (or a future you) can pick this up without replaying the whole
+conversation.
 
 ## Where things are
 
@@ -236,14 +237,29 @@ unilaterally if you pick this back up.
    above it carries six services. They were moved across as-is, per the
    instruction, but whether the four should be expanded to map to all six
    is still an open question for Bryan.
-9. **A venture/infrastructure inconsistency, introduced by the fix.** The
-   portfolio architecture table now ends its Alternative Investments list
-   with "infrastructure" as instructed, but the Alternative Investments
-   layer further down the same page still lists "Private equity &
-   venture capital access" in its checklist. The instruction was
-   explicitly "one content change", so the checklist was left alone
-   rather than silently editing a second service claim. If venture is
-   genuinely out of the offering, that line needs to change too.
+9. ~~A venture/infrastructure inconsistency, introduced by the fix.~~
+   **Resolved.** Brandon confirmed venture is not part of the offering, so
+   the Alternative Investments checklist now reads "Private equity &
+   infrastructure access" too, matching the table above it. No venture
+   reference remains anywhere on the site (grepped to confirm).
+
+### Closed without action, on the brand owner's explicit call
+
+10. **Bryan's bio is short (53 words, the shortest of the nine) after the
+    round 3 de-slop**, because his original had the least factual content
+    and the most generic praise per word. Brandon's call: not our problem
+    right now, Bryan can lengthen it himself later if he wants to. Do not
+    pad it back out to fix the optics; wait for him to bring it up.
+11. **The site's repeated templates** (six service cards with an identical
+    header/summary/four-bullets/kicker shape, three portfolio layers each
+    with four bullets and a "DESIGNED TO" line, coordinate lists that land
+    on exactly three items in several places) were flagged by the round 3
+    verification pass as the strongest remaining sign the copy was
+    machine-assisted. Brandon's call: leave it. This structure is the
+    Compound-style design Bryan asked for in the original feedback, not an
+    AI-writing defect, and restructuring it is a design decision that
+    belongs to Bryan, not something to fix silently under a copy-editing
+    pass.
 
 ## Known asset gap
 
@@ -287,6 +303,55 @@ The working version is `.track-rail::after` with
 `flex: 0 0 max(var(--edge), calc(100% - var(--card-w) - var(--track-gap)))`.
 The invariant to test is `scrollWidth - clientWidth === lastCardOffset -
 scrollPaddingInlineStart`. Check that rather than eyeballing a screenshot.
+
+## Round 3: de-slopping the copy
+
+Source: a skill called `humanize`
+(`C:\Users\Brandon\OneDrive - Taylor Capital\Shared - Documents\Claude\claude-skills\humanize-skill.zip`,
+outside this repo). It detects AI writing patterns (Wikipedia's "Signs of
+AI writing" categories: significance inflation, promotional language,
+copula avoidance, rule-of-three overuse, filler, hedging, and 19 others)
+and rewrites against Strunk & White composition principles. Process used:
+
+1. Extracted every page's visible text plus the nine team bios (they only
+   surface inside the profile dialog, so a static crawl misses them) with
+   `design-loop/extract-copy.mjs`.
+2. A fresh-context agent scanned the extraction against the full pattern
+   catalog and returned hits with quotes and severity, no rewriting.
+   68 hits, about 50 of them in the bios.
+3. Rewrote against the hit list. Full scope covered: the marketing copy
+   written during rounds 1 to 2 (bento tiles, service card footnotes,
+   headlines, the strategies comparison table) plus all nine pre-existing
+   team bios. Explicitly out of scope: legal disclosure and regulatory
+   boilerplate, left untouched throughout.
+4. Re-extracted and re-scanned the result with a second fresh-context
+   agent. 44 hits remained, three of them genuine defects (below); the
+   rest were the structural pattern closed as item 11 above.
+
+**One constraint that mattered more than any single pattern fix:**
+hedged phrasing attached to performance or outcomes ("designed to",
+"intended to", "seeking", "seeks to", "historically shown") was
+deliberately preserved everywhere, even though the pattern catalog flags
+this kind of hedging for removal. For a registered investment adviser that
+language is doing real regulatory work; turning "designed to capture broad
+market returns" into "captures broad market returns" would turn a hedged
+statement into a performance claim. **If you run humanize (or anything
+like it) on this site again, preserve that hedging class explicitly, or
+brief whoever's rewriting to do the same.** It is exactly the kind of
+phrasing a generic de-slop pass is built to strip.
+
+The nine bios shrank from 1,423 words to 842, a 41% cut. Every number and
+proper noun was diffed against the pre-rewrite version to confirm nothing
+was lost or invented; the diff came back clean.
+
+Three real defects the verification pass caught, all fixed in the same
+round: eight curly apostrophes that survived only inside the bios (every
+other page uses straight ones, which marked the bios as pasted from a
+different source); a footnote that restated its own subject ("A Director
+of Compliance oversees compliance and client service"), replaced with the
+actual fact that one person, Tracey Pannell, holds both roles; and a
+duplicated "from the first conversation to X" construction appearing twice
+within two sections of each other.
 
 ## Cleanup still worth doing
 
@@ -348,6 +413,11 @@ repo):
 - `progress.html`: the full round-by-round record, every piece's
   verdicts, the complete gap ledger, what was fixed each round. Open it in
   a browser.
+- `extract-copy.mjs`: dumps every page's visible text plus the nine team
+  bios (they only render inside the profile dialog, so a plain HTML read
+  misses them) to `site-copy.txt`. Built for the round 3 pattern scan;
+  rerun it any time you need a plain-text snapshot of what a visitor
+  actually reads, across all five pages, in one file.
 
 None of `design-loop/rounds/`, `shots/`, `blind*/`, `bar/` (the reference
 screenshots), or `champion/` are committed. They're bulky, fully
@@ -356,4 +426,6 @@ earlier version of `shoot.mjs` was also accidentally writing full
 headless-Chrome browser profiles (50-150MB each) into every output
 directory. That bug is fixed (profiles now go to the OS temp directory),
 but if you regenerate renders, expect the output directories to still be
-too large for git. That's expected and correct.
+too large for git. That's expected and correct. `site-copy.txt` (and any
+`site-copy-*.txt` variant) is the same story: reproducible in one command,
+so it is gitignored rather than committed and left to go stale.
