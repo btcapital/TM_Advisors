@@ -6,16 +6,18 @@ HTML/CSS/JS so it can be dropped straight onto GitHub Pages.
 ## Structure
 
 ```
-index.html                  Home
-services.html               Six service disciplines
+index.html                  Home. Services and Team are anchors on this page.
 investment-strategies.html  Portfolio architecture (3 layers + process)
 contact.html                Contact form + offices
 thank-you.html              Form success landing (form _next target)
 404.html                    Served automatically by GitHub Pages
-assets/css/main.css         The entire design system, one file
+assets/css/main.css         The base design system
+assets/css/theme-bands.css  The "Bands" redesign, layered over main.css
 assets/js/main.js           All behaviour, one file, ~7KB, zero libraries
+assets/js/bands.js          Service track + header inversion for the bands
 assets/img/team/*.jpg       Portraits, 720x900, ~68KB each
 tools/optimize-images.ps1   Re-run when new portraits are added
+BANDS-REDESIGN.md           Why the site looks the way it does. Read this first.
 ```
 
 ## House rule: no em dashes
@@ -89,10 +91,12 @@ every deploy** or returning visitors will keep the old stylesheet.
   `<div id="bio-src-{key}">` per person. They sit in the HTML (rather than a JS
   object) so search engines index them. The key must match the `data-member`
   attribute on that person's `.member-trigger` button.
-- **Header and footer are duplicated** across the five pages. That is the cost of
+- **Header and footer are duplicated** across every page. That is the cost of
   having no build step. If editing them in five places becomes annoying, the fix is
   a static site generator (Eleventy is the lightest option), not JS includes, which
   would hurt SEO and cause layout shift.
+- **There is no services.html.** Services live on the home page and the nav
+  links to `index.html#services`. See `BANDS-REDESIGN.md`.
 
 ## Adding or replacing portraits
 

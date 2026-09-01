@@ -1,0 +1,9 @@
+{
+  "outDir": "shots/verify",
+  "width": 1440,
+  "height": 900,
+  "wait": 3200,
+  "jobs": [
+    { "name": "alts-layer", "url": "file:///C:/Users/Brandon/dev/TM_Advisors/investment-strategies.html", "atY": 2450, "prescroll": false }
+  ]
+}
