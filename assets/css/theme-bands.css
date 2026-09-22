@@ -498,9 +498,17 @@ body { background: var(--band-navy); }
   margin-top: clamp(1.8rem, 3vw, 2.6rem);
 }
 .in-practice-label {
-  font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
   letter-spacing: var(--track-cap-sm); color: var(--gold-ink);
   flex: none;
+}
+/* Sized up on Bryan's round 5 note. Scoped to .in-practice rather than
+   changing .bento-chips, which is shared. */
+.in-practice .bento-chips { gap: 0.5rem; }
+.in-practice .bento-chips li {
+  font-size: 0.87rem;
+  padding: 0.44rem 0.85rem;
+  color: var(--fg-2);
 }
 
 @media (max-width: 860px) {
@@ -509,12 +517,15 @@ body { background: var(--band-navy); }
 }
 
 /* ---------- 6d. STRATEGY LAYERS, REORIENTED ----------
-   The checklist used to sit in the right column, wedged between the
-   narrative and the pull quote, which broke the reading line in two. It
-   moves under the layer title in the left column instead: the title anchors
-   the top, the visual drops in beneath it, and the narrative runs
-   uninterrupted alongside. Columns are equal width, and the boxes are
-   normalised so every layer matches. */
+   Round 5. The four-box checklist under each layer title is gone on Bryan's
+   note, and the How you benefit pull quote took its place in the left
+   column. The left column now reads title, role, benefit; the right column
+   reads how it works, narrative, detail list. Two columns, one idea each.
+
+   The .cap-grid rules in main.css are left alone. Nothing uses them now,
+   but round 2 deleted a table's styles while its markup was still on
+   another page and it shipped unstyled, so unused rules stay until someone
+   is sure. */
 .band .strategy {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.75rem, 3.2vw, 3.25rem);
@@ -524,17 +535,16 @@ body { background: var(--band-navy); }
 /* Not sticky any more: both columns now carry comparable weight, and a
    sticky left column against a short right column just drifts. */
 .band .strategy-aside { position: static; top: auto; }
-.band .strategy-aside .cap-grid { margin-top: clamp(1.5rem, 2.4vw, 2rem); }
-/* Equal box heights across all three layers, not just within one. */
-.band .cap-grid li { min-height: 5.25rem; align-items: center; }
 .band .designed-to { margin-top: clamp(1.3rem, 2.1vw, 1.75rem); }
+/* In the aside it needs to clear the role label rather than a paragraph. */
+.band .strategy-aside .designed-to { margin-top: clamp(1.8rem, 3vw, 2.6rem); }
 /* Tighter than the default section rhythm: Bryan flagged too much air
    above, below and between the layers. */
 .band.section--layer { padding-block: clamp(2.4rem, 4.2vw, 3.6rem); }
 
 @media (max-width: 900px) {
   .band .strategy { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-  .band .cap-grid li { min-height: 0; }
+  .band .strategy-aside .designed-to { margin-top: 1.4rem; }
 }
 
 /* ---------- 6e. CONTACT PANELS AND FORM ON A LIGHT BAND ----------
