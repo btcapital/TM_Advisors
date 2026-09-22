@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="assets/css/main.css?v=25">
-<link rel="stylesheet" href="assets/css/theme-bands.css?v=2">
+<link rel="stylesheet" href="assets/css/theme-bands.css?v=3">
 <!-- Runs before first paint. If scripting is off it never runs, the class stays,
      and the html.no-js floor in main.css keeps gated entrances visible. -->
 <script>document.documentElement.classList.remove("no-js");</script>
@@ -80,9 +80,14 @@
 
 <main id="main">
 
-  <!-- ===== BAND 1 / navy: PAGE HERO + THE LAYER INDEX =====
+  <!-- ===== BAND 1 / navy: PAGE HERO =====
        The page's whole idea: you are about to scroll down through a
-       portfolio, one layer per band. The index doubles as a jump list. -->
+       portfolio, one layer per band.
+
+       Round 4: the comparison table that sat here moved down to band 6. It
+       was asking the reader to compare three layers they had not met yet,
+       and it pushed Our Approach below the fold. Below the layers it reads
+       as a recap, which is the job it is actually good at. -->
   <section class="page-hero band band--navy">
     <div class="shell">
       <span class="eyebrow">Investment Philosophy</span>
@@ -92,17 +97,180 @@
         position. From there we build in three layers, each with a distinct job to do. Together they
         form a single architecture designed to navigate volatility and pursue long-term growth.
       </p>
-      <!-- Replaces the three-row summary that used to sit here. That summary
-           said the same thing as the three detail sections below it, in the
-           same sequential shape, so the page gave a reader no way to compare
-           the layers: you had to read three near-identical blocks and hold
-           them in your head. Side by side, the differences are the point.
-           Every value here comes from the detail copy further down the page
-           or from the disclosure at the bottom. Column headings jump to the
-           detail, so this keeps the old summary's navigation job too.
+    </div>
+  </section>
 
-           DRAFT: the row set is a judgement about which four attributes
-           matter most. Needs Bryan's sign-off and a compliance read. -->
+  <!-- ===== BAND 2 / paper: OUR APPROACH =====
+       Round 4. Restored from the live tmadvisors.com page, which opens with
+       these three and which Bryan prefers. This page had no positioning at
+       all: it went straight from the title into portfolio construction, so a
+       reader got the architecture before any reason to care about it.
+
+       Copy is the live page's, with two changes flagged for the compliance
+       read. "free from conflicts of interest" became a statement about
+       independence and proprietary products, because an SEC-registered
+       adviser discloses conflicts in Part 2A and cannot claim to have none.
+       "we'll create a strategy designed to get you there" lost the promise
+       of arrival. -->
+  <section class="section band band--paper" id="approach">
+    <div class="shell">
+      <header class="section-head section-head--center reveal">
+        <span class="eyebrow">Our Approach</span>
+        <h2 class="h2"><span class="tone-mute">Before the portfolio,</span>three commitments.</h2>
+      </header>
+      <div class="adv-grid adv-grid--3">
+        <article class="adv reveal" style="--i:0">
+          <div class="adv-top">
+            <span class="adv-num">01</span>
+            <h3>Open &amp; Objective Advice</h3>
+          </div>
+          <p>We are independent, with no proprietary products to sell. The recommendation you get is the one we believe fits your situation, not the one a product shelf requires.</p>
+        </article>
+        <article class="adv reveal" style="--i:1">
+          <div class="adv-top">
+            <span class="adv-num">02</span>
+            <h3>Custom-Designed Portfolios</h3>
+          </div>
+          <p>Your portfolio is built around your goals, risk tolerance and timeline. Whether you are focused on growth, income or capital preservation, the strategy is built around that objective.</p>
+        </article>
+        <article class="adv reveal" style="--i:2">
+          <div class="adv-top">
+            <span class="adv-num">03</span>
+            <h3>Powerful Alternative Investments</h3>
+          </div>
+          <p>We source alternative investments intended to diversify a portfolio beyond traditional asset classes. Available to qualified clients.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BAND 3 / bone: LAYER 01 ===== -->
+  <section class="section section--layer band band--bone" id="core">
+    <div class="shell">
+      <article class="strategy">
+        <div class="strategy-aside reveal">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-layers"/></svg>
+          <span class="strategy-num">Layer 01 of 03</span>
+          <h2>Core<br>Diversified</h2>
+          <span class="strategy-role">The Foundation</span>
+          <ul class="cap-grid">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Low-cost index &amp; factor-based implementation</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Domestic, international &amp; emerging market exposure</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Systematic rebalancing protocols</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Ongoing cost and tax-efficiency review</li>
+          </ul>
+        </div>
+        <div class="reveal" style="--i:1">
+          <span class="how-label">How it works</span>
+          <p class="lead">
+            The Core Diversified strategy forms the bedrock of our portfolios. We allocate across a
+            range of low-cost funds for exposure to key markets and sectors, by discipline rather
+            than by forecast. Think of it as the essential building blocks for long-term growth.
+          </p>
+          <ul class="how-list">
+            <li>Large-cap, mid-cap and small-cap domestic equity</li>
+            <li>International and emerging markets</li>
+            <li>Core, opportunistic and defensive fixed income</li>
+          </ul>
+          <div class="designed-to">
+            <span class="label">How you benefit</span>
+            <p>Diversification across key markets and sectors, working to manage risk and pursue consistent long-term growth across full market cycles.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== BAND 4 / navy: LAYER 02 ===== -->
+  <section class="section section--layer band band--navy" id="tactical">
+    <div class="shell">
+      <article class="strategy">
+        <div class="strategy-aside reveal">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-trend"/></svg>
+          <span class="strategy-num">Layer 02 of 03</span>
+          <h2>Tactical<br>Overlay</h2>
+          <span class="strategy-role">The Complement</span>
+          <ul class="cap-grid">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Momentum &amp; trend-responsive strategies</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sector-specific ETF rotation</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Dynamic risk positioning framework</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Continuous relative-strength monitoring</li>
+          </ul>
+        </div>
+        <div class="reveal" style="--i:1">
+          <span class="how-label">How it works</span>
+          <p class="lead">
+            Markets are dynamic, and opportunities arise. The Tactical Overlay lets us respond to
+            them selectively. We look for shifts in momentum, value and relative strength across
+            sectors and asset classes, and add targeted positions while the core portfolio stays put.
+          </p>
+          <ul class="how-list">
+            <li>Sector-specific ETFs</li>
+            <li>Individual stocks</li>
+          </ul>
+          <div class="designed-to">
+            <span class="label">How you benefit</span>
+            <p>A way to position toward areas showing strength, and a mechanism for defensive positioning when volatility is elevated, without disturbing the core.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== BAND 5 / tint: LAYER 03 =====
+       The tint marks the layer that is not for everyone: alternatives are
+       gated on suitability, and the band change says so before the copy does. -->
+  <section class="section section--layer band band--tint" id="alternatives">
+    <div class="shell">
+      <article class="strategy">
+        <div class="strategy-aside reveal">
+          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-buildings"/></svg>
+          <span class="strategy-num">Layer 03 of 03</span>
+          <h2>Alternative<br>Investments</h2>
+          <span class="strategy-role">Qualified Clients</span>
+          <ul class="cap-grid">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Private credit &amp; direct lending</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Real estate syndications</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Private equity &amp; infrastructure access</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Independent due diligence on every sponsor</li>
+          </ul>
+        </div>
+        <div class="reveal" style="--i:1">
+          <span class="how-label">How it works</span>
+          <p class="lead">
+            Meaningful diversification often extends beyond public markets. Qualified clients get
+            access to private investments that have historically shown lower correlation to public
+            equities, which is where the diversification benefit is meant to come from.
+          </p>
+          <ul class="how-list how-list--defined">
+            <li><strong>Private Equity</strong> Investing in, improving, restructuring or consolidating privately held companies.</li>
+            <li><strong>Private Credit</strong> Privately originated and negotiated debt instruments.</li>
+            <li><strong>Private Real Estate</strong> Private equity or debt investments related to real estate.</li>
+            <li><strong>Hedge Funds</strong> Sophisticated trading strategies in relatively liquid securities.</li>
+          </ul>
+          <div class="designed-to">
+            <span class="label">How you benefit</span>
+            <p>Access to private equity, private credit, private real estate and hedge funds, for diversification beyond public markets. Open to qualified investors only, and often with limited liquidity.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== BAND 6 / bone: THE THREE LAYERS, SIDE BY SIDE =====
+       Moved down from the hero in round 4. Same table, same values, all of
+       them drawn from the three bands above or from the disclosure at the
+       bottom. The column headings still link to each layer, which is now a
+       way back up rather than a way down.
+
+       DRAFT: which five attributes to compare is a judgement call. Still
+       needs Bryan's sign-off and a compliance read. -->
+  <section class="section band band--bone" id="compare">
+    <div class="shell">
+      <header class="section-head section-head--center reveal">
+        <span class="eyebrow">Side by side</span>
+        <h2 class="h2"><span class="tone-mute">Three layers,</span>three different jobs.</h2>
+      </header>
       <div class="matrix-wrap reveal" style="margin-top:clamp(2rem,4vw,3rem)">
         <table class="matrix matrix--text">
           <thead>
@@ -133,7 +301,7 @@
               <th scope="row">How it is built</th>
               <td>Low-cost index and factor-based, globally diversified</td>
               <td>Momentum and trend-responsive, with sector rotation</td>
-              <td>Private credit, real estate, private equity and infrastructure</td>
+              <td>Private equity, private credit, private real estate and hedge funds</td>
             </tr>
             <tr>
               <th scope="row">When it changes</th>
@@ -159,102 +327,7 @@
     </div>
   </section>
 
-  <!-- ===== BAND 2 / bone: LAYER 01 ===== -->
-  <section class="section section--layer band band--bone" id="core">
-    <div class="shell">
-      <article class="strategy">
-        <div class="strategy-aside reveal">
-          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-layers"/></svg>
-          <span class="strategy-num">Layer 01 of 03</span>
-          <h2>Core<br>Diversified</h2>
-          <span class="strategy-role">The Foundation</span>
-          <ul class="cap-grid">
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Low-cost index &amp; factor-based implementation</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Domestic, international &amp; emerging market exposure</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Systematic rebalancing protocols</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Ongoing cost and tax-efficiency review</li>
-          </ul>
-        </div>
-        <div class="reveal" style="--i:1">
-          <p class="lead">
-            The foundation of every portfolio we build. We allocate by discipline rather than by
-            forecast, with this layer designed to capture broad market returns while holding down
-            cost and uncompensated risk through global diversification.
-          </p>
-          <div class="designed-to">
-            <span class="label">Designed to</span>
-            <p>Serve as the reliable core of the portfolio, seeking consistent long-term growth across full market cycles.</p>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===== BAND 3 / navy: LAYER 02 ===== -->
-  <section class="section section--layer band band--navy" id="tactical">
-    <div class="shell">
-      <article class="strategy">
-        <div class="strategy-aside reveal">
-          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-trend"/></svg>
-          <span class="strategy-num">Layer 02 of 03</span>
-          <h2>Tactical<br>Overlay</h2>
-          <span class="strategy-role">The Complement</span>
-          <ul class="cap-grid">
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Momentum &amp; trend-responsive strategies</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sector-specific ETF rotation</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Dynamic risk positioning framework</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Continuous relative-strength monitoring</li>
-          </ul>
-        </div>
-        <div class="reveal" style="--i:1">
-          <p class="lead">
-            Market dislocations can create opportunities. This layer is designed to spot shifts in
-            momentum, value and relative strength across sectors and asset classes, and to respond
-            to them while the core portfolio stays put.
-          </p>
-          <div class="designed-to">
-            <span class="label">Designed to</span>
-            <p>Seek improved risk-adjusted returns in favorable markets, and provide a mechanism for defensive positioning when volatility is elevated.</p>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===== BAND 4 / tint: LAYER 03 =====
-       The tint marks the layer that is not for everyone: alternatives are
-       gated on suitability, and the band change says so before the copy does. -->
-  <section class="section section--layer band band--tint" id="alternatives">
-    <div class="shell">
-      <article class="strategy">
-        <div class="strategy-aside reveal">
-          <svg class="icon icon--lg" aria-hidden="true"><use href="#i-buildings"/></svg>
-          <span class="strategy-num">Layer 03 of 03</span>
-          <h2>Alternative<br>Investments</h2>
-          <span class="strategy-role">Qualified Clients</span>
-          <ul class="cap-grid">
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Private credit &amp; direct lending</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Real estate syndications</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Private equity &amp; infrastructure access</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Independent due diligence on every sponsor</li>
-          </ul>
-        </div>
-        <div class="reveal" style="--i:1">
-          <p class="lead">
-            Meaningful diversification often extends beyond public markets. Qualified clients get
-            access to private investments that have historically shown lower correlation to public
-            equities, which is where the diversification benefit is meant to come from.
-          </p>
-          <div class="designed-to">
-            <span class="label">Designed to</span>
-            <p>Pursue income and capital appreciation through channels that have historically shown lower sensitivity to daily public market movements.</p>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===== BAND 5 / paper: THE PROCESS ===== -->
+  <!-- ===== BAND 7 / paper: THE PROCESS ===== -->
   <section class="section band band--paper">
     <div class="shell">
       <header class="section-head section-head--center reveal">
@@ -290,7 +363,7 @@
     </div>
   </section>
 
-  <!-- ===== BAND 6 / navy: CTA ===== -->
+  <!-- ===== BAND 8 / navy: CTA ===== -->
   <section class="section cta-band band band--navy">
     <div class="shell shell--narrow cta-inner reveal">
       <span class="eyebrow">Get in touch</span>
@@ -308,7 +381,7 @@
 
 </main>
 
-<!-- ===== BAND 7 / deep: FOOTER ===== -->
+<!-- ===== BAND 9 / deep: FOOTER ===== -->
 <footer class="site-footer band band--deep">
   <div class="shell">
     <div class="footer-top">

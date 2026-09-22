@@ -352,8 +352,9 @@ body { background: var(--band-navy); }
 .band--bone .track-count .bar span, .band--tint .track-count .bar span,
 .band--paper .track-count .bar span { background: var(--gold-ink); }
 
-/* The four disciplines. The Services page is gone, so these now sit on the
-   home page directly below the services track, above the team. */
+/* The four disciplines. Originally the deleted Services page, then a band of
+   their own below the services track. As of round 4 they are the body of the
+   merged TM Advantage band, above the services track. */
 .adv-grid {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1rem, 1.8vw, 1.6rem);
@@ -391,8 +392,8 @@ body { background: var(--band-navy); }
    bento layout, friendlier framing: one anchor tile carries the claim, and
    each situation tile shows which disciplines actually engage.
 
-   The four capability paragraphs that used to live here now sit below the
-   services track as their own section, so nothing is duplicated. */
+   Superseded in round 4: see section 6d. The tiles below are unused, the
+   label, creds and chip rules are not. */
 .bento {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -456,6 +457,55 @@ body { background: var(--band-navy); }
 @media (max-width: 560px) {
   .bento { grid-template-columns: minmax(0, 1fr); }
   .bento-tile--anchor { grid-column: span 1; }
+}
+
+/* ---------- 6d. THE TM ADVANTAGE, MERGED ----------
+   Round 4. Bryan asked for the bento section and the separate four-discipline
+   section to become one. The anchor tile turned into .roof (the claim beside
+   the credential list), the four .adv cards carry the substance, and the five
+   situation tiles collapsed into one .in-practice chip line.
+
+   .bento and .bento-tile above are no longer used by any markup. They are
+   kept because .bento-label, .bento-creds and .bento-chips still are, and
+   because splitting that block is how the Investment Strategies table lost
+   its styling in round 2. */
+.roof {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(1.4rem, 3vw, 3.4rem);
+  align-items: end;
+  margin-top: clamp(2.2rem, 4vw, 3.2rem);
+  padding-bottom: clamp(1.6rem, 3vw, 2.4rem);
+  border-bottom: 1px solid var(--line);
+}
+.roof-claim h3 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.9rem, 3vw, 2.7rem); line-height: 1.1; letter-spacing: -0.02em;
+  margin-top: 1rem; max-width: 22ch;
+}
+.roof-claim p {
+  font-size: var(--body); line-height: var(--body-lh); color: var(--fg-2);
+  margin-top: 1rem; max-width: 48ch;
+}
+/* .bento-creds pushes itself down with margin-top:auto inside a flex tile.
+   Here the grid handles alignment, so both are reset. */
+.roof-creds { margin-top: 0; padding-top: 0; gap: 0.5rem 1.4rem; }
+
+/* The situations, demoted from five tiles to one line. */
+.in-practice {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 0.7rem 1.1rem;
+  margin-top: clamp(1.8rem, 3vw, 2.6rem);
+}
+.in-practice-label {
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--track-cap-sm); color: var(--gold-ink);
+  flex: none;
+}
+
+@media (max-width: 860px) {
+  .roof { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 1.5rem; }
+  .roof-creds { padding-top: 0.4rem; }
 }
 
 /* ---------- 6d. STRATEGY LAYERS, REORIENTED ----------
@@ -601,4 +651,45 @@ body { background: var(--band-navy); }
 @media (max-width: 640px) {
   .track-arrow { width: 42px; height: 42px; }
   .track-card { padding: 1.5rem; }
+}
+
+/* ---------- 10. INVESTMENT STRATEGIES: HOW IT WORKS / HOW YOU BENEFIT ----------
+   Round 4. The live tmadvisors.com page splits every strategy into "How it
+   Works" and "How You Benefit", and Bryan prefers reading it that way. The
+   benefit half reuses .designed-to (the gold-ruled pull quote) with a
+   different label, so only the works half is new here. */
+.how-label {
+  display: block;
+  font-size: 0.61rem; font-weight: 600; letter-spacing: 0.24em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.9rem;
+}
+.band--bone .how-label, .band--tint .how-label, .band--paper .how-label { color: var(--gold-ink); }
+
+.how-list { margin-top: clamp(1.2rem, 2vw, 1.6rem); display: grid; gap: 0.55rem; }
+.how-list li {
+  position: relative;
+  padding-left: 1.15rem;
+  font-size: var(--body-sm); line-height: 1.6; color: var(--fg-2);
+  text-wrap: pretty;
+}
+.how-list li::before {
+  content: ""; position: absolute; left: 0; top: 0.62em;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold);
+}
+.band--bone .how-list li::before, .band--tint .how-list li::before,
+.band--paper .how-list li::before { background: var(--gold-ink); }
+
+/* The four alternative sleeves: name, then what it is. */
+.how-list--defined { gap: 0.8rem; }
+.how-list--defined li strong {
+  display: block; font-weight: 500; color: var(--fg);
+  letter-spacing: 0.01em; margin-bottom: 0.15rem;
+}
+
+/* Our Approach runs three across, not the two the home page uses. */
+.adv-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .adv-grid--3 { grid-template-columns: minmax(0, 1fr); }
 }
