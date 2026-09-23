@@ -22,8 +22,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/main.css?v=25">
-<link rel="stylesheet" href="assets/css/theme-bands.css?v=4">
+<link rel="stylesheet" href="assets/css/main.css?v=26">
+<link rel="stylesheet" href="assets/css/theme-bands.css?v=5">
 <!-- Runs before first paint. If scripting is off it never runs, the class stays,
      and the html.no-js floor in main.css keeps gated entrances visible. -->
 <script>document.documentElement.classList.remove("no-js");</script>
@@ -50,9 +50,26 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="index.html" aria-label="TM Advisors home">
-      <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
-    </a>
+    <!-- Brett: "Can we move the accounting today award in the top banner by
+         our logo?" The header is shared, so the badge shows on all three main
+         pages. 404 and thank-you keep their stripped header (logo only, no
+         nav, no button); an award on an error page is noise. -->
+    <div class="header-brand">
+      <a class="brand" href="index.html" aria-label="TM Advisors home">
+        <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
+      </a>
+      <span class="accolade header-accolade">
+        <img class="accolade-badge"
+             src="assets/img/accounting-today-2026.png"
+             alt="Recognised by Accounting Today as a 2026 Top Firm by AUM"
+             width="540" height="275" decoding="async"
+             onerror="this.closest('.accolade').classList.add('no-badge')">
+        <span data-badge-fallback>
+          <span class="accolade-pub">Accounting Today</span>
+          <span class="accolade-award"><span class="yr">2026</span> Top Firms by AUM</span>
+        </span>
+      </span>
+    </div>
     <nav class="nav" aria-label="Primary">
       <a class="nav-link" href="index.html">Home</a>
       <a class="nav-link" href="index.html#services">Services</a>

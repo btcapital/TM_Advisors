@@ -325,9 +325,26 @@ ul, ol { list-style: none; }
 .site-header.is-stuck::before { opacity: 1; }
 
 .header-inner { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+/* Logo and award travel together, so header-inner still has three children and
+   its space-between distribution is unchanged. */
+.header-brand { display: flex; align-items: center; gap: clamp(0.7rem, 1.3vw, 1.15rem); flex: none; min-width: 0; }
 .brand { display: block; flex: none; }
 .brand img { height: 42px; width: auto; filter: brightness(0) invert(1); transition: height 0.45s var(--ease); }
 .site-header.is-stuck .brand img { height: 34px; }
+
+/* The award, moved out of the hero on Brett's note. The hero sizing (81px to
+   117px, with a heavy drop shadow to lift it off the band) is wrong at header
+   scale, so both are reset here rather than loosened there. */
+.header-accolade { flex: none; padding-left: clamp(0.7rem, 1.3vw, 1.15rem); border-left: 1px solid var(--line); }
+.header-accolade .accolade-badge {
+  height: 38px; filter: none;
+  transition: height 0.45s var(--ease);
+}
+.site-header.is-stuck .header-accolade .accolade-badge { height: 31px; }
+/* If the artwork 404s, the text fallback has to fit a header, not a hero. */
+.header-accolade.no-badge [data-badge-fallback] { padding-left: 0; border-left: 0; gap: 0.1rem; }
+.header-accolade .accolade-pub { font-size: 0.54rem; }
+.header-accolade .accolade-award { font-size: 0.8rem; }
 
 .nav { display: flex; align-items: center; gap: clamp(1.1rem, 2vw, 2.1rem); }
 .nav-link {
@@ -455,7 +472,13 @@ ul, ol { list-style: none; }
 .hero-inner { width: 100%; }
 .hero .eyebrow { margin-bottom: clamp(1.5rem, 3vw, 2.4rem); opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
 .is-ready .hero .eyebrow { opacity: 1; transform: none; transition-delay: 0.12s; }
-.hero .display { max-width: 16ch; }
+ /* Three lines of six words, where there were two lines of two. The old
+    clamp(3.4rem, 8.8vw, 8rem) would have set "Strategic Wealth Management"
+    at a size no viewport could hold, and .line clips its overflow, so a
+    wrapped line would not have wrapped, it would have vanished. Sized so the
+    longest of the three fits on one line at every width above the breakpoint
+    below, where the clip is released and wrapping is allowed. */
+.hero .display { max-width: 30ch; font-size: clamp(1.75rem, 4.4vw, 3.9rem); }
 /* The clip box for the entrance IS the line box, and line-height 0.94 makes that
    box shorter than the type is tall: at 49.6px the ink runs 37px up and 11px
    down, 48px of it, inside a 46.6px box. So every descender was sliced off, the
@@ -473,6 +496,7 @@ ul, ol { list-style: none; }
 .hero .display .line > span { display: block; transform: translateY(125%); transition: transform 1.15s var(--ease); }
 .is-ready .hero .display .line > span { transform: none; }
 .hero .display .line:nth-child(2) > span { transition-delay: 0.13s; }
+.hero .display .line:nth-child(3) > span { transition-delay: 0.26s; }
 
 .hero-lead { margin-top: clamp(1.75rem, 3vw, 2.5rem); max-width: 52ch; opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease) 0.42s, transform 0.9s var(--ease) 0.42s; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: clamp(2rem, 3.5vw, 2.9rem); opacity: 0; transform: translateY(16px); transition: opacity 0.9s var(--ease) 0.56s, transform 0.9s var(--ease) 0.56s; }
@@ -481,6 +505,62 @@ ul, ol { list-style: none; }
 .hero-scroll { position: absolute; right: var(--gutter); bottom: clamp(2.5rem, 5vw, 4.5rem); display: flex; align-items: center; gap: 0.8rem; font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg-4); }
 .hero-scroll::after { content: ""; width: 60px; height: 1px; background: linear-gradient(90deg, var(--fg-4), transparent); animation: scroll-cue 2.8s var(--ease-io) infinite; }
 @keyframes scroll-cue { 0%, 100% { opacity: 0.35; transform: translateX(0); } 50% { opacity: 1; transform: translateX(6px); } }
+
+/* ---------- 10b. HERO AURORA ----------
+   Brett asked for movement because "one plain colour is boring". Three soft
+   glows, no hard edges, drifting on 54s, 71s and 89s loops. The durations are
+   coprime enough that the arrangement does not visibly repeat inside a visit.
+
+   Only transform is animated, so this stays on the compositor and never costs
+   a layout or a paint. The layer sits at z-index -2, behind the scrim at -1
+   and above the band's own background, which is why .hero isolates. */
+.hero-aurora {
+  position: absolute; inset: 0; z-index: -2;
+  overflow: hidden; pointer-events: none;
+}
+.hero-aurora span {
+  position: absolute; display: block; border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+.hero-aurora span:nth-child(1) {
+  width: 46vw; height: 46vw; min-width: 320px; min-height: 320px;
+  top: -12%; left: -6%;
+  background: radial-gradient(circle, rgba(58, 80, 105, 0.55), rgba(58, 80, 105, 0) 68%);
+  animation: aurora-a 54s var(--ease-io) infinite;
+}
+.hero-aurora span:nth-child(2) {
+  width: 38vw; height: 38vw; min-width: 260px; min-height: 260px;
+  top: 28%; right: -8%;
+  background: radial-gradient(circle, rgba(197, 164, 126, 0.16), rgba(197, 164, 126, 0) 70%);
+  animation: aurora-b 71s var(--ease-io) infinite;
+}
+.hero-aurora span:nth-child(3) {
+  width: 52vw; height: 52vw; min-width: 340px; min-height: 340px;
+  bottom: -22%; left: 24%;
+  background: radial-gradient(circle, rgba(47, 68, 87, 0.5), rgba(47, 68, 87, 0) 66%);
+  animation: aurora-c 89s var(--ease-io) infinite;
+}
+@keyframes aurora-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(14vw, 8vh, 0) scale(1.14); }
+  66%      { transform: translate3d(5vw, 18vh, 0) scale(0.92); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  40%      { transform: translate3d(-16vw, 12vh, 0) scale(1.2); }
+  70%      { transform: translate3d(-6vw, -8vh, 0) scale(0.9); }
+}
+@keyframes aurora-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  45%      { transform: translate3d(-12vw, -14vh, 0) scale(1.1); }
+  75%      { transform: translate3d(9vw, -6vh, 0) scale(0.95); }
+}
+/* Asked not to move: keep the glows, drop the drift. The band is still not one
+   plain colour, which was the actual note. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-aurora span { animation: none; }
+}
 
 /* ---------- 11. CREDENTIAL STRIP ---------- */
 .creds { border-block: 1px solid var(--line); padding-block: 1.5rem; }
@@ -893,6 +973,12 @@ select.input:invalid { color: var(--fg-4); }
 .is-ready .hero--full .cta-inner > * { opacity: 1; transform: none; }
 
 /* ---------- 20. RESPONSIVE ---------- */
+/* Logo plus badge plus burger is one thing too many on a phone, and the logo
+   is the one that has to stay. */
+@media (max-width: 560px) {
+  .header-accolade { display: none; }
+}
+
 @media (max-width: 1180px) {
   .svc-grid { grid-template-columns: repeat(2, 1fr); }
   .cap { grid-template-columns: 3.5rem minmax(0, 18rem) minmax(0, 1fr); }
@@ -927,6 +1013,13 @@ select.input:invalid { color: var(--fg-4); }
 }
 
 @media (max-width: 640px) {
+  /* Below here the three title lines are allowed to wrap, so the clip that
+     powers the slide-up reveal has to come off: a wrapped second row would be
+     clipped out of existence rather than shown. The reveal falls back to the
+     translate alone, which still reads. */
+  .hero .display .line { overflow: visible; padding-bottom: 0; margin-bottom: 0; }
+  .hero .display .line > span { transform: translateY(22px); opacity: 0; transition: transform 1.15s var(--ease), opacity 1.15s var(--ease); }
+  .is-ready .hero .display .line > span { transform: none; opacity: 1; }
   .svc-grid, .team-grid, .cap-grid, .process-grid, .svc-detail-grid, .form-grid { grid-template-columns: 1fr; }
   .svc { min-height: 0; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }

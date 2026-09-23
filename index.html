@@ -28,8 +28,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
 <!-- Bump ?v= on every deploy so returning visitors pick up changes immediately -->
-<link rel="stylesheet" href="assets/css/main.css?v=25">
-<link rel="stylesheet" href="assets/css/theme-bands.css?v=4">
+<link rel="stylesheet" href="assets/css/main.css?v=26">
+<link rel="stylesheet" href="assets/css/theme-bands.css?v=5">
 
 <script type="application/ld+json">
 {
@@ -121,9 +121,26 @@
 <!-- ===== HEADER ===== -->
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="index.html" aria-label="TM Advisors home">
-      <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
-    </a>
+    <!-- Brett: "Can we move the accounting today award in the top banner by
+         our logo?" The header is shared, so the badge shows on all three main
+         pages. 404 and thank-you keep their stripped header (logo only, no
+         nav, no button); an award on an error page is noise. -->
+    <div class="header-brand">
+      <a class="brand" href="index.html" aria-label="TM Advisors home">
+        <img src="assets/img/logo-white.png" alt="TM Advisors" width="403" height="120">
+      </a>
+      <span class="accolade header-accolade">
+        <img class="accolade-badge"
+             src="assets/img/accounting-today-2026.png"
+             alt="Recognised by Accounting Today as a 2026 Top Firm by AUM"
+             width="540" height="275" decoding="async"
+             onerror="this.closest('.accolade').classList.add('no-badge')">
+        <span data-badge-fallback>
+          <span class="accolade-pub">Accounting Today</span>
+          <span class="accolade-award"><span class="yr">2026</span> Top Firms by AUM</span>
+        </span>
+      </span>
+    </div>
 
     <nav class="nav" aria-label="Primary">
       <a class="nav-link" href="index.html" aria-current="page">Home</a>
@@ -159,36 +176,34 @@
 
   <!-- ===== BAND 1 / navy: HERO ===== -->
   <section class="hero band band--navy">
+    <!-- Brett: "I think we need some sort of background or movement. One plain
+         colour is boring." Three soft glows drifting on long, mismatched loops
+         so the pattern never visibly repeats. Transform only, so it composites
+         on the GPU and never triggers layout. Under prefers-reduced-motion the
+         glows stay but stop moving, which answers the note without moving
+         anything for a reader who has asked the browser not to. -->
+    <div class="hero-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="shell hero-inner">
       <span class="eyebrow">Registered Investment Adviser</span>
+      <!-- Reverted to the live site's title on Brett's note. He wrote it with a
+           dash; tmadvisors.com actually separates the three with pipes, which
+           is just as well, since a dash would fail the house rule. Three lines
+           rather than three pipes: the pipe is doing a line break's job. -->
       <h1 class="display">
-        <span class="line"><span>Wealth Engineered.</span></span>
-        <span class="line"><span class="gold-text">Tax Optimized.</span></span>
+        <span class="line"><span>Strategic Wealth Management</span></span>
+        <span class="line"><span>Sophisticated Tax Planning</span></span>
+        <span class="line"><span class="gold-text">Experienced M&amp;A Advisory</span></span>
       </h1>
       <p class="lead hero-lead">
-        Investment management, tax strategy and transaction advisory, delivered by one team
-        at one table. Our CPAs, CFPs and attorneys work from a single view of your balance sheet,
-        so every decision is made with the whole picture in view.
+        Investment management, tax strategy and transaction advisory, delivered by one team.
+        Our CPAs, CFPs and JDs work together so your entire financial picture is clear
+        and planned for.
       </p>
       <div class="hero-actions">
         <a class="btn btn--primary" href="contact.html">
           Start the conversation <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
         </a>
         <a class="btn btn--ghost" href="#capabilities">Explore capabilities</a>
-      </div>
-
-      <div class="hero-accolade">
-        <span class="accolade">
-          <img class="accolade-badge"
-               src="assets/img/accounting-today-2026.png"
-               alt="Recognised by Accounting Today as a 2026 Top Firm by AUM"
-               width="540" height="275" decoding="async"
-               onerror="this.closest('.accolade').classList.add('no-badge')">
-          <span data-badge-fallback>
-            <span class="accolade-pub">Accounting Today</span>
-            <span class="accolade-award"><span class="yr">2026</span> Top Firms by AUM</span>
-          </span>
-        </span>
       </div>
     </div>
     <span class="hero-scroll" aria-hidden="true">Scroll</span>
@@ -227,7 +242,7 @@
     <div class="shell">
       <header class="section-head reveal">
         <span class="eyebrow">The TM Advantage</span>
-        <h2 class="h2"><span class="tone-mute">One conversation,</span>every discipline at the table.</h2>
+        <h2 class="h2"><span class="tone-mute">One firm,</span>every financial need.</h2>
       </header>
 
       <div class="roof reveal">
