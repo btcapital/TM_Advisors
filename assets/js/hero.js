@@ -136,8 +136,11 @@
     '  float s = (fract(u_time * 0.045) * 2.6 - 0.75) - (uv.x * 0.82 + uv.y * 0.38);',
     '  col += exp(-(s * s) * 4.41) * vec3(0.055, 0.072, 0.095);',
 
-    // Grain, in the shader rather than as a sixth composited layer.
-    '  float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + u_time) * 43758.5453);',
+    /* Grain, in the shader rather than as a sixth composited layer. On the
+       same hash as the noise: the version here was still sin based, with an
+       unbounded u_time added inside the sin, so it had the same precision
+       cliff as the lattice bug above, just slower to arrive. */
+    '  float g = hash2(gl_FragCoord.xy + fract(u_time) * 431.7).x * 0.5 + 0.5;',
     '  col += (g - 0.5) * 0.030;',
 
     // Ordered dither before the 8 bit write. Smooth dark gradients band
