@@ -336,11 +336,14 @@ ul, ol { list-style: none; }
    117px, with a heavy drop shadow to lift it off the band) is wrong at header
    scale, so both are reset here rather than loosened there. */
 .header-accolade { flex: none; padding-left: clamp(0.7rem, 1.3vw, 1.15rem); border-left: 1px solid var(--line); }
+/* Sized up: 38px was timid next to a 42px logo, and the award is the point.
+   At 54px it clears the logo and still leaves 15px of air top and bottom in
+   the 84px bar, 11px in the 68px stuck bar. */
 .header-accolade .accolade-badge {
-  height: 38px; filter: none;
+  height: 54px; filter: none;
   transition: height 0.45s var(--ease);
 }
-.site-header.is-stuck .header-accolade .accolade-badge { height: 31px; }
+.site-header.is-stuck .header-accolade .accolade-badge { height: 44px; }
 /* If the artwork 404s, the text fallback has to fit a header, not a hero. */
 .header-accolade.no-badge [data-badge-fallback] { padding-left: 0; border-left: 0; gap: 0.1rem; }
 .header-accolade .accolade-pub { font-size: 0.54rem; }
@@ -506,60 +509,122 @@ ul, ol { list-style: none; }
 .hero-scroll::after { content: ""; width: 60px; height: 1px; background: linear-gradient(90deg, var(--fg-4), transparent); animation: scroll-cue 2.8s var(--ease-io) infinite; }
 @keyframes scroll-cue { 0%, 100% { opacity: 0.35; transform: translateX(0); } 50% { opacity: 1; transform: translateX(6px); } }
 
-/* ---------- 10b. HERO AURORA ----------
-   Brett asked for movement because "one plain colour is boring". Three soft
-   glows, no hard edges, drifting on 54s, 71s and 89s loops. The durations are
-   coprime enough that the arrangement does not visibly repeat inside a visit.
+/* ---------- 10b. HERO ATMOSPHERE ----------
+   Round 6b. The first pass read as "a bunch of circles in different shades of
+   blue", which was fair: a 60px blur on a 46vw disc leaves 91% of the disc
+   edge intact, and three discs at three lightnesses is three readable circles.
 
-   Only transform is animated, so this stays on the compositor and never costs
-   a layout or a paint. The layer sits at z-index -2, behind the scrim at -1
-   and above the band's own background, which is why .hero isolates. */
+   Rebuilt on different principles.
+
+   No blur filter and no border-radius. The softness comes from the gradient
+   itself, which fades across its whole radius, so there is no edge to find.
+   That is also far cheaper than blurring a 660px element every frame.
+
+   Ellipses, not circles, at wildly different aspect ratios, sized past the
+   viewport on at least one axis so no shape can be read whole.
+
+   One light source, not three. Everything is lit warm from the upper right
+   and falls to deep navy at the lower left. Random blobs look random; a
+   consistent direction of light looks intentional.
+
+   A sheen crosses on a 24s loop. That is the part you actually notice, and it
+   reads as light moving over a surface rather than as shapes drifting, which
+   is what fixes "too subtle" without making anything hectic.
+
+   Grain over the top. Gradients alone render plastic; a fine noise is what
+   separates an expensive dark surface from a CSS demo. */
 .hero-aurora {
   position: absolute; inset: 0; z-index: -2;
   overflow: hidden; pointer-events: none;
 }
+
+/* The lit surface. Static: this is the light source, and light sources that
+   wander are what made the first pass look accidental. */
+.hero-aurora::before {
+  content: ""; position: absolute; inset: -15%;
+  background:
+    radial-gradient(85% 65% at 82% 8%, rgba(104, 141, 182, 0.50), rgba(104, 141, 182, 0) 64%),
+    radial-gradient(60% 70% at 96% 34%, rgba(197, 164, 126, 0.15), rgba(197, 164, 126, 0) 60%),
+    radial-gradient(95% 80% at 8% 104%, rgba(8, 14, 22, 0.82), rgba(8, 14, 22, 0) 62%);
+}
+
+/* The sheen. A wide, very soft diagonal band crossing the whole hero. */
+.hero-aurora::after {
+  content: ""; position: absolute; top: -30%; bottom: -30%; left: -60%; width: 75%;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.028) 38%,
+    rgba(214, 231, 250, 0.065) 50%,
+    rgba(255, 255, 255, 0.028) 62%,
+    rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-12deg);
+  will-change: transform;
+  animation: hero-sheen 24s var(--ease-io) infinite;
+}
+
 .hero-aurora span {
-  position: absolute; display: block; border-radius: 50%;
-  filter: blur(60px);
+  position: absolute; display: block;
   will-change: transform;
 }
+/* Wider than the viewport, so its ends are always off screen. */
 .hero-aurora span:nth-child(1) {
-  width: 46vw; height: 46vw; min-width: 320px; min-height: 320px;
-  top: -12%; left: -6%;
-  background: radial-gradient(circle, rgba(58, 80, 105, 0.55), rgba(58, 80, 105, 0) 68%);
-  animation: aurora-a 54s var(--ease-io) infinite;
+  top: -45%; left: -30%; width: 150%; height: 115%;
+  background: radial-gradient(52% 46% at 42% 50%, rgba(101, 137, 178, 0.42), rgba(101, 137, 178, 0) 72%);
+  animation: atmos-a 38s var(--ease-io) infinite;
 }
+/* The one warm field, kept near the light source so the warmth has a reason. */
 .hero-aurora span:nth-child(2) {
-  width: 38vw; height: 38vw; min-width: 260px; min-height: 260px;
-  top: 28%; right: -8%;
-  background: radial-gradient(circle, rgba(197, 164, 126, 0.16), rgba(197, 164, 126, 0) 70%);
-  animation: aurora-b 71s var(--ease-io) infinite;
+  top: -25%; right: -40%; width: 115%; height: 95%;
+  background: radial-gradient(46% 52% at 60% 42%, rgba(197, 164, 126, 0.17), rgba(197, 164, 126, 0) 70%);
+  animation: atmos-b 47s var(--ease-io) infinite;
 }
+/* Deep shadow field, anchoring the lower left away from the light. */
 .hero-aurora span:nth-child(3) {
-  width: 52vw; height: 52vw; min-width: 340px; min-height: 340px;
-  bottom: -22%; left: 24%;
-  background: radial-gradient(circle, rgba(47, 68, 87, 0.5), rgba(47, 68, 87, 0) 66%);
-  animation: aurora-c 89s var(--ease-io) infinite;
+  bottom: -55%; left: -25%; width: 140%; height: 120%;
+  background: radial-gradient(48% 44% at 38% 55%, rgba(13, 22, 33, 0.60), rgba(13, 22, 33, 0) 70%);
+  animation: atmos-c 61s var(--ease-io) infinite;
 }
-@keyframes aurora-a {
+
+@keyframes hero-sheen {
+  0%       { transform: translateX(0) skewX(-12deg); }
+  100%     { transform: translateX(260%) skewX(-12deg); }
+}
+@keyframes atmos-a {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  33%      { transform: translate3d(14vw, 8vh, 0) scale(1.14); }
-  66%      { transform: translate3d(5vw, 18vh, 0) scale(0.92); }
+  38%      { transform: translate3d(9%, 12%, 0) scale(1.18); }
+  70%      { transform: translate3d(-5%, 5%, 0) scale(0.94); }
 }
-@keyframes aurora-b {
+@keyframes atmos-b {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  40%      { transform: translate3d(-16vw, 12vh, 0) scale(1.2); }
-  70%      { transform: translate3d(-6vw, -8vh, 0) scale(0.9); }
+  45%      { transform: translate3d(-12%, 14%, 0) scale(1.22); }
+  75%      { transform: translate3d(-4%, -7%, 0) scale(0.9); }
 }
-@keyframes aurora-c {
+@keyframes atmos-c {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  45%      { transform: translate3d(-12vw, -14vh, 0) scale(1.1); }
-  75%      { transform: translate3d(9vw, -6vh, 0) scale(0.95); }
+  42%      { transform: translate3d(11%, -13%, 0) scale(1.15); }
+  78%      { transform: translate3d(-7%, -4%, 0) scale(0.93); }
 }
-/* Asked not to move: keep the glows, drop the drift. The band is still not one
-   plain colour, which was the actual note. */
+
+/* Film grain. It lives inside .hero-aurora rather than on .hero::after,
+   because the bands redesign kills .hero::before and .hero::after with
+   !important to keep the hero flat, and that rule is still doing its job for
+   the gradient and texture pass it was written against. Same reason the scrim
+   that main.css puts on .hero::before has never actually painted.
+
+   Last child, so it sits over every field below it. One repeating 180px tile,
+   rasterised once. */
+.hero-grain {
+  position: absolute; inset: 0; display: block; pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Asked not to move: the lit surface, the fields and the grain all stay, the
+   drift and the sheen stop. The band is still a lit surface, which was the
+   actual note, and nothing travels. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-aurora span { animation: none; }
+  .hero-aurora span, .hero-aurora::after { animation: none; }
+  .hero-aurora::after { opacity: 0.5; transform: translateX(120%) skewX(-12deg); }
 }
 
 /* ---------- 11. CREDENTIAL STRIP ---------- */
