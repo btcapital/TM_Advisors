@@ -15,6 +15,7 @@ assets/css/main.css         The base design system
 assets/css/theme-bands.css  The "Bands" redesign, layered over main.css
 assets/js/main.js           All behaviour, one file, ~7KB, zero libraries
 assets/js/bands.js          Service track + header inversion for the bands
+assets/js/hero.js           WebGL hero field. Raw GL, no library, home page only
 assets/img/team/*.jpg       Portraits, 720x900, ~68KB each
 tools/optimize-images.ps1   Re-run when new portraits are added
 BANDS-REDESIGN.md           Why the site looks the way it does. Read this first.
