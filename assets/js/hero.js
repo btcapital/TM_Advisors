@@ -36,27 +36,56 @@
     'void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }'
   ].join('\n');
 
-  /* Domain-warped fractal noise: fbm is fed its own output twice, which is
-     what stops the field ever settling into a shape you can name. The gold is
-     gated on the fold being both high and steep, so it shows up where the
-     surface catches light rather than as a wash over everything. */
+  /* Gradient noise, domain warped.
+
+     The first version of this shader showed hard rectangular blocks at
+     several scales. Two causes, both worth recording because both are easy
+     to reintroduce.
+
+     1. The hash was fract(sin(dot(p, k)) * 43758.5)). That idiom is
+     everywhere, and it falls apart exactly here: the domain warp feeds
+     already-warped coordinates back in, so the argument to sin gets large,
+     and sin of a large float32 loses its low bits. Neighbouring lattice
+     cells then hash to the same value and the lattice itself becomes
+     visible, axis aligned, as blocks. Replaced with a multiply-and-fract
+     hash that never calls a trig function.
+
+     2. Value noise interpolates a scalar per lattice corner, so the grid
+     survives smoothing. This is gradient noise: a random direction per
+     corner, quintic interpolation, which is C2 continuous, so no crease
+     falls on a cell boundary. Each octave is also rotated, because
+     doubling frequency on an unrotated lattice stacks every octave's grid
+     on the same axes, which is what made the blocks read as one grid
+     rather than as noise. */
   var FRAG = [
     'precision highp float;',
     'uniform vec2 u_res;',
     'uniform float u_time;',
 
-    'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }',
+    'vec2 hash2(vec2 p){',
+    '  vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));',
+    '  p3 += dot(p3, p3.yzx + 33.33);',
+    '  return fract((p3.xx + p3.yz) * p3.zy) * 2.0 - 1.0;',
+    '}',
 
-    'float noise(vec2 p){',
+    'float gnoise(vec2 p){',
     '  vec2 i = floor(p), f = fract(p);',
-    '  vec2 u = f * f * (3.0 - 2.0 * f);',
-    '  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),',
-    '             mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);',
+    '  vec2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);',
+    '  float a = dot(hash2(i), f);',
+    '  float b = dot(hash2(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0));',
+    '  float c = dot(hash2(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0));',
+    '  float d = dot(hash2(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0));',
+    '  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y) * 0.5 + 0.5;',
     '}',
 
     'float fbm(vec2 p){',
     '  float v = 0.0, a = 0.5;',
-    '  for (int i = 0; i < 5; i++){ v += a * noise(p); p *= 2.02; a *= 0.5; }',
+    '  mat2 rot = mat2(0.80, 0.60, -0.60, 0.80);',
+    '  for (int i = 0; i < 5; i++){',
+    '    v += a * gnoise(p);',
+    '    p = rot * p * 2.03 + 11.7;',
+    '    a *= 0.5;',
+    '  }',
     '  return v;',
     '}',
 
@@ -70,7 +99,10 @@
     '  vec2 r = vec2(fbm(p * 1.5 + 2.3 * q + vec2(1.7, 9.2) + t * 0.45),',
     '                fbm(p * 1.5 + 2.3 * q + vec2(8.3, 2.8) - t * 0.32));',
     '  float f = fbm(p * 1.5 + 2.5 * r);',
-    '  f = clamp((f - 0.28) * 1.85, 0.0, 1.0);',
+    /* Gradient noise clusters nearer its mean than the value noise it
+       replaced, so the same remap left the field flatter and lost the bright
+       plumes that were the part worth keeping. More gain, lower floor. */
+    '  f = clamp((f - 0.255) * 2.40, 0.0, 1.0);',
 
     '  vec3 deep  = vec3(0.039, 0.071, 0.110);',
     '  vec3 navy  = vec3(0.086, 0.157, 0.239);',
@@ -92,16 +124,26 @@
 
     // Headline and lede sit lower left. Sink that quadrant so the type never
     // has to fight the field for contrast.
-    '  float d = length((uv - vec2(0.20, 0.36)) * vec2(1.05, 1.45));',
-    '  col *= mix(0.62, 1.06, smoothstep(0.0, 0.66, d));',
+    '  float dd = length((uv - vec2(0.20, 0.36)) * vec2(1.05, 1.45));',
+    '  col *= mix(0.62, 1.06, smoothstep(0.0, 0.66, dd));',
 
-    '  float sweepPos = fract(u_time * 0.045) * 2.6 - 0.75;',
-    '  float band = exp(-pow((sweepPos - (uv.x * 0.82 + uv.y * 0.38)) * 2.1, 2.0));',
-    '  col += band * vec3(0.055, 0.072, 0.095);',
+    /* A soft band of light crossing the field on a 22s cycle. This is the
+       part that reads as movement at a glance.
+
+       Squared by multiplication, not by pow(). GLSL leaves pow(x, y)
+       undefined for x < 0, and this base goes negative on half the screen
+       by construction, which was the other half of the block artefact. */
+    '  float s = (fract(u_time * 0.045) * 2.6 - 0.75) - (uv.x * 0.82 + uv.y * 0.38);',
+    '  col += exp(-(s * s) * 4.41) * vec3(0.055, 0.072, 0.095);',
 
     // Grain, in the shader rather than as a sixth composited layer.
-    '  float g = hash(gl_FragCoord.xy + fract(u_time) * vec2(13.7, 71.3));',
-    '  col += (g - 0.5) * 0.034;',
+    '  float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + u_time) * 43758.5453);',
+    '  col += (g - 0.5) * 0.030;',
+
+    // Ordered dither before the 8 bit write. Smooth dark gradients band
+    // badly at this depth, and banding reads as blockiness too.
+    '  float dith = fract(dot(gl_FragCoord.xy, vec2(0.75487, 0.56984)));',
+    '  col += (dith - 0.5) / 255.0;',
 
     '  gl_FragColor = vec4(col, 1.0);',
     '}'
@@ -138,13 +180,22 @@
   var uRes = gl.getUniformLocation(prog, 'u_res');
   var uTime = gl.getUniformLocation(prog, 'u_time');
 
-  /* Fill rate is the whole cost here, so the backing store is capped well
-     below a retina ratio. The field has no edges, so nobody can tell. */
+  /* Render at the display's real pixel ratio now that the field is the
+     centrepiece, but under a total pixel budget, because fill rate is the
+     entire cost and an ultrawide at 2x is four times the work of a laptop.
+     Above the budget the ratio is scaled back rather than the cap being a
+     flat number, so a big screen loses sharpness gradually. */
+  var PIXEL_BUDGET = 2900000;
+
   function resize() {
     var r = host.getBoundingClientRect();
-    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    var w = Math.max(1, Math.round(r.width * dpr));
-    var h = Math.max(1, Math.round(r.height * dpr));
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(1, r.width), h = Math.max(1, r.height);
+    if (w * h * dpr * dpr > PIXEL_BUDGET) {
+      dpr = Math.max(1, Math.sqrt(PIXEL_BUDGET / (w * h)));
+    }
+    w = Math.round(w * dpr);
+    h = Math.round(h * dpr);
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
