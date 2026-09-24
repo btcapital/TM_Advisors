@@ -81,7 +81,7 @@
     'float fbm(vec2 p){',
     '  float v = 0.0, a = 0.5;',
     '  mat2 rot = mat2(0.80, 0.60, -0.60, 0.80);',
-    '  for (int i = 0; i < 5; i++){',
+    '  for (int i = 0; i < 4; i++){',
     '    v += a * gnoise(p);',
     '    p = rot * p * 2.03 + 11.7;',
     '    a *= 0.5;',
@@ -94,11 +94,14 @@
     '  vec2 p = uv; p.x *= u_res.x / u_res.y;',
     '  float t = u_time * 0.030;',
 
+    /* One level of domain warp, not two. Two levels meant five fbm calls per
+       pixel; at five octaves and four hashes an octave that is a hundred hash
+       evaluations for every pixel on the screen, every frame, which saturates
+       the GPU that the compositor needs to scroll smoothly. One level with a
+       stronger warp keeps the folded look for three calls instead of five. */
     '  vec2 q = vec2(fbm(p * 1.5 + vec2(0.0, t)),',
     '                fbm(p * 1.5 + vec2(3.2, -t * 0.75)));',
-    '  vec2 r = vec2(fbm(p * 1.5 + 2.3 * q + vec2(1.7, 9.2) + t * 0.45),',
-    '                fbm(p * 1.5 + 2.3 * q + vec2(8.3, 2.8) - t * 0.32));',
-    '  float f = fbm(p * 1.5 + 2.5 * r);',
+    '  float f = fbm(p * 1.5 + 3.4 * q + vec2(1.7, 9.2) + t * 0.28);',
     /* Gradient noise clusters nearer its mean than the value noise it
        replaced, so the same remap left the field flatter and lost the bright
        plumes that were the part worth keeping. More gain, lower floor. */
@@ -114,7 +117,7 @@
     '  col = mix(col, slate, smoothstep(0.34, 0.84, f));',
     '  col = mix(col, lift,  smoothstep(0.52, 0.98, f) * 0.88);',
 
-    '  float catchLight = smoothstep(0.56, 0.90, f) * smoothstep(0.20, 0.70, r.x);',
+    '  float catchLight = smoothstep(0.56, 0.90, f) * smoothstep(0.24, 0.74, q.x);',
     '  col = mix(col, gold, catchLight * 0.58);',
 
     // One light source: warm and bright upper right, falling to the lower
@@ -183,16 +186,17 @@
   var uRes = gl.getUniformLocation(prog, 'u_res');
   var uTime = gl.getUniformLocation(prog, 'u_time');
 
-  /* Render at the display's real pixel ratio now that the field is the
-     centrepiece, but under a total pixel budget, because fill rate is the
-     entire cost and an ultrawide at 2x is four times the work of a laptop.
-     Above the budget the ratio is scaled back rather than the cap being a
-     flat number, so a big screen loses sharpness gradually. */
-  var PIXEL_BUDGET = 2900000;
+  /* Fill rate is the entire cost, so this is the biggest lever there is.
+     The ratio was 2 with a 2.9M budget, which on a normal laptop is 2.5M
+     pixels of a shader that is not cheap per pixel. It is now 1.25 under a
+     1.5M budget. The field has no edges and no fine detail, so the browser's
+     own filtering hides the upscale completely; the blocks reported earlier
+     were a lattice bug, not resolution, and they are fixed at the source. */
+  var PIXEL_BUDGET = 1500000;
 
   function resize() {
     var r = host.getBoundingClientRect();
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     var w = Math.max(1, r.width), h = Math.max(1, r.height);
     if (w * h * dpr * dpr > PIXEL_BUDGET) {
       dpr = Math.max(1, Math.sqrt(PIXEL_BUDGET / (w * h)));
@@ -208,8 +212,12 @@
   }
 
   var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
-  var running = false, raf = 0, start = 0;
+  var running = false, raf = 0, start = 0, visible = true, lastDraw = 0;
   var FROZEN = 8.0;
+  /* Half rate. The field drifts slowly enough that nobody can tell 30 from
+     60, and it halves the GPU time this costs. Slightly under 33.3ms so the
+     cadence does not beat against the display's refresh. */
+  var MIN_FRAME_MS = 31;
 
   function draw(seconds) {
     gl.uniform1f(uTime, seconds);
@@ -217,9 +225,11 @@
   }
 
   function frame(now) {
-    if (!start) start = now;
-    draw((now - start) / 1000);
     raf = requestAnimationFrame(frame);
+    if (!start) start = now;
+    if (now - lastDraw < MIN_FRAME_MS) return;
+    lastDraw = now;
+    draw((now - start) / 1000);
   }
 
   function play() {
@@ -245,11 +255,24 @@
      running behind six bands of content. */
   if (window.IntersectionObserver) {
     new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) play(); else pause();
+      visible = entries[0].isIntersecting;
+      if (visible) play(); else pause();
     }, { threshold: 0 }).observe(host);
   } else {
     play();
   }
+
+  /* Stop dead while the user is actually scrolling, and pick up shortly
+     after they stop. Scrolling is the one moment the compositor wants the
+     whole GPU, and it is also the one moment nobody is studying the hero,
+     because it is sliding off the screen. This is the change that should be
+     felt rather than measured. */
+  var scrollIdle = 0;
+  addEventListener('scroll', function () {
+    pause();
+    clearTimeout(scrollIdle);
+    scrollIdle = setTimeout(function () { if (visible && !document.hidden) play(); }, 170);
+  }, { passive: true });
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) pause(); else play();

@@ -128,19 +128,52 @@
   );
 
   if (header && lightBands.length) {
-    var lastScrim = '';
+    /* This used to measure inside the scroll handler: offsetHeight, then
+       getBoundingClientRect on every light band, then getComputedStyle on the
+       one it found, and then it wrote a class and a custom property. Reading
+       layout after writing to it forces the browser to recompute layout
+       synchronously, and doing that on every scroll frame is the textbook
+       cause of scrolling that feels heavy rather than glassy.
 
-    var sync = function () {
-      // Probe just below the header's own bottom edge.
-      var probe = header.offsetHeight * 0.55;
-      var hit = null;
+       Nothing being read here actually changes while you scroll. Band
+       positions and background colours are fixed once the page has laid out,
+       so they are measured once and again on resize, and the scroll path is
+       then arithmetic against a cached list with no DOM reads at all. */
+    var lastScrim = '';
+    var lastHit = -1;
+    var probe = 0;
+    var geo = [];
+
+    var measure = function () {
+      /* Taken while the header is at whatever height it currently is. The
+         difference between its resting and stuck heights is about 9px, which
+         only shifts a band changeover by a frame. */
+      probe = header.getBoundingClientRect().height * 0.55;
+      var sy = window.pageYOffset;
+      geo = [];
       for (var i = 0; i < lightBands.length; i++) {
         var r = lightBands[i].getBoundingClientRect();
-        if (r.top <= probe && r.bottom > probe) { hit = lightBands[i]; break; }
+        geo.push({
+          top: r.top + sy,
+          bottom: r.bottom + sy,
+          bg: getComputedStyle(lightBands[i]).backgroundColor
+        });
       }
-      header.classList.toggle('on-light', !!hit);
-      if (hit) {
-        var bg = getComputedStyle(hit).backgroundColor;
+    };
+
+    var sync = function () {
+      var y = window.pageYOffset + probe;
+      var hit = -1;
+      for (var i = 0; i < geo.length; i++) {
+        if (geo[i].top <= y && geo[i].bottom > y) { hit = i; break; }
+      }
+      // Writing the same class and the same colour every frame still costs a
+      // style invalidation, so nothing is touched unless the band changed.
+      if (hit === lastHit) return;
+      lastHit = hit;
+      header.classList.toggle('on-light', hit >= 0);
+      if (hit >= 0) {
+        var bg = geo[hit].bg;
         if (bg && bg !== lastScrim) {
           header.style.setProperty('--hdr-scrim', bg);
           lastScrim = bg;
@@ -155,9 +188,13 @@
       requestAnimationFrame(function () { queued = false; sync(); });
     };
 
+    var remeasure = function () { measure(); lastHit = -1; sync(); };
+
     addEventListener('scroll', onScroll, { passive: true });
-    addEventListener('resize', onScroll, { passive: true });
-    if (mq && mq.addEventListener) mq.addEventListener('change', onScroll);
-    sync();
+    addEventListener('resize', remeasure, { passive: true });
+    // Late web fonts and images can move a band after first layout.
+    addEventListener('load', remeasure);
+    if (mq && mq.addEventListener) mq.addEventListener('change', remeasure);
+    remeasure();
   }
 })();
